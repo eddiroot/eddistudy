@@ -1,0 +1,44 @@
+name: eddi
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: eddi
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  obj:
+    image: minio/minio
+    restart: always
+    ports:
+      - 9000:9000
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    volumes:
+      - objdata:/data
+    command: server /data
+
+  obj_buckets:
+    image: minio/mc
+    depends_on:
+      - obj
+    restart: on-failure
+    entrypoint: >
+      /bin/sh -c "
+      sleep 10;
+      /usr/bin/mc alias set myminio http://obj:9000 minio minio123;
+      /usr/bin/mc mb myminio/schools;
+      /usr/bin/mc mb myminio/logos;
+      /usr/bin/mc anonymous set public myminio/logos;
+      exit 0;
+      "
+
+volumes:
+  dbdata:
+  objdata:
