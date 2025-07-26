@@ -295,3 +295,28 @@ export const standardElaboration = pgTable('std_elab', {
 });
 
 export type StandardElaboration = typeof standardElaboration.$inferSelect;
+
+export enum extraContentTypeEnum {
+	definition = 'definition',
+	method = 'method',
+	characteristic = 'characteristic'
+}
+
+export const extraContentTypeEnumPg = pgEnum('extra_content_type', [
+	extraContentTypeEnum.definition,
+	extraContentTypeEnum.method,
+	extraContentTypeEnum.characteristic
+]);
+
+export const extraContent = pgTable('extra_content', {
+	id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
+	description: text('description').notNull(),
+	curriculumSubjectId: integer('cur_sub_id')
+		.notNull()
+		.references(() => curriculumSubject.id, { onDelete: 'cascade' }),
+	extraContentType: extraContentTypeEnumPg().notNull(),
+	isArchived: boolean('is_archived').notNull().default(false),
+	...timestamps
+});
+
+export type ExtraContent = typeof extraContent.$inferSelect;
