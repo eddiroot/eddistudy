@@ -55,6 +55,7 @@ export const outcome = pgTable('outcome', {
 		.notNull()
 		.references(() => curriculumSubject.id, { onDelete: 'cascade' }),
 	number: integer('number').notNull(),
+	description: text('description').notNull(),
 	isArchived: boolean('is_archived').notNull().default(false),
 	...timestamps
 });
