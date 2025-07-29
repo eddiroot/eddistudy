@@ -154,6 +154,7 @@
             "curriculumSubjectId": 1000,
             "description": "On completion of this unit the student should be able to use and apply a range of mathematical concepts, skills and procedures from selected areas of study to solve practical problems based on a range of everyday and real-life contexts.",
             "number": 1,
+            "abbreviation": "U1O1",
             "isArchived": false,
             "topics": [
                 {
@@ -457,6 +458,7 @@
                 "curriculumSubjectId": 1000,
                 "description": "On completion of this unit the student should be able to apply mathematical processes in non-routine practical contexts, including situations with some open-ended aspects requiring investigative, modelling or problem-solving techniques or approaches, and analyse and discuss these applications of mathematics.",
                 "number": 2,
+                "abbreviation": "U1O2",
                 "isArchived": false,
                 "keySkills": [
                     {
@@ -539,6 +541,7 @@
                 "curriculumSubjectId": 1000,
                 "description": "On completion of this unit the student should be able to apply computational thinking and use numerical, graphical, symbolic and statistical functionalities of technology to develop mathematical ideas, produce results and carry out analysis in practical situations requiring investigative, modelling or problem-solving techniques or approaches.",
                 "number": 3,
+                "abbreviation": "U1O3",
                 "isArchived": false,
                 "keySkills": [
                     {
@@ -617,7 +620,7 @@
             }        
         ],
         "curriculumLearningActivities": [
-          {
+            {
             "id": 1000,
             "name": "Lab: Measure Plant Transpiration",
             "description": "Students set up potometers to quantify transpiration rates.",

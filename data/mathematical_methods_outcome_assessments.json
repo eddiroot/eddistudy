@@ -1,0 +1,194 @@
+[
+  {
+    "unit": "Unit 3",
+    "outcomeNumber": "1",
+    "outcomeDescription": "Define and explain key concepts as specified in the content from the areas of study and apply a range of related mathematical routines and procedures.",
+    "totalMarks": "15 marks",
+    "criteria": [
+      {
+        "markRange": "0–3",
+        "description": "Appropriate use of mathematical conventions, symbols and terminology Application of mathematical conventions in diagrams, tables, and graphs, such as axes labels and conventions for asymptotes. Appropriate and accurate use of symbolic notation in defining mathematical terms or expressions, such as formulas, equations, transformations and combinations of functions. Use of correct expressions in symbolic manipulation or computation in mathematical work. Use of correct terminology, including set notation, to specify relations and functions, such as domain, co-domain, range, and rule. Description of key features of relations and functions as applicable, such as symmetry, periodicity, asymptotes, coordinates for axial intercepts, stationary points and points of inflection."
+      },
+      {
+        "markRange": "0–6",
+        "description": "Definition and explanation of key concepts Definition of mathematical concepts using appropriate terminology, phrases, and symbolic expressions. Provision of examples which illustrate key concepts and explain their role in the development of related mathematics. Statement of conditions or restrictions which apply to the definition of a concept. Identification of key concepts in relation to each area of study and explanation of the use of these concepts in applying mathematics in different practical or theoretical contexts."
+      },
+      {
+        "markRange": "0–6",
+        "description": "Accurate use of mathematical skills and techniques Use of algebra and numerical values to evaluate expressions, substitute into formulas, construct lists and tables, produce graphs and solve equations. Use of mathematical algorithms, routines and procedures involving algebra, functions, coordinate geometry, calculus to obtain results and solve problems. Identification of domain and range of a function or relation and other key features using numerical, graphical, and algebraic techniques, including approximate or exact specification of values."
+      }
+    ]
+  },
+  {
+    "unit": "Unit 3",
+    "outcomeNumber": "2",
+    "outcomeDescription": "",
+    "totalMarks": "20 marks",
+    "criteria": [
+      {
+        "markRange": "0–4",
+        "description": "Identification of important information, variables and constraints Identification of key characteristics of a problem, task or issue and statement of any assumptions underlying the use of relevant mathematics in the given context. Choice of suitable variables, parameters, and constants for the development of mathematics related to various aspects of a given context. Specifications of constraints, such as domain and range constraints, and relationships between variables, related to aspects of a context."
+      },
+      {
+        "markRange": "0–8",
+        "description": "Application of mathematical ideas and content from the specified areas of study Demonstration of understanding of key mathematical content from one or more areas of study in relation to a given context. Use of specific and general formulations of concepts and mathematical content drawn from the areas of study to derive results for analysis in this context. Key elements of algorithm design including sequencing, decision-making and repetition, and their representation and implementation. Appropriate use of examples to illustrate the application of a mathematical process, or use of a counter-example to disprove a proposition or conjecture. Use of a variety of approaches to develop functions as models for data presented in tabular, diagrammatic, or graphical form. Use of algebra, coordinate geometry, derivatives, gradients, anti-derivatives, and integrals, to set up and solve problems."
+      },
+      {
+        "markRange": "0–8",
+        "description": "Analysis and interpretation of results Analysis and interpretation of results obtained from examples or counter-examples to establish or refute general case propositions or conjectures related to a context for investigation. Generation of inferences from analysis to draw conclusions related to the context for investigation, and to verify or modify conjectures. Discussion of the validity and limitations of any models."
+      }
+    ]
+  },
+  {
+    "unit": "Unit 3",
+    "outcomeNumber": "3",
+    "outcomeDescription": "Apply computational thinking and use numerical, graphical, symbolic and statistical functionalities of technology to develop mathematical ideas, produce results and carry out analysis in situations requiring problem-solving, modelling or investigative techniques or approaches.",
+    "totalMarks": "15 marks",
+    "criteria": [
+      {
+        "markRange": "0–6",
+        "description": "Appropriate selection and effective use of technology Relevant and appropriate selection and use of technology, or a functionality of the selected technology for the mathematical context being considered. Distinction between exact and approximate results produced by technology, and interpretation of these results to a required accuracy. Use of appropriate range and domain and other specifications which illustrate key features of the mathematics under consideration."
+      },
+      {
+        "markRange": "0–9",
+        "description": "Application of technology Use and interpretation of the relationship between numerical, graphical, and symbolic forms of information produced by technology about relations, functions and equations and the corresponding features of those relations, functions, or equations. Analysis of the relationship of the results from an application of technology to the nature of a particular mathematical question, problem, or task. Use of tables of values, families of graphs or collections of other results produced using technology to support analysis in problem-solving, investigative, or modelling contexts. Production of results efficiently and systematically which identify examples or counter-examples which are clearly relevant to the task. Use of computational thinking, algorithms, models and simulations to solve problems related to a context."
+      }
+    ]
+  },
+  {
+    "unit": "Unit 4",
+    "outcomeNumber": "1",
+    "outcomeDescription": "Define and explain key terms and concepts as specified in the content from the areas of study and apply a range of related mathematical routines and procedures.",
+    "totalMarks": "15 marks",
+    "criteria": [
+      {
+        "markRange": "0–2",
+        "description": "Appropriate use of mathematical conventions, symbols and terminology Application of mathematical conventions in diagrams, tables, and graphs, such as axes labels and conventions for asymptotes. Appropriate and accurate use of symbolic notation in defining mathematical terms or expressions, such as equations, transformations and combinations of functions. Use of correct expressions in symbolic manipulation or computation in mathematical work. Use of correct terminology, including set notation, to specify relations and functions, such as domain, co-domain, range and rule. Description of key features of relations and functions, including probability mass and density functions as applicable, such as symmetry, periodicity, asymptotes, coordinates for axial intercepts, stationary points and points of inflection.",
+        "tasks": [
+          {
+            "taskNumber": "1",
+            "markRange": "0–2"
+          },
+          {
+            "taskNumber": "2",
+            "markRange": "0–2"
+          }
+        ]
+      },
+      {
+        "markRange": "0–3",
+        "description": "Definition and explanation of key concepts Definition of mathematical concepts using appropriate terminology, phrases, and symbolic expressions. Provision of examples which illustrate key concepts and explain their role in the development of related mathematics. Statement of conditions or restrictions which apply to the definition of a concept. Identification of key concepts in relation to each area of study and explanation of the use of these concepts in applying mathematics in different practical or theoretical contexts.",
+        "tasks": [
+          {
+            "taskNumber": "1",
+            "markRange": "0–3"
+          },
+          {
+            "taskNumber": "2",
+            "markRange": "0–2"
+          }
+        ]
+      },
+      {
+        "markRange": "0–3",
+        "description": "Accurate use of mathematical skills and techniques Use of algebra and numerical values to evaluate expressions, substitute into formulas, construct tables, produce graphs and solve equations. Use of mathematical routines and procedures involving algebra, functions, coordinate geometry, calculus, probability, and statistics to obtain results and solve problems. Identification of domain and range of a function or relation and other key features using numerical, graphical and algebraic techniques, including approximate or exact specification of values. Identification and representation of sample spaces.",
+        "tasks": [
+          {
+            "taskNumber": "1",
+            "markRange": "0–3"
+          },
+          {
+            "taskNumber": "2",
+            "markRange": "0–3"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "unit": "Unit 4",
+    "outcomeNumber": "2",
+    "outcomeDescription": "Apply mathematical processes in non-routine contexts, including situations with some open-ended aspects requiring problem-solving, modelling or investigative techniques or approaches, and analyse and discuss these applications of mathematics.",
+    "totalMarks": "20 marks",
+    "criteria": [
+      {
+        "markRange": "0–2",
+        "description": "Identification of important information, variables and constraints Identification of key characteristics of a problem, task or issue and statement of any assumptions underlying the use of relevant mathematics in the given context. Choice of suitable variables, including random variables, parameters, and constants for the development of mathematics related to various aspects of a given context. Specifications of constraints, such as domain and range constraints, and relationships between variables, related to aspects of a context.",
+        "tasks": [
+          {
+            "taskNumber": "1",
+            "markRange": "0–2"
+          },
+          {
+            "taskNumber": "2",
+            "markRange": "0–2"
+          }
+        ]
+      },
+      {
+        "markRange": "0–4",
+        "description": "Application of mathematical ideas and content from the specified areas of study Demonstration of understanding of key mathematical content from one or more areas of study in relation to a given context. Use of specific and general formulations of concepts and mathematical content drawn from the areas of study to derive results for analysis in this context. Key elements of algorithm design including sequencing, decision-making and repetition, and their representation and implementation. Appropriate use of examples to illustrate the application of a mathematical process, or use of a counter-example to disprove a proposition or conjecture. Use of a variety of approaches to develop functions as models for data or distributions presented in tabular, diagrammatic, or graphical form. Use of algebra, coordinate geometry, derivatives, gradients, anti-derivatives, and integrals, to set up and solve problems.",
+        "tasks": [
+          {
+            "taskNumber": "1",
+            "markRange": "0–4"
+          },
+          {
+            "taskNumber": "2",
+            "markRange": "0–4"
+          }
+        ]
+      },
+      {
+        "markRange": "0–4",
+        "description": "Analysis and interpretation of results Analysis and interpretation of results obtained from examples or counter-examples to establish or refute general case propositions or conjectures related to a context for investigation. Generation of inferences from analysis to draw conclusions related to the context for investigation, and to verify or modify conjectures. Discussion of the validity and limitations of any models.",
+        "tasks": [
+          {
+            "taskNumber": "1",
+            "markRange": "0–4"
+          },
+          {
+            "taskNumber": "2",
+            "markRange": "0–4"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "unit": "Unit 4",
+    "outcomeNumber": "3",
+    "outcomeDescription": "Apply computational thinking and use numerical, graphical, symbolic and statistical functionalities of technology to develop mathematical ideas, produce results and carry out analysis in situations requiring problem-solving, modelling or investigative techniques or approaches.",
+    "totalMarks": "15 marks",
+    "criteria": [
+      {
+        "markRange": "0–3",
+        "description": "Appropriate selection and effective use of technology Relevant and appropriate selection and use of technology, or a function of the selected technology for the mathematical context being considered. Distinction between exact and approximate results produced by technology, and interpretation of these results to a required accuracy. Use of appropriate range and domain and other specifications which illustrate key features of the mathematics under consideration.",
+        "tasks": [
+          {
+            "taskNumber": "1",
+            "markRange": "0–3"
+          },
+          {
+            "taskNumber": "2",
+            "markRange": "0–3"
+          }
+        ]
+      },
+      {
+        "markRange": "0–4",
+        "description": "Application of technology Use and interpretation of the relation between numerical, graphical, and symbolic forms of information produced by technology about functions, equations and distributions, and their corresponding features. Analysis of the relationship of the results from an application of technology to the nature of a particular mathematical question, problem or task. Use of tables of values, families of graphs or collections of other results produced using technology to support analysis in problem solving, investigative or modelling contexts. Production of results efficiently and systematically which identify key features, examples or counter-examples which are clearly relevant to the task. Use of computational thinking, algorithms, models and simulations to solve problems related to a context.",
+        "tasks": [
+          {
+            "taskNumber": "1",
+            "markRange": "0–4"
+          },
+          {
+            "taskNumber": "2",
+            "markRange": "0–5"
+          }
+        ]
+      }
+    ]
+  }
+]
