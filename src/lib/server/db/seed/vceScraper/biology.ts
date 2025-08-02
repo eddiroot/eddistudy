@@ -1,20 +1,24 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Types for Biology curriculum data
 interface BiologyLearningActivity {
   activity: string;
   unit: number;
-  areaOfStudy: string;
-  outcome: string;
+  areaOfStudy: number;
+  outcome: number;
 }
 
 interface BiologyDetailedExample {
   title: string;
   content: string;
   unit: number;
-  areaOfStudy: string;
-  outcome: string;
+  areaOfStudy: number;
+  outcome: number;
 }
 
 interface BiologyAssessmentTask {
@@ -57,27 +61,27 @@ function cleanHtml(htmlContent: string): string {
 }
 
 // Function to parse unit and area information from accordion title
-function parseUnitAreaTitle(title: string): { unit: number; areaOfStudy: string; outcome: string } | null {
+function parseUnitAreaTitle(title: string): { unit: number; areaOfStudy: number; outcome: number } | null {
   // Unit 1 patterns
   if (title.includes('Unit 1') && title.includes('Area of Study 1')) {
     return {
       unit: 1,
-      areaOfStudy: 'How do cells function?',
-      outcome: 'Outcome 1'
+      areaOfStudy: 1,
+      outcome: 1
     };
   }
   if (title.includes('Unit 1') && title.includes('Area of Study 2')) {
     return {
       unit: 1,
-      areaOfStudy: 'How do plant and animal systems function?',
-      outcome: 'Outcome 2'
+      areaOfStudy: 2,
+      outcome: 2
     };
   }
   if (title.includes('Unit 1') && title.includes('Area of Study 3')) {
     return {
       unit: 1,
-      areaOfStudy: 'How do scientific investigations develop understanding of how organisms regulate their functions?',
-      outcome: 'Outcome 3'
+      areaOfStudy: 3,
+      outcome: 3
     };
   }
 
@@ -85,22 +89,22 @@ function parseUnitAreaTitle(title: string): { unit: number; areaOfStudy: string;
   if (title.includes('Unit 2') && title.includes('Area of Study 1')) {
     return {
       unit: 2,
-      areaOfStudy: 'How is inheritance explained?',
-      outcome: 'Outcome 1'
+      areaOfStudy: 1,
+      outcome: 1
     };
   }
   if (title.includes('Unit 2') && title.includes('Area of Study 2')) {
     return {
       unit: 2,
-      areaOfStudy: 'How do inherited adaptations impact on survival?',
-      outcome: 'Outcome 2'
+      areaOfStudy: 2,
+      outcome: 2
     };
   }
   if (title.includes('Unit 2') && title.includes('Area of Study 3')) {
     return {
       unit: 2,
-      areaOfStudy: 'How do humans use science to explore and communicate contemporary bioethical issues?',
-      outcome: 'Outcome 3'
+      areaOfStudy: 3,
+      outcome: 3
     };
   }
 
@@ -108,15 +112,15 @@ function parseUnitAreaTitle(title: string): { unit: number; areaOfStudy: string;
   if (title.includes('Unit 3') && title.includes('Area of Study 1')) {
     return {
       unit: 3,
-      areaOfStudy: 'How do nucleic acids and proteins determine cell structure and function?',
-      outcome: 'Outcome 1'
+      areaOfStudy: 1,
+      outcome: 1
     };
   }
   if (title.includes('Unit 3') && title.includes('Area of Study 2')) {
     return {
       unit: 3,
-      areaOfStudy: 'How are biochemical pathways regulated?',
-      outcome: 'Outcome 2'
+      areaOfStudy: 2,
+      outcome: 2
     };
   }
 
@@ -124,22 +128,22 @@ function parseUnitAreaTitle(title: string): { unit: number; areaOfStudy: string;
   if (title.includes('Unit 4') && title.includes('Area of Study 1')) {
     return {
       unit: 4,
-      areaOfStudy: 'How do organisms respond to pathogens?',
-      outcome: 'Outcome 1'
+      areaOfStudy: 1,
+      outcome: 1
     };
   }
   if (title.includes('Unit 4') && title.includes('Area of Study 2')) {
     return {
       unit: 4,
-      areaOfStudy: 'How are species related over time?',
-      outcome: 'Outcome 2'
+      areaOfStudy: 2,
+      outcome: 2
     };
   }
   if (title.includes('Unit 4') && title.includes('Area of Study 3')) {
     return {
       unit: 4,
-      areaOfStudy: 'How is scientific inquiry used to investigate cellular processes and/or biological change?',
-      outcome: 'Outcome 3'
+      areaOfStudy: 3,
+      outcome: 3
     };
   }
 
@@ -147,61 +151,183 @@ function parseUnitAreaTitle(title: string): { unit: number; areaOfStudy: string;
 }
 
 // Function to extract learning activities from HTML content
-function extractLearningActivities(htmlContent: string, unit: number, areaOfStudy: string, outcome: string): BiologyLearningActivity[] {
+function extractLearningActivities(htmlContent: string, unit: number, areaOfStudy: number, outcome: number): BiologyLearningActivity[] {
   const activities: BiologyLearningActivity[] = [];
   
-  // Extract activities from HTML using regex to find list items in example boxes
-  const activityRegex = /<li[^>]*>([^<]+(?:<[^>]+>[^<]*<\/[^>]+>[^<]*)*)<\/li>/g;
-  let match;
-  
-  while ((match = activityRegex.exec(htmlContent)) !== null) {
-    const activityText = cleanHtml(match[1]);
+  try {
+    // Remove the detailed examples section first to avoid including them
+    const contentWithoutDetailedExamples = htmlContent.replace(/<div class="notebox">.*?<\/div>/gs, '');
     
-    // Skip if it's a detailed example (contains exampleno-border class or is within notebox)
-    if (activityText && !match[0].includes('exampleno-border') && !match[0].includes('examplesAnchor')) {
-      activities.push({
-        activity: activityText,
-        unit,
-        areaOfStudy,
-        outcome
-      });
+    // Find all examplebox sections using a more robust approach that handles nested <ul> tags
+    const exampleboxStartRegex = /<ul class="examplebox">/g;
+    let startMatch;
+    
+    while ((startMatch = exampleboxStartRegex.exec(contentWithoutDetailedExamples)) !== null) {
+      const startIndex = startMatch.index + startMatch[0].length;
+      
+      // Find the matching closing </ul> tag by counting nested levels
+      let depth = 1;
+      let currentIndex = startIndex;
+      let endIndex = -1;
+      
+      while (currentIndex < contentWithoutDetailedExamples.length && depth > 0) {
+        const remaining = contentWithoutDetailedExamples.slice(currentIndex);
+        
+        const nextUlOpen = remaining.search(/<ul/);
+        const nextUlClose = remaining.search(/<\/ul>/);
+        
+        if (nextUlClose === -1) break; // No more closing tags
+        
+        if (nextUlOpen !== -1 && nextUlOpen < nextUlClose) {
+          // Found opening <ul> before closing </ul>
+          depth++;
+          currentIndex += nextUlOpen + 3; // Move past "<ul"
+        } else {
+          // Found closing </ul>
+          depth--;
+          currentIndex += nextUlClose + 5; // Move past "</ul>"
+          if (depth === 0) {
+            endIndex = currentIndex - 5; // Position at start of </ul>
+            break;
+          }
+        }
+      }
+      
+      if (endIndex !== -1) {
+        const examplesContent = contentWithoutDetailedExamples.slice(startIndex, endIndex);
+        
+        // Split by <li> tags and process each item
+        const listItems = examplesContent.split(/<li(?=[^>]*>)/);
+        
+        for (let i = 1; i < listItems.length; i++) { // Skip first empty element
+          let itemContent = '<li' + listItems[i];
+          
+          // Skip detailed examples (exampleno-border or examplesAnchor)
+          if (itemContent.includes('class="exampleno-border"') || itemContent.includes('examplesAnchor')) {
+            continue;
+          }
+          
+          // Skip nested examplenoborder items (these should be part of parent items)
+          if (itemContent.includes('class="examplenoborder"')) {
+            continue;
+          }
+          
+          // Clean up the item content - remove the opening li tag
+          itemContent = itemContent.replace(/^<li[^>]*>/, '');
+          
+          // Remove any trailing </li> tags
+          itemContent = itemContent.replace(/<\/li>$/, '');
+          
+          // Check if this item has nested bullet points
+          const hasNestedList = itemContent.includes('<ul>') && itemContent.includes('class="examplenoborder"');
+          
+          if (hasNestedList) {
+            // Extract main text before nested list
+            const mainTextMatch = itemContent.match(/^(.*?)(?=<ul>)/s);
+            const mainText = mainTextMatch ? cleanHtml(mainTextMatch[1]).trim() : '';
+            
+            // Extract nested items
+            const nestedItemRegex = /<li class="examplenoborder"[^>]*>(.*?)<\/li>/gs;
+            const nestedItems = [];
+            let nestedMatch;
+            
+            while ((nestedMatch = nestedItemRegex.exec(itemContent)) !== null) {
+              const nestedText = cleanHtml(nestedMatch[1]).trim();
+              if (nestedText && nestedText.length > 5) {
+                nestedItems.push(nestedText);
+              }
+            }
+            
+            if (mainText && nestedItems.length > 0) {
+              const combinedActivity = `${mainText} Including: ${nestedItems.join('; ')}.`;
+              activities.push({
+                activity: combinedActivity,
+                unit,
+                areaOfStudy,
+                outcome
+              });
+            } else if (mainText) {
+              let finalActivity = mainText;
+              if (!finalActivity.endsWith('.') && !finalActivity.endsWith('?') && !finalActivity.endsWith('!')) {
+                finalActivity += '.';
+              }
+              activities.push({
+                activity: finalActivity,
+                unit,
+                areaOfStudy,
+                outcome
+              });
+            }
+          } else {
+            // Simple list item without nesting
+            const cleanedActivity = cleanHtml(itemContent).trim();
+            
+            if (cleanedActivity && cleanedActivity.length > 20) {
+              let finalActivity = cleanedActivity;
+              if (!finalActivity.endsWith('.') && !finalActivity.endsWith('?') && !finalActivity.endsWith('!')) {
+                finalActivity += '.';
+              }
+              
+              activities.push({
+                activity: finalActivity,
+                unit,
+                areaOfStudy,
+                outcome
+              });
+            }
+          }
+        }
+      }
     }
+    
+  } catch (error) {
+    console.error('Error extracting learning activities:', error);
   }
   
   return activities;
 }
 
-// Function to extract detailed examples from HTML content
-function extractDetailedExamples(htmlContent: string, unit: number, areaOfStudy: string, outcome: string): BiologyDetailedExample[] {
+// Function to extract detailed examples from HTML content  
+function extractDetailedExamples(htmlContent: string, unit: number, areaOfStudy: number, outcome: number): BiologyDetailedExample[] {
   const examples: BiologyDetailedExample[] = [];
   
-  // Extract detailed examples using regex to find notebox divs
-  const noteboxRegex = /<div class="notebox">(.*?)<\/div>/gs;
-  const matches = htmlContent.match(noteboxRegex);
-  
-  if (matches) {
-    matches.forEach((match: string) => {
-      // Extract title from h2 or h3 tags within the notebox
-      let title = 'Detailed Example';
-      
-      const titleMatch = match.match(/<h[23][^>]*>(.*?)<\/h[23]>/);
-      if (titleMatch) {
-        title = cleanHtml(titleMatch[1]);
-      }
-      
-      // Extract content by removing HTML tags but preserving structure
-      const content = cleanHtml(match);
-      
-      if (content && content.length > 50) { // Only include substantial content
-        examples.push({
-          title,
-          content,
-          unit,
-          areaOfStudy,
-          outcome
-        });
-      }
-    });
+  try {
+    // Extract detailed examples using regex to find notebox divs
+    const noteboxRegex = /<div class="notebox">(.*?)<\/div>/gs;
+    const matches = htmlContent.match(noteboxRegex);
+    
+    if (matches) {
+      matches.forEach((match: string) => {
+        // Extract title from h2 or h3 tags within the notebox
+        let title = 'Detailed Example';
+        
+        // Look for h3 tag first (more specific), then h2
+        const h3Match = match.match(/<h3[^>]*>(.*?)<\/h3>/);
+        const h2Match = match.match(/<h2[^>]*>(.*?)<\/h2>/);
+        
+        if (h3Match) {
+          title = cleanHtml(h3Match[1]);
+        } else if (h2Match) {
+          title = cleanHtml(h2Match[1]);
+        }
+        
+        // Extract content by removing HTML tags but preserving structure
+        const content = cleanHtml(match);
+        
+        if (content && content.length > 100) { // Only include substantial content
+          examples.push({
+            title,
+            content,
+            unit,
+            areaOfStudy,
+            outcome
+          });
+        }
+      });
+    }
+    
+  } catch (error) {
+    console.error('Error extracting detailed examples:', error);
   }
   
   return examples;
@@ -249,7 +375,7 @@ async function scrapeBiologyCurriculumData(): Promise<{ learningActivities: Biol
           
           if (unitInfo) {
             const { unit, areaOfStudy, outcome } = unitInfo;
-            console.log(`  Unit ${unit}, Area: ${areaOfStudy.substring(0, 50)}...`);
+            console.log(`  Unit ${unit}, Area: ${areaOfStudy}...`);
             
             // Extract activities and examples for this section
             const activities = extractLearningActivities(htmlContent, unit, areaOfStudy, outcome);
@@ -301,7 +427,7 @@ async function scrapeBiologyCombinedData(): Promise<void> {
     };
     
     // Write combined data to JSON file
-    const outputPath = path.join(process.cwd(), 'data', 'biology_curriculum_data.json');
+    const outputPath = path.join(__dirname, 'data', 'biology_curriculum_data.json');
     
     // Ensure the data directory exists
     const dataDir = path.dirname(outputPath);
