@@ -8,8 +8,8 @@ const __dirname = path.dirname(__filename);
 interface EnglishLearningActivity {
   activity: string;
   unit: number;
-  areaOfStudy: string;
-  outcome: string;
+  areaOfStudy: number;
+  outcome: number;
 }
 
 interface EnglishData {
@@ -90,7 +90,7 @@ function extractLearningActivities(data: ApiResponse): EnglishLearningActivity[]
     const englishUnitSections = components.filter((comp: AccordionComponent, index) => 
       comp.type === 'paragraph--accordion' && 
       comp.field_accordion_title &&
-      comp.field_accordion_title.match(/Unit\s+\d+/) &&
+      (comp.field_accordion_title.match(/Unit\s+\d+/) || comp.field_accordion_title.match(/Units\s+\d+\s+and\s+\d+/)) &&
       index >= 7 && index <= 13 // English units are in indexes 7-13, EAL starts at 15
     );
 
@@ -110,12 +110,24 @@ function extractLearningActivities(data: ApiResponse): EnglishLearningActivity[]
       if (!bodyContent) continue;
 
       // Extract unit number from title (e.g., "Unit 1 – Area of Study 1: Reading and exploring texts")
-      const unitMatch = title.match(/Unit\s+(\d+)/i);
-      const unitNumber = unitMatch ? parseInt(unitMatch[1]) : 1;
+      // Handle both "Unit X" and "Units X and Y" formats
+      const unitMatch = title.match(/Units?\s+(\d+)(?:\s+and\s+(\d+))?/i);
+      let unitNumber = 1;  // default
+      
+      if (unitMatch) {
+        if (unitMatch[2]) {
+          // "Units 3 and 4" - we'll create separate entries for both units
+          // For now, let's use the first unit number and handle both later
+          unitNumber = parseInt(unitMatch[1]);
+        } else {
+          // "Unit X"
+          unitNumber = parseInt(unitMatch[1]);
+        }
+      }
 
-      // Extract area of study from title
-      const areaOfStudyMatch = title.match(/Area of Study \d+[:\s]*([^:]+?)(?:\s*$)/i);
-      const areaOfStudy = areaOfStudyMatch ? areaOfStudyMatch[1].trim() : title.replace(/Unit\s+\d+[^\w]*/, '').trim();
+      // Extract area of study number from title
+      const areaOfStudyMatch = title.match(/Area of Study (\d+)/i);
+      const areaOfStudyNumber = areaOfStudyMatch ? parseInt(areaOfStudyMatch[1]) : 1;
 
       // Parse the HTML content to extract activities
       const cleanContent = cleanHtmlContent(bodyContent);
@@ -128,47 +140,114 @@ function extractLearningActivities(data: ApiResponse): EnglishLearningActivity[]
         const activitiesContent = examplesMatch[1];
         console.log(`Found activities section with ${activitiesContent.length} characters`);
         
-        // Split activities by paragraph breaks or clear sentence endings
-        const activityTexts = activitiesContent
-          .split(/\n\s*\n/) // Split by double line breaks (paragraphs)
-          .map(text => text.trim())
-          .filter(text => text.length > 50) // Only substantial text
-          .flatMap(paragraph => {
-            // Further split long paragraphs by sentence endings followed by capital letters
-            return paragraph.split(/\.\s+(?=[A-Z])/)
-              .map(sentence => sentence.trim())
-              .filter(sentence => sentence.length > 30);
-          });
-
-        console.log(`Extracted ${activityTexts.length} potential activities`);
-
-        for (let activityText of activityTexts) {
-          // Clean up the text
-          activityText = activityText.replace(/\s+/g, ' ').trim();
+        // Parse HTML to find actual bullet points
+        const htmlContent = accordion.field_accordion_body?.processed || '';
+        
+        // Find the Examples of learning activities section in HTML
+        const examplesHtmlMatch = htmlContent.match(/Examples of learning activities(.*?)$/is);
+        if (examplesHtmlMatch) {
+          const activitiesHtml = examplesHtmlMatch[1];
           
-          // Add period if missing
-          if (activityText && !activityText.endsWith('.') && !activityText.endsWith('?') && !activityText.endsWith('!')) {
-            activityText += '.';
+          // Extract bullet points from nested HTML structure
+          const bulletPoints: string[] = [];
+          
+          // Look for the main examplebox ul and extract nested li elements
+          const exampleboxMatch = activitiesHtml.match(/<ul class="examplebox"[^>]*>(.*?)<\/ul>/s);
+          if (exampleboxMatch) {
+            const exampleboxContent = exampleboxMatch[1];
+            
+            // Find all category sections (top-level li elements)
+            const categoryMatches = exampleboxContent.match(/<li[^>]*>([^<]*)<ul[^>]*>(.*?)<\/ul><\/li>/gs);
+            
+            if (categoryMatches) {
+              console.log(`Found ${categoryMatches.length} category sections`);
+              
+              categoryMatches.forEach((categorySection: string) => {
+                // Extract nested li elements (actual activities)
+                const nestedLiMatches = categorySection.match(/<li class="examplenoborder"[^>]*>(.*?)<\/li>/gs);
+                
+                if (nestedLiMatches) {
+                  nestedLiMatches.forEach((li: string) => {
+                    const cleanText = cleanHtmlContent(li).trim();
+                    if (cleanText.length > 30) {
+                      bulletPoints.push(cleanText);
+                    }
+                  });
+                }
+              });
+            } else {
+              console.log('No category sections found, trying alternative extraction');
+              
+              // Fallback: extract all li elements with examplenoborder class
+              const allLiMatches = activitiesHtml.match(/<li class="examplenoborder"[^>]*>(.*?)<\/li>/gs);
+              if (allLiMatches) {
+                allLiMatches.forEach((li: string) => {
+                  const cleanText = cleanHtmlContent(li).trim();
+                  if (cleanText.length > 30) {
+                    bulletPoints.push(cleanText);
+                  }
+                });
+              }
+            }
+          } else {
+            console.log('No examplebox found, trying generic extraction');
+            
+            // Final fallback: extract any li elements
+            const liMatches = activitiesHtml.match(/<li[^>]*>(.*?)<\/li>/gs);
+            if (liMatches) {
+              liMatches.forEach((li: string) => {
+                const cleanText = cleanHtmlContent(li).trim();
+                // Skip category headers (they usually don't end with punctuation)
+                if (cleanText.length > 30 && !cleanText.match(/^[A-Z][^.!?]*$/)) {
+                  bulletPoints.push(cleanText);
+                }
+              });
+            }
           }
 
-          // Skip very short or very long texts
-          if (activityText.length < 40 || activityText.length > 800) {
-            continue;
+          console.log(`Extracted ${bulletPoints.length} bullet points`);
+
+          for (let bulletText of bulletPoints) {
+            // Clean up the text
+            bulletText = bulletText.replace(/\s+/g, ' ').trim();
+            
+            // Skip very short or very long texts
+            if (bulletText.length < 40 || bulletText.length > 1000) {
+              continue;
+            }
+
+            // Skip obvious headers or metadata
+            if (bulletText.match(/^(Examples of learning activities|Outcome|Unit|Area of Study|The following|These activities)/i)) {
+              continue;
+            }
+
+            // Handle "Units 3 and 4" case - create activities for both units
+            const unitsMatch = title.match(/Units?\s+(\d+)(?:\s+and\s+(\d+))?/i);
+            if (unitsMatch && unitsMatch[2]) {
+              // "Units 3 and 4" - create for both units
+              const unit1 = parseInt(unitsMatch[1]);
+              const unit2 = parseInt(unitsMatch[2]);
+              
+              [unit1, unit2].forEach(unit => {
+                const activity: EnglishLearningActivity = {
+                  activity: bulletText,
+                  unit: unit,
+                  areaOfStudy: areaOfStudyNumber,
+                  outcome: unit // Map outcome to unit number
+                };
+                activities.push(activity);
+              });
+            } else {
+              // Single unit
+              const activity: EnglishLearningActivity = {
+                activity: bulletText,
+                unit: unitNumber,
+                areaOfStudy: areaOfStudyNumber,
+                outcome: unitNumber // Map outcome to unit number
+              };
+              activities.push(activity);
+            }
           }
-
-          // Skip obvious headers or metadata
-          if (activityText.match(/^(Examples of learning activities|Outcome|Unit|Area of Study|The following|These activities)/i)) {
-            continue;
-          }
-
-          const activity: EnglishLearningActivity = {
-            activity: activityText,
-            unit: unitNumber,
-            areaOfStudy,
-            outcome: `Outcome ${unitNumber}` // Simple outcome assignment
-          };
-
-          activities.push(activity);
         }
       } else {
         console.log('No "Examples of learning activities" section found');
@@ -246,6 +325,19 @@ if (import.meta.url === `file://${process.argv[1]}`) {
         console.log('\n=== DISTRIBUTION BY UNIT ===');
         Object.keys(byUnit).forEach(unit => {
           console.log(`Unit ${unit}: ${byUnit[parseInt(unit)].length} activities`);
+        });
+
+        // Show distribution by area of study
+        const byAreaOfStudy = data.learningActivities.reduce((acc, activity) => {
+          const key = `Unit ${activity.unit} Area ${activity.areaOfStudy}`;
+          if (!acc[key]) acc[key] = [];
+          acc[key].push(activity);
+          return acc;
+        }, {} as Record<string, EnglishLearningActivity[]>);
+
+        console.log('\n=== DISTRIBUTION BY AREA OF STUDY ===');
+        Object.keys(byAreaOfStudy).forEach(key => {
+          console.log(`${key}: ${byAreaOfStudy[key].length} activities`);
         });
       }
     })
