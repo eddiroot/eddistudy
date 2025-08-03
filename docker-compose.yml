@@ -1,14 +1,14 @@
-name: eddi
+name: eddistudy
 services:
   db:
     image: postgres
     restart: always
     ports:
-      - 5432:5432
+      - 5433:5433
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: eddi
+      POSTGRES_DB: eddistudy
     volumes:
       - dbdata:/var/lib/postgresql/data
 
@@ -16,7 +16,7 @@ services:
     image: minio/minio
     restart: always
     ports:
-      - 9000:9000
+      - 9001:9001
     environment:
       MINIO_ACCESS_KEY: minio
       MINIO_SECRET_KEY: minio123
@@ -32,7 +32,7 @@ services:
     entrypoint: >
       /bin/sh -c "
       sleep 10;
-      /usr/bin/mc alias set myminio http://obj:9000 minio minio123;
+      /usr/bin/mc alias set myminio http://obj:9001 minio minio123;
       /usr/bin/mc mb myminio/schools;
       /usr/bin/mc mb myminio/logos;
       /usr/bin/mc anonymous set public myminio/logos;
