@@ -14,6 +14,7 @@ import postgres from 'postgres';
 import { VCAAF10Scraper } from './scraper/index';
 import { eq } from 'drizzle-orm';
 import { reset } from 'drizzle-seed';
+import { seedVCECurriculumData } from './vce-curriculum-seeder';
 
 const databaseUrl = process.env.DATABASE_URL;
 
@@ -1080,6 +1081,11 @@ async function seed() {
 		await db.insert(schema.subjectClassAllocation).values(timetableEntries);
 
 		console.log('✅ Database seeded successfully!');
+		
+		// Seed VCE curriculum data
+		console.log('🌱 Now seeding VCE curriculum data...');
+		await seedVCECurriculumData();
+		
 		console.log(`
 📊 Summary:
 -- School: ${schoolRecord.name}
