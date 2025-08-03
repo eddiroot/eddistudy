@@ -475,692 +475,692 @@
   ],
   "outcomes": [
     {
-      "id": 11000,
-      "curriculumSubjectId": 11000,
+      "id": 16006,
+      "curriculumSubjectId": 16000,
       "number": 1,
       "description": "On completion of this unit the student should be able to define and explain key concepts as specified in the content from the areas of study and apply a range of related mathematical routines and procedures.",
       "keyKnowledge": [
         {
-          "id": 11000,
+          "id": 16060,
           "description": "sets of numbers: representations of natural numbers, integers, rational numbers and real numbers",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11001,
+          "id": 16061,
           "description": "set notations and operations",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11002,
+          "id": 16062,
           "description": "principles of proof and proof techniques: contradiction, contrapositive and counter-examples, the method of proof by mathematical induction",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11003,
+          "id": 16063,
           "description": "first-order linear recurrence relations and in particular arithmetic and geometric sequences and their partial sums",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11004,
+          "id": 16064,
           "description": "the pigeon-hole principle as a problem-solving technique, techniques of counting such as permutations and combinations, the inclusion-exclusion principle and simple combinatorial identities",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11005,
+          "id": 16065,
           "description": "matrix notation and algebra",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11006,
+          "id": 16066,
           "description": "notation, definitions and representations of graphs, types of graphs and their properties",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11007,
+          "id": 16067,
           "description": "applications of graph theory and constructions and graphs",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11008,
+          "id": 16068,
           "description": "elementary graph theory theorems and their proofs",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11009,
+          "id": 16069,
           "description": "concepts of proposition, truth value, tautology, Karnaugh maps, set and set operations",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11010,
+          "id": 16070,
           "description": "concepts of validity, argument and proof",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11011,
+          "id": 16071,
           "description": "Boolean operators, and axioms of Boolean algebra",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11012,
+          "id": 16072,
           "description": "logic gates and circuit diagrams",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11013,
+          "id": 16073,
           "description": "key elements of algorithm design: sequence, decision and repetition",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11014,
+          "id": 16074,
           "description": "the ordered steps for an algorithm from the related pseudocode",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11015,
+          "id": 16075,
           "description": "algorithms in a variety of contexts as a precise set of instructions that can be specified using pseudocode",
-          "outcomeId": 11000
+          "outcomeId": 16006
         }
       ],
       "keySkills": [
         {
-          "id": 11000,
+          "id": 16076,
           "description": "apply deductive reasoning, including mathematical induction, and use appropriate language, in the construction of mathematical arguments and proofs involving concepts from topics in this area of study",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11001,
+          "id": 16077,
           "description": "identify assumptions, give definitions and provide examples and counter-examples using appropriate mathematical language, diagrams and models",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11002,
+          "id": 16078,
           "description": "define and represent number in various structures and contexts such as integer, rational, real and complex number systems, ordered sets of numbers such as sequences and series",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11003,
+          "id": 16079,
           "description": "solve problems involving first order linear recurrence relations using both recursive and formula-based techniques",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11004,
+          "id": 16080,
           "description": "solve problems which involve techniques of counting",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11005,
+          "id": 16081,
           "description": "use deductive reasoning to solve problems involving counting techniques, the pigeon-hole principle and Pascal’s triangle",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11006,
+          "id": 16082,
           "description": "use matrix algebra including solving matrix equations",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11007,
+          "id": 16083,
           "description": "construct graphs and use them to model situations",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11008,
+          "id": 16084,
           "description": "use algorithms to construct subsets of graphs according to conditions and solve related problems",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11009,
+          "id": 16085,
           "description": "develop and understand results, including planar graphs, trails and circuits",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11010,
+          "id": 16086,
           "description": "solve problems and prove theorems involving graphs",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11011,
+          "id": 16087,
           "description": "represent and test the truth of propositions using truth tables",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11012,
+          "id": 16088,
           "description": "develop proofs of propositions in natural language and mathematics",
-          "outcomeId": 11000
+          "outcomeId": 16006
         },
         {
-          "id": 11013,
+          "id": 16089,
           "description": "perform exact and approximate computations and apply algorithms including reading and interpreting algorithms described by pseudocode in various structures and contexts",
-          "outcomeId": 11000
+          "outcomeId": 16006
         }
       ]
     },
     {
-      "id": 11001,
-      "curriculumSubjectId": 11000,
+      "id": 16007,
+      "curriculumSubjectId": 16000,
       "number": 2,
       "description": "On completion of this unit the student should be able to apply mathematical processes in non-routine contexts, including situations with some open-ended aspects requiring investigative, modelling or problem-solving techniques or approaches, and analyse and discuss these applications of mathematics.",
       "keyKnowledge": [
         {
-          "id": 11016,
+          "id": 16090,
           "description": "the application of mathematical content from one or more areas of study in a given context for investigation",
-          "outcomeId": 11001
+          "outcomeId": 16007
         },
         {
-          "id": 11017,
+          "id": 16091,
           "description": "specific and general formulations of concepts used to derive results for analysis within a given context for investigation",
-          "outcomeId": 11001
+          "outcomeId": 16007
         },
         {
-          "id": 11018,
+          "id": 16092,
           "description": "the role of proof in establishing results",
-          "outcomeId": 11001
+          "outcomeId": 16007
         },
         {
-          "id": 11019,
+          "id": 16093,
           "description": "the role of examples, counter-examples and general cases in developing mathematical analysis",
-          "outcomeId": 11001
+          "outcomeId": 16007
         },
         {
-          "id": 11020,
+          "id": 16094,
           "description": "the role of developing algorithms and expressing these through pseudocode to help determine and understand mathematical ideas and results",
-          "outcomeId": 11001
+          "outcomeId": 16007
         },
         {
-          "id": 11021,
+          "id": 16095,
           "description": "inferences from analysis and their use to draw valid conclusions related to a given context for investigation",
-          "outcomeId": 11001
+          "outcomeId": 16007
         }
       ],
       "keySkills": [
         {
-          "id": 11014,
+          "id": 16096,
           "description": "specify the relevance of key mathematical content from one or more areas of study to the investigation of various questions in a given context",
-          "outcomeId": 11001
+          "outcomeId": 16007
         },
         {
-          "id": 11015,
+          "id": 16097,
           "description": "develop mathematical formulations of specific and general cases used to derive results for analysis within a given context for investigation",
-          "outcomeId": 11001
+          "outcomeId": 16007
         },
         {
-          "id": 11016,
+          "id": 16098,
           "description": "use algorithms to solve or help solve problems",
-          "outcomeId": 11001
+          "outcomeId": 16007
         },
         {
-          "id": 11017,
+          "id": 16099,
           "description": "use proof to establish results rigorously in different contexts",
-          "outcomeId": 11001
+          "outcomeId": 16007
         },
         {
-          "id": 11018,
+          "id": 16100,
           "description": "make inferences from analysis and use these to draw valid conclusions related to a given context for investigation",
-          "outcomeId": 11001
+          "outcomeId": 16007
         },
         {
-          "id": 11019,
+          "id": 16101,
           "description": "communicate conclusions using both mathematical expression and everyday language; in particular, the interpretation of mathematics with respect to the context for investigation",
-          "outcomeId": 11001
+          "outcomeId": 16007
         }
       ]
     },
     {
-      "id": 11002,
-      "curriculumSubjectId": 11000,
+      "id": 16008,
+      "curriculumSubjectId": 16000,
       "number": 3,
       "description": "On completion of this unit the student should be able to apply computational thinking and use numerical, graphical, symbolic and statistical functionalities of technology to develop mathematical ideas, produce results and carry out analysis in situations requiring investigative, modelling or problem-solving techniques or approaches.",
       "keyKnowledge": [
         {
-          "id": 11022,
+          "id": 16102,
           "description": "the role of computational thinking (abstraction, decomposition, pattern and algorithm) in problem-solving, and its application to mathematical investigation",
-          "outcomeId": 11002
+          "outcomeId": 16008
         },
         {
-          "id": 11023,
+          "id": 16103,
           "description": "exact and approximate technological specification of mathematical information such as numerical data, graphical forms and the solutions of equations",
-          "outcomeId": 11002
+          "outcomeId": 16008
         },
         {
-          "id": 11024,
+          "id": 16104,
           "description": "domain and range requirements for the technological specification of graphs of functions and relations",
-          "outcomeId": 11002
+          "outcomeId": 16008
         },
         {
-          "id": 11025,
+          "id": 16105,
           "description": "the relation between numerical, graphical and symbolic forms of information about functions and equations, and the corresponding features of those functions and equations",
-          "outcomeId": 11002
+          "outcomeId": 16008
         },
         {
-          "id": 11026,
+          "id": 16106,
           "description": "the similarities and differences between formal mathematical expressions and their representation in various technology applications",
-          "outcomeId": 11002
+          "outcomeId": 16008
         },
         {
-          "id": 11027,
+          "id": 16107,
           "description": "the appropriate selection of a technology application for a variety of mathematical contexts",
-          "outcomeId": 11002
+          "outcomeId": 16008
         }
       ],
       "keySkills": [
         {
-          "id": 11020,
+          "id": 16108,
           "description": "use computational thinking, algorithms, models and simulations to solve problems related to a given context",
-          "outcomeId": 11002
+          "outcomeId": 16008
         },
         {
-          "id": 11021,
+          "id": 16109,
           "description": "distinguish between exact and approximate presentations of mathematical results, and interpret these results to a specified degree of accuracy",
-          "outcomeId": 11002
+          "outcomeId": 16008
         },
         {
-          "id": 11022,
+          "id": 16110,
           "description": "produce results, using technology, which identify examples or counter-examples for propositions",
-          "outcomeId": 11002
+          "outcomeId": 16008
         },
         {
-          "id": 11023,
+          "id": 16111,
           "description": "produce tables of values, families of graphs or collections of other results which support general analysis in investigative, modelling or problem-solving contexts",
-          "outcomeId": 11002
+          "outcomeId": 16008
         },
         {
-          "id": 11024,
+          "id": 16112,
           "description": "carry out analysis in investigative, modelling or problem-solving contexts",
-          "outcomeId": 11002
+          "outcomeId": 16008
         },
         {
-          "id": 11025,
+          "id": 16113,
           "description": "use appropriate domain and range technological specifications to illustrate key features of graphs of functions and relations",
-          "outcomeId": 11002
+          "outcomeId": 16008
         },
         {
-          "id": 11026,
+          "id": 16114,
           "description": "design and implement simulations and algorithms using appropriate functionalities of technology",
-          "outcomeId": 11002
+          "outcomeId": 16008
         },
         {
-          "id": 11027,
+          "id": 16115,
           "description": "identify the relation between numerical, graphical and symbolic forms of information about functions and equations, and the corresponding features of those functions and equations",
-          "outcomeId": 11002
+          "outcomeId": 16008
         },
         {
-          "id": 11028,
+          "id": 16116,
           "description": "specify the similarities and differences between formal mathematical expressions and their representation in various technology applications",
-          "outcomeId": 11002
+          "outcomeId": 16008
         },
         {
-          "id": 11029,
+          "id": 16117,
           "description": "make appropriate selections for technology applications in a variety of mathematical contexts, and provide a rationale for these selections",
-          "outcomeId": 11002
+          "outcomeId": 16008
         },
         {
-          "id": 11030,
+          "id": 16118,
           "description": "relate the results from a particular technology application to the nature of a particular mathematical task (investigative, modelling or problem-solving) and verify these results",
-          "outcomeId": 11002
+          "outcomeId": 16008
         },
         {
-          "id": 11031,
+          "id": 16119,
           "description": "specify the process used to develop a solution to a problem using technology and communicate the key stages of mathematical reasoning (formulation, solution, interpretation) used in this process",
-          "outcomeId": 11002
+          "outcomeId": 16008
         }
       ]
     },
     {
-      "id": 11003,
-      "curriculumSubjectId": 11000,
+      "id": 16009,
+      "curriculumSubjectId": 16000,
       "number": 1,
       "description": "On completion of this unit the student should be able to define and explain key concepts as specified in the content from the areas of study and apply a range of related mathematical routines and procedures.",
       "keyKnowledge": [
         {
-          "id": 11028,
+          "id": 16120,
           "description": "linear combination of random variables",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11029,
+          "id": 16121,
           "description": "methods of simulation applied to sampling distributions and the effect of taking larger samples from a fixed population",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11030,
+          "id": 16122,
           "description": "arc length of circles, areas of sectors and segments of circles",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11031,
+          "id": 16123,
           "description": "the reciprocal circular functions and their graphs and the restricted circular functions and their graphs",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11032,
+          "id": 16124,
           "description": "trigonometric identities",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11033,
+          "id": 16125,
           "description": "sine and cosine rules applied in two and three dimensions, including angles between planes, and congruence conditions for their application",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11034,
+          "id": 16126,
           "description": "coordinate and matrix representation of points and transformations",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11035,
+          "id": 16127,
           "description": "translations, dilation, rotations and reflections, invariance properties, inverse transformations and composition of transformations",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11036,
+          "id": 16128,
           "description": "locus definitions of curves in the plane",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11037,
+          "id": 16129,
           "description": "Cartesian, polar and parametric coordinate systems and graphs, including exact values for circular functions",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11038,
+          "id": 16130,
           "description": "standard notation and representations for vectors in the plane, including arrows, coordinates and matrices",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11039,
+          "id": 16131,
           "description": "the definition of arithmetic operations for vectors in the plane",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11040,
+          "id": 16132,
           "description": "geometrical representation of vectors and geometric and coordinate definition of the scalar product of two vectors",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11041,
+          "id": 16133,
           "description": "representation of complex numbers and the conventions for arithmetic of complex numbers in Cartesian and polar forms",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11042,
+          "id": 16134,
           "description": "regions of the complex plane",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11043,
+          "id": 16135,
           "description": "reciprocals and their properties",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11044,
+          "id": 16136,
           "description": "representation of relations by Cartesian, parametric and polar equations",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11045,
+          "id": 16137,
           "description": "the absolute value function",
-          "outcomeId": 11003
+          "outcomeId": 16009
         }
       ],
       "keySkills": [
         {
-          "id": 11032,
+          "id": 16138,
           "description": "simulate sampling from a population and display the results of taking multiple samples of the same size from a fixed population",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11033,
+          "id": 16139,
           "description": "consider measures of central tendency and spread of the distribution of sample means",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11034,
+          "id": 16140,
           "description": "prove trigonometric identities and use them to solve problems",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11035,
+          "id": 16141,
           "description": "prove and use the sine and cosine rules and solve problems in both two and three dimensions, including angle between planes problems",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11036,
+          "id": 16142,
           "description": "define and apply transformations to the plane and specify their effect on subsets of the plane",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11037,
+          "id": 16143,
           "description": "identify the set of points that are invariant under a given transformation",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11038,
+          "id": 16144,
           "description": "find and apply inverse transformations and composite transformations, and interpret their effects on subsets of the plane",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11039,
+          "id": 16145,
           "description": "use vectors to model situations involving direction and magnitude",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11040,
+          "id": 16146,
           "description": "apply vector operations of scalar multiples, addition, subtraction and scalar product",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11041,
+          "id": 16147,
           "description": "use vectors to solve problems involving position, displacement, velocity and force",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11042,
+          "id": 16148,
           "description": "use vectors to solve geometric problems and prove theorems",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11043,
+          "id": 16149,
           "description": "construct the graph of a reciprocal function from the graph of the original function",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11044,
+          "id": 16150,
           "description": "use the distance formula and locus definitions to obtain the rule of a relation and draw the corresponding curve in the plane",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11045,
+          "id": 16151,
           "description": "represent complex numbers and the effect of arithmetic of complex numbers in both Cartesian and polar form",
-          "outcomeId": 11003
+          "outcomeId": 16009
         },
         {
-          "id": 11046,
+          "id": 16152,
           "description": "graph non-linear relations in the plane from their Cartesian, polar and parametric representations, and identify and interpret their key features, including any linear asymptotes",
-          "outcomeId": 11003
+          "outcomeId": 16009
         }
       ]
     },
     {
-      "id": 11004,
-      "curriculumSubjectId": 11000,
+      "id": 16010,
+      "curriculumSubjectId": 16000,
       "number": 2,
       "description": "On completion of this unit the student should be able to apply mathematical processes in non-routine contexts, including situations with some open-ended aspects requiring investigative, modelling or problem-solving techniques or approaches, and analyse and discuss these applications of mathematics.",
       "keyKnowledge": [
         {
-          "id": 11046,
+          "id": 16153,
           "description": "the application of mathematical content from one or more areas of study in a given context for investigation",
-          "outcomeId": 11004
+          "outcomeId": 16010
         },
         {
-          "id": 11047,
+          "id": 16154,
           "description": "specific and general formulations of concepts used to derive results for analysis within a given context for investigation",
-          "outcomeId": 11004
+          "outcomeId": 16010
         },
         {
-          "id": 11048,
+          "id": 16155,
           "description": "the role of examples, counter-examples and general cases in developing mathematical analysis",
-          "outcomeId": 11004
+          "outcomeId": 16010
         },
         {
-          "id": 11049,
+          "id": 16156,
           "description": "the role of proof involving the communication and justification of an argument for a mathematical statement in a clear, concise and precise manner",
-          "outcomeId": 11004
+          "outcomeId": 16010
         },
         {
-          "id": 11050,
+          "id": 16157,
           "description": "the role of developing algorithms and expressing these through pseudocode to help determine and understand mathematical ideas and results",
-          "outcomeId": 11004
+          "outcomeId": 16010
         },
         {
-          "id": 11051,
+          "id": 16158,
           "description": "inferences from analysis and their use to draw valid conclusions related to a given context for investigation",
-          "outcomeId": 11004
+          "outcomeId": 16010
         }
       ],
       "keySkills": [
         {
-          "id": 11047,
+          "id": 16159,
           "description": "specify the relevance of key mathematical content from one or more areas of study to the investigation of various questions in a given context",
-          "outcomeId": 11004
+          "outcomeId": 16010
         },
         {
-          "id": 11048,
+          "id": 16160,
           "description": "develop mathematical formulations of specific and general cases used to derive results for analysis within a given context for investigation",
-          "outcomeId": 11004
+          "outcomeId": 16010
         },
         {
-          "id": 11049,
+          "id": 16161,
           "description": "use algorithms to solve problems",
-          "outcomeId": 11004
+          "outcomeId": 16010
         },
         {
-          "id": 11050,
+          "id": 16162,
           "description": "use proof to establish mathematical results",
-          "outcomeId": 11004
+          "outcomeId": 16010
         },
         {
-          "id": 11051,
+          "id": 16163,
           "description": "make inferences from analysis and use these to draw valid conclusions related to a given context for investigation",
-          "outcomeId": 11004
+          "outcomeId": 16010
         },
         {
-          "id": 11052,
+          "id": 16164,
           "description": "communicate conclusions using both mathematical expression and everyday language; in particular, the interpretation of mathematics with respect to the context for investigation",
-          "outcomeId": 11004
+          "outcomeId": 16010
         }
       ]
     },
     {
-      "id": 11005,
-      "curriculumSubjectId": 11000,
-      "number": 6,
+      "id": 16011,
+      "curriculumSubjectId": 16000,
+      "number": 3,
       "description": "On completion of this unit the student should be able to apply computational thinking and use numerical, graphical, symbolic and statistical functionalities of technology to develop mathematical ideas, produce results and carry out analysis in situations requiring investigative, modelling or problem-solving techniques or approaches.",
       "keyKnowledge": [
         {
-          "id": 11052,
+          "id": 16165,
           "description": "the role of computational thinking (abstraction, decomposition, pattern and algorithm) in problem-solving, and its application to mathematical investigation",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11053,
+          "id": 16166,
           "description": "exact and approximate technological specification of mathematical information such as numerical data, graphical forms and the solutions of equations",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11054,
+          "id": 16167,
           "description": "domain and range requirements for the technological specification of graphs of functions and relations",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11055,
+          "id": 16168,
           "description": "the relation between numerical, graphical and symbolic forms of information about functions and equations, and the corresponding features of those functions and equations",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11056,
+          "id": 16169,
           "description": "the similarities and differences between formal mathematical expressions and their representation in various technology applications",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11057,
+          "id": 16170,
           "description": "the appropriate selection of a technology application for a variety of mathematical contexts",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11058,
+          "id": 16171,
           "description": "For Unit 3 a selection of content would typically include content from the ‘Discrete mathematics’, ‘Functions, relations and graphs’, ‘Algebra, number and structure’, ‘Space and measurement’ and ‘Calculus’ areas of study. In Unit 4 the corresponding selection of content would typically consist of the remaining content from the ‘Discrete mathematics’, ‘Calculus’, and ‘Space and measurement’ areas of study and the content from the ‘Data analysis, probability and statistics’ area of study.",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11059,
+          "id": 16172,
           "description": "In undertaking these units, students are expected to be able to apply techniques, routines and processes involving rational, real and complex arithmetic, sets, lists, tables and vectors, diagrams and geometric constructions, algorithms, algebraic manipulation, equations, graphs, differentiation, anti-differentiation and integration and inference, with and without the use of technology. They should have facility with relevant mental and by-hand approaches to estimation and computation. The use of numerical, graphical, geometric, symbolic and statistical functionality of technology for teaching and learning mathematics, for working mathematically, and in related assessment, is to be incorporated throughout each unit as applicable.",
-          "outcomeId": 11005
+          "outcomeId": 16011
         }
       ],
       "keySkills": [
         {
-          "id": 11053,
+          "id": 16173,
           "description": "use computational thinking, algorithms, models and simulations to solve problems related to a given context",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11054,
+          "id": 16174,
           "description": "distinguish between exact and approximate presentations of mathematical results, and interpret these results to a specified degree of accuracy",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11055,
+          "id": 16175,
           "description": "produce results, using technology, which identify examples or counter-examples for propositions",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11056,
+          "id": 16176,
           "description": "produce tables of values, families of graphs or collections of other results which support general analysis in investigative, modelling or problem-solving contexts",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11057,
+          "id": 16177,
           "description": "use appropriate domain and range technological specifications which illustrate key features of graphs of functions and relations",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11058,
+          "id": 16178,
           "description": "identify the relation between numerical, graphical and symbolic forms of information about functions and equations, and the corresponding features of those functions and equations",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11059,
+          "id": 16179,
           "description": "specify the similarities and differences between formal mathematical expressions and their representation in various technology applications",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11060,
+          "id": 16180,
           "description": "make appropriate selections for technology applications in a variety of mathematical contexts, and provide a rationale for these selections",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11061,
+          "id": 16181,
           "description": "specify the purpose and effect of sequencing, decision-making and iterative statements on applicable functionalities of technology, and their role in the design of algorithms and simulations",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11062,
+          "id": 16182,
           "description": "relate the results from a particular technology application to the nature of a particular mathematical task (investigative, modelling or problem-solving) and verify these results",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11063,
+          "id": 16183,
           "description": "specify the process used to develop a solution to a problem using technology and communicate the key stages of mathematical reasoning (formulation, solution, interpretation) used in this process",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11064,
+          "id": 16184,
           "description": "Units 3 and 4: Specialist Mathematics",
-          "outcomeId": 11005
+          "outcomeId": 16011
         },
         {
-          "id": 11065,
+          "id": 16185,
           "description": "Specialist Mathematics Units 3 and 4 consist of the areas of study: ‘Algebra, number and structure’, ‘Calculus’, ‘Data analysis, probability and statistics’, ‘Discrete mathematics’, ‘Functions, relations and graphs’, and ‘Space and measurement’. The development of course content should highlight mathematical structure, reasoning and proof and applications across a range of modelling contexts with an appropriate selection of content for each of Unit 3 and Unit 4. The selection of content for Unit 3 and Unit 4 should be constructed so that there is a balanced and progressive development of knowledge and skills with connections among the areas of study being developed as appropriate across Unit 3 and Unit 4.",
-          "outcomeId": 11005
+          "outcomeId": 16011
         }
       ]
     }
