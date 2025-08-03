@@ -3,145 +3,148 @@ import path from 'path';
 
 // Types for Legal Studies
 export interface LegalStudiesLearningActivity {
-  unit: string;
-  areaOfStudy: string;
-  outcome: string;
-  title: string;
-  description: string;
+  activity: string;
+  unit: number;
+  areaOfStudy: number;
+  outcome: number;
 }
 
 export interface LegalStudiesDetailedExample {
-  unit: string;
-  areaOfStudy: string;
-  name: string;
-  description: string;
-}
-
-export interface LegalStudiesAssessmentTask {
-  unit: string;
   title: string;
-  description: string;
+  unit: number;
+  areaOfStudy: number;
+  outcome: number;
+  content: string;
 }
 
 export interface LegalStudiesSubjectData {
   subject: string;
   learningActivities: LegalStudiesLearningActivity[];
   detailedExamples: LegalStudiesDetailedExample[];
-  assessmentTasks: LegalStudiesAssessmentTask[];
 }
 
 // Function to clean HTML and extract text
 function cleanHtml(html: string): string {
   return html
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<\/div>/gi, '\n')
+    .replace(/<\/li>/gi, '\n')
     .replace(/<[^>]*>/g, ' ') // Remove HTML tags
     .replace(/&nbsp;/g, ' ') // Replace &nbsp;
     .replace(/&amp;/g, '&') // Replace &amp;
     .replace(/&lt;/g, '<') // Replace &lt;
     .replace(/&gt;/g, '>') // Replace &gt;
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
     .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+    .replace(/\n\s+/g, '\n')
+    .replace(/\n+/g, '\n')
     .trim(); // Trim whitespace
 }
 
-// Function to extract unit and area of study from title
-function parseUnitAreaTitle(title: string): { unit: string; areaOfStudy: string } {
-  // Pattern: "Unit X Area of Study Y: Title"
-  const match = title.match(/Unit (\d+) Area of Study (\d+):\s*(.+)/);
+// Function to extract unit and area of study numbers from title
+function parseUnitAreaTitle(title: string): { unit: number; areaOfStudy: number } {
+  // Pattern: "Unit X Area of Study Y: Title" or "Unit X – Area of Study Y: Title"
+  const match = title.match(/Unit\s+(\d+)\s*[–-]\s*Area\s+of\s+Study\s+(\d+)/i);
   if (match) {
     return {
-      unit: `Unit ${match[1]}`,
-      areaOfStudy: `Area of Study ${match[2]}: ${match[3]}`
+      unit: parseInt(match[1]),
+      areaOfStudy: parseInt(match[2])
     };
   }
   
   // Fallback for different patterns
-  const unitMatch = title.match(/Unit (\d+)/);
-  if (unitMatch) {
-    return {
-      unit: `Unit ${unitMatch[1]}`,
-      areaOfStudy: title.replace(/Unit \d+\s*/, '').trim()
-    };
-  }
+  const unitMatch = title.match(/Unit\s+(\d+)/i);
+  const areaMatch = title.match(/Area\s+of\s+Study\s+(\d+)/i);
   
   return {
-    unit: 'Unknown Unit',
-    areaOfStudy: title
+    unit: unitMatch ? parseInt(unitMatch[1]) : 1,
+    areaOfStudy: areaMatch ? parseInt(areaMatch[1]) : 1
   };
 }
 
-// Function to extract outcome number and description
-function parseOutcome(html: string): { outcomeNumber: string; outcomeDescription: string } {
-  const outcomeMatch = html.match(/<h3>Outcome (\d+)<\/h3><p>([^<]+)/);
-  if (outcomeMatch) {
-    return {
-      outcomeNumber: `Outcome ${outcomeMatch[1]}`,
-      outcomeDescription: cleanHtml(outcomeMatch[2])
-    };
-  }
-  return {
-    outcomeNumber: 'Unknown Outcome',
-    outcomeDescription: ''
-  };
+// Function to extract outcome number from HTML content
+function parseOutcome(html: string): number {
+  const outcomeMatch = html.match(/Outcome\s+(\d+)/i);
+  return outcomeMatch ? parseInt(outcomeMatch[1]) : 1;
 }
 
 // Function to extract learning activities from HTML content
-function extractLearningActivities(html: string, unit: string, areaOfStudy: string, outcome: string): LegalStudiesLearningActivity[] {
+function extractLearningActivities(html: string, unit: number, areaOfStudy: number, outcome: number): LegalStudiesLearningActivity[] {
   const activities: LegalStudiesLearningActivity[] = [];
   
-  // Extract activities from <li> elements within examplebox class
-  const activityBoxMatch = html.match(/<ul class="examplebox">([\s\S]*?)<\/ul>/);
-  if (activityBoxMatch) {
-    const activityContent = activityBoxMatch[1];
-    const activityMatches = activityContent.match(/<li[^>]*>([\s\S]*?)<\/li>/g);
-    
-    if (activityMatches) {
-      activityMatches.forEach((activityMatch, index) => {
-        const cleanActivity = cleanHtml(activityMatch);
-        if (cleanActivity && !activityMatch.includes('exampleno-border')) {
-          // Extract first sentence or significant part as title
-          const sentences = cleanActivity.split(/[.!?]/);
-          const title = sentences[0]?.trim() || `Activity ${index + 1}`;
-          
-          activities.push({
-            unit,
-            areaOfStudy,
-            outcome,
-            title: title.length > 100 ? title.substring(0, 100) + '...' : title,
-            description: cleanActivity
-          });
-        }
+  // Look for bullet points and other activity indicators
+  const cleanedHtml = html.replace(/<br\s*\/?>/gi, '\n');
+  
+  // Split by common delimiters and filter meaningful content
+  const lines = cleanedHtml
+    .split(/\n|<\/li>|<\/p>/)
+    .map(line => cleanHtml(line))
+    .filter(line => line.length > 20) // Filter out very short lines
+    .filter(line => {
+      const lower = line.toLowerCase();
+      return !lower.includes('outcome') && 
+             !lower.includes('detailed example') && 
+             !lower.includes('assessment') &&
+             !lower.match(/^(unit|area of study)/i) &&
+             line.trim().length > 0;
+    });
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed && trimmed.length > 20) {
+      activities.push({
+        activity: trimmed,
+        unit,
+        areaOfStudy,
+        outcome
       });
     }
   }
-  
+
   return activities;
 }
 
 // Function to extract detailed examples from HTML content
-function extractDetailedExamples(html: string, unit: string, areaOfStudy: string): LegalStudiesDetailedExample[] {
+function extractDetailedExamples(html: string, unit: number, areaOfStudy: number): LegalStudiesDetailedExample[] {
   const examples: LegalStudiesDetailedExample[] = [];
   
-  // Look for detailed example sections in notebox class
-  const exampleMatches = html.match(/<div class="notebox">([\s\S]*?)<\/div>/g);
+  // Look for detailed examples in notebox divs
+  const noteboxMatches = html.match(/<div class="notebox">([\s\S]*?)<\/div>/g);
   
-  if (exampleMatches) {
-    exampleMatches.forEach(exampleMatch => {
-      const titleMatch = exampleMatch.match(/<h[23]>([^<]+)</);
-      const contentMatch = exampleMatch.match(/<div class="notebox">([\s\S]*?)<\/div>/);
-      
-      if (titleMatch && contentMatch) {
-        const name = cleanHtml(titleMatch[1]);
-        const description = cleanHtml(contentMatch[1]);
+  if (noteboxMatches) {
+    for (const noteboxMatch of noteboxMatches) {
+      // Check if this notebox contains a "Detailed example" header
+      if (noteboxMatch.includes('<h2>Detailed example</h2>')) {
+        // Extract title from h3 tag after the "Detailed example" header
+        const titleMatch = noteboxMatch.match(/<h2>Detailed example<\/h2>\s*<h3>([^<]+)<\/h3>/);
+        const title = titleMatch ? cleanHtml(titleMatch[1]).trim() : 'Detailed Example';
         
-        examples.push({
-          unit,
-          areaOfStudy,
-          name,
-          description
-        });
+        // Extract content (everything after the title)
+        let content = noteboxMatch;
+        if (titleMatch) {
+          content = content.replace(/<h2>Detailed example<\/h2>\s*<h3>[^<]+<\/h3>/, '');
+        } else {
+          content = content.replace(/<h2>Detailed example<\/h2>/, '');
+        }
+        
+        // Clean the content
+        const cleanedContent = cleanHtml(content.replace(/<div class="notebox">/, '').replace(/<\/div>$/, ''));
+        
+        if (cleanedContent.length > 20) {
+          examples.push({
+            title,
+            unit,
+            areaOfStudy,
+            outcome: 1, // Default outcome for detailed examples
+            content: cleanedContent
+          });
+        }
       }
-    });
+    }
   }
-  
+
   return examples;
 }
 
@@ -174,10 +177,10 @@ async function extractLegalStudiesCurriculumData(): Promise<LegalStudiesSubjectD
           console.log(`Processing: ${title}`);
           
           const { unit, areaOfStudy } = parseUnitAreaTitle(title);
-          const { outcomeNumber } = parseOutcome(bodyContent);
+          const outcome = parseOutcome(bodyContent);
           
           // Extract learning activities
-          const activities = extractLearningActivities(bodyContent, unit, areaOfStudy, outcomeNumber);
+          const activities = extractLearningActivities(bodyContent, unit, areaOfStudy, outcome);
           learningActivities.push(...activities);
           
           // Extract detailed examples
@@ -193,8 +196,7 @@ async function extractLegalStudiesCurriculumData(): Promise<LegalStudiesSubjectD
     return {
       subject: 'Legal Studies',
       learningActivities,
-      detailedExamples,
-      assessmentTasks: [] // Will be populated when we create assessment scraper
+      detailedExamples
     };
     
   } catch (error) {
@@ -209,7 +211,7 @@ async function saveLegalStudiesData(): Promise<void> {
     const curriculumData = await extractLegalStudiesCurriculumData();
     
     // Create data directory if it doesn't exist
-    const dataDir = path.join(process.cwd(), 'data');
+    const dataDir = path.join(process.cwd(), 'src/lib/server/db/seed/vceScraper/data');
     if (!fs.existsSync(dataDir)) {
       fs.mkdirSync(dataDir, { recursive: true });
     }
@@ -221,7 +223,6 @@ async function saveLegalStudiesData(): Promise<void> {
     console.log(`Legal Studies curriculum data saved to: ${outputPath}`);
     console.log(`Learning Activities: ${curriculumData.learningActivities.length}`);
     console.log(`Detailed Examples: ${curriculumData.detailedExamples.length}`);
-    console.log(`Assessment Tasks: ${curriculumData.assessmentTasks.length}`);
     
   } catch (error) {
     console.error('Error saving Legal Studies data:', error);
@@ -233,6 +234,9 @@ async function saveLegalStudiesData(): Promise<void> {
 export { extractLegalStudiesCurriculumData, saveLegalStudiesData };
 
 // Run the scraper if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  saveLegalStudiesData().catch(console.error);
+}
 if (import.meta.url === `file://${process.argv[1]}`) {
   saveLegalStudiesData().catch(console.error);
 }

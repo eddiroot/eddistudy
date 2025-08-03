@@ -8,22 +8,23 @@ const __dirname = dirname(__filename);
 interface PsychologyLearningActivity {
   activity: string;
   unit: number;
-  areaOfStudy: string;
-  outcome: string;
+  areaOfStudy: number;
+  outcome: number;
 }
 
 interface PsychologyDetailedExample {
   title: string;
   content: string;
   unit: number;
-  areaOfStudy: string;
-  outcome: string;
+  areaOfStudy: number;
+  outcome: number;
 }
 
 interface PsychologyAssessmentTask {
-  task: string;
+  title: string;
   unit: number;
-  description: string;
+  task: string;
+  outcome: number;
 }
 
 interface PsychologyData {
@@ -38,6 +39,21 @@ interface AccordionComponent {
     processed?: string;
   };
   field_accordion_title?: string;
+}
+
+interface PageComponent {
+  type: string;
+  field_accordion_title?: string;
+  field_title?: string;
+  field_heading?: {
+    value?: string;
+  };
+  field_text?: {
+    processed?: string;
+  };
+  field_accordion_body?: {
+    processed?: string;
+  };
 }
 
 // Function to clean HTML content
@@ -61,39 +77,52 @@ function cleanHtmlContent(html: string): string {
     .trim();
 }
 
-// Function to extract unit number from accordion title
-function extractUnitNumber(title: string): number {
-  const match = title.match(/Unit (\d+)/);
+// Function to extract area of study number from accordion title
+function extractAreaOfStudy(title: string): number {
+  const match = title.match(/Area of Study\s+(\d+)/i);
   return match ? parseInt(match[1]) : 1;
 }
 
-// Function to extract area of study from accordion title
-function extractAreaOfStudy(title: string): string {
-  const match = title.match(/Area of Study \d+:\s*(.+)/);
-  return match ? match[1].trim() : '';
-}
-
-// Function to extract outcome from content
-function extractOutcome(content: string): string {
-  const match = content.match(/<h3>Outcome (\d+)/);
-  return match ? `Outcome ${match[1]}` : 'Outcome 1';
+// Function to extract outcome number from content or title
+function extractOutcome(content: string, title: string = ''): number {
+  // First try to extract from title
+  const titleMatch = title.match(/Outcome\s+(\d+)/i);
+  if (titleMatch) return parseInt(titleMatch[1]);
+  
+  // Then try to extract from content
+  const contentMatch = content.match(/Outcome\s+(\d+)/i);
+  return contentMatch ? parseInt(contentMatch[1]) : 1;
 }
 
 // Function to extract learning activities from accordion content
-function extractLearningActivities(accordionData: AccordionComponent[]): PsychologyLearningActivity[] {
+function extractLearningActivities(accordionData: AccordionComponent[], allComponents: PageComponent[]): PsychologyLearningActivity[] {
   const activities: PsychologyLearningActivity[] = [];
 
-  accordionData.forEach(accordion => {
+  // Filter for area of study accordion components (Psychology uses Area of Study, not Unit in titles)
+  const areaOfStudyAccordions = accordionData.filter((comp: AccordionComponent) => 
+    comp.type === 'paragraph--accordion' && 
+    comp.field_accordion_title &&
+    comp.field_accordion_title.match(/Area of Study\s+\d+/i)
+  );
+
+  console.log(`Found ${areaOfStudyAccordions.length} area of study accordion sections for learning activities`);
+
+  areaOfStudyAccordions.forEach((accordion, index) => {
     if (accordion.field_accordion_body?.processed) {
       const content = accordion.field_accordion_body.processed;
       const title = accordion.field_accordion_title || '';
       
-      const unit = extractUnitNumber(title);
+      console.log(`Processing: ${title}`);
+      
+      // Psychology uses a different structure - derive unit from component position
       const areaOfStudy = extractAreaOfStudy(title);
-      const outcome = extractOutcome(content);
+      const unit = deriveUnitFromComponentIndex(allComponents, index);
+      const outcome = extractOutcome(content, title);
 
       // Extract activities from list items
       const activityMatches = content.match(/<li[^>]*>(.*?)<\/li>/gs) || [];
+      
+      console.log(`Found ${activityMatches.length} list items in ${title}`);
       
       activityMatches.forEach((match: string) => {
         const activityText = cleanHtmlContent(match);
@@ -119,18 +148,51 @@ function extractLearningActivities(accordionData: AccordionComponent[]): Psychol
   return activities;
 }
 
+// Function to derive unit number from accordion index using component separators
+function deriveUnitFromComponentIndex(allComponents: PageComponent[], accordionIndex: number): number {
+  // Find the actual accordion component in the full component list
+  const accordionComponents = allComponents.filter(comp => comp.type === 'paragraph--accordion');
+  const targetAccordion = accordionComponents[accordionIndex];
+  
+  // Find the index of this accordion in the full component list
+  const fullIndex = allComponents.findIndex(comp => comp === targetAccordion);
+  
+  // Psychology curriculum structure based on component positions:
+  // Components 2-4: Unit 1 (Area of Study 1, 2, 3)
+  // Component 5: Unit separator (paragraph--body_content)
+  // Components 6-8: Unit 2 (Area of Study 1, 2, 3) 
+  // Component 9: Unit separator (paragraph--body_content)
+  // Components 10-11: Unit 3 (Area of Study 1, 2)
+  // Component 12: Unit separator (paragraph--body_content)
+  // Components 13-15: Unit 4 (Area of Study 1, 2, 3)
+  
+  if (fullIndex <= 4) return 1;      // Components 2-4 (Unit 1)
+  if (fullIndex <= 8) return 2;      // Components 6-8 (Unit 2)  
+  if (fullIndex <= 11) return 3;     // Components 10-11 (Unit 3)
+  return 4;                         // Components 13-15 (Unit 4)
+}
+
 // Function to extract detailed examples
-function extractDetailedExamples(accordionData: AccordionComponent[]): PsychologyDetailedExample[] {
+function extractDetailedExamples(accordionData: AccordionComponent[], allComponents: PageComponent[]): PsychologyDetailedExample[] {
   const examples: PsychologyDetailedExample[] = [];
 
-  accordionData.forEach(accordion => {
+  // Filter for area of study accordion components (Psychology uses Area of Study, not Unit in titles)
+  const areaOfStudyAccordions = accordionData.filter((comp: AccordionComponent) => 
+    comp.type === 'paragraph--accordion' && 
+    comp.field_accordion_title &&
+    comp.field_accordion_title.match(/Area of Study\s+\d+/i)
+  );
+
+  console.log(`Found ${areaOfStudyAccordions.length} area of study accordion sections for detailed examples`);
+
+  areaOfStudyAccordions.forEach((accordion, index) => {
     if (accordion.field_accordion_body?.processed) {
       const content = accordion.field_accordion_body.processed;
       const title = accordion.field_accordion_title || '';
       
-      const unit = extractUnitNumber(title);
       const areaOfStudy = extractAreaOfStudy(title);
-      const outcome = extractOutcome(content);
+      const unit = deriveUnitFromComponentIndex(allComponents, index);
+      const outcome = extractOutcome(content, title);
 
       // Extract detailed examples from div elements with class notebox or similar
       const exampleMatches = content.match(/<div[^>]*class="[^"]*notebox[^"]*"[^>]*>[\s\S]*?<\/div>/g) || 
@@ -228,15 +290,17 @@ async function extractAssessmentTasks(): Promise<PsychologyAssessmentTask[]> {
           if (taskName.length > 5) {
             // These tasks apply to both Units 1 and 2 based on the table header
             assessmentTasks.push({
-              task: taskName,
+              title: taskName,
               unit: 1,
-              description: taskDescription.substring(0, 500) + (taskDescription.length > 500 ? '...' : '')
+              task: taskDescription.substring(0, 500) + (taskDescription.length > 500 ? '...' : ''),
+              outcome: 1
             });
             
             assessmentTasks.push({
-              task: taskName,
+              title: taskName,
               unit: 2,
-              description: taskDescription.substring(0, 500) + (taskDescription.length > 500 ? '...' : '')
+              task: taskDescription.substring(0, 500) + (taskDescription.length > 500 ? '...' : ''),
+              outcome: 1
             });
           }
         }
@@ -265,16 +329,21 @@ export async function scrapePsychologyCurriculumData(): Promise<PsychologyData> 
     
     const data = await response.json();
     
+    // Extract all components to properly map units
+    const allComponents = data.pageProps?.node?.field_components || [];
+    
+    console.log(`Found ${allComponents.length} total components`);
+    
     // Extract accordion components
-    const accordionComponents = data.pageProps?.node?.field_components?.filter(
+    const accordionComponents = allComponents.filter(
       (component: AccordionComponent) => component.type === 'paragraph--accordion'
-    ) || [];
+    );
     
     console.log(`Found ${accordionComponents.length} accordion sections`);
     
     // Extract learning activities and detailed examples
-    const learningActivities = extractLearningActivities(accordionComponents);
-    const detailedExamples = extractDetailedExamples(accordionComponents);
+    const learningActivities = extractLearningActivities(accordionComponents, allComponents);
+    const detailedExamples = extractDetailedExamples(accordionComponents, allComponents);
     const assessmentTasks = await extractAssessmentTasks();
     
     console.log(`Learning Activities: ${learningActivities.length}`);

@@ -8,16 +8,15 @@ const __dirname = path.dirname(__filename);
 interface LiteratureLearningActivity {
   activity: string;
   unit: number;
-  areaOfStudy: string;
-  outcome: string;
+  areaOfStudy: number;
+  outcome: number;
 }
 
 interface LiteratureDetailedExample {
   title: string;
   content: string;
   unit: number;
-  areaOfStudy: string;
-  outcome: string;
+  areaOfStudy: number;
 }
 
 interface LiteratureData {
@@ -49,6 +48,23 @@ function cleanHtmlContent(html: string): string {
     .trim();
   
   return cleaned;
+}
+
+// Function to parse unit and area of study from title
+function parseUnitAreaTitle(title: string): { unit: number; areaOfStudy: number } {
+  const unitMatch = title.match(/Unit\s+(\d+)/i);
+  const areaMatch = title.match(/Area of Study\s+(\d+)/i);
+  
+  return {
+    unit: unitMatch ? parseInt(unitMatch[1]) : 1,
+    areaOfStudy: areaMatch ? parseInt(areaMatch[1]) : 1
+  };
+}
+
+// Function to parse outcome number from content
+function parseOutcome(content: string): number {
+  const outcomeMatch = content.match(/Outcome\s+(\d+)/i);
+  return outcomeMatch ? parseInt(outcomeMatch[1]) : 1;
 }
 
 // API response interfaces
@@ -109,13 +125,11 @@ function extractLearningActivities(data: ApiResponse): LiteratureLearningActivit
 
       if (!bodyContent) continue;
 
-      // Extract unit number from title (e.g., "Unit 1 – Area of Study 1: Reading and exploring texts")
-      const unitMatch = title.match(/Unit\s+(\d+)/i);
-      const unitNumber = unitMatch ? parseInt(unitMatch[1]) : 1;
-
-      // Extract area of study from title
-      const areaOfStudyMatch = title.match(/Area of Study \d+[:\s]*([^:]+?)(?:\s*$)/i);
-      const areaOfStudy = areaOfStudyMatch ? areaOfStudyMatch[1].trim() : title.replace(/Unit\s+\d+[^\w]*/, '').trim();
+      // Parse unit and area of study from title
+      const { unit: unitNumber, areaOfStudy: areaOfStudyNumber } = parseUnitAreaTitle(title);
+      
+      // Parse outcome number from content
+      const outcome = parseOutcome(bodyContent);
 
       // Parse the HTML content to extract activities
       const cleanContent = cleanHtmlContent(bodyContent);
@@ -128,23 +142,27 @@ function extractLearningActivities(data: ApiResponse): LiteratureLearningActivit
         const activitiesContent = examplesMatch[1];
         console.log(`Found activities section with ${activitiesContent.length} characters`);
         
-        // Split activities by paragraph breaks or clear sentence endings
-        const activityTexts = activitiesContent
-          .split(/\n\s*\n/) // Split by double line breaks (paragraphs)
-          .map(text => text.trim())
-          .filter(text => text.length > 50) // Only substantial text
-          .flatMap(paragraph => {
-            // Skip detailed examples entirely - they'll be extracted separately
-            if (paragraph.match(/^Detailed example/i)) {
-              return []; // Don't include detailed examples in learning activities
+        // Parse HTML to extract list items directly from the raw HTML
+        const listItemMatches = bodyContent.match(/<li[^>]*>(.*?)<\/li>/gs);
+        const activityTexts: string[] = [];
+        
+        if (listItemMatches) {
+          for (const listItem of listItemMatches) {
+            // Clean the HTML and extract text content
+            const cleanText = listItem
+              .replace(/<[^>]+>/g, '') // Remove all HTML tags
+              .replace(/\s+/g, ' ') // Normalize whitespace
+              .trim();
+            
+            // Skip detailed examples
+            if (cleanText.match(/^Detailed example/i) || cleanText.length < 30) {
+              continue;
             }
             
-            // For regular paragraphs, split by sentence endings followed by capital letters
-            return paragraph.split(/\.\s+(?=[A-Z])/)
-              .map(sentence => sentence.trim())
-              .filter(sentence => sentence.length > 30);
-          });
-
+            activityTexts.push(cleanText);
+          }
+        }
+        
         console.log(`Extracted ${activityTexts.length} potential activities (excluding detailed examples)`);
 
         for (let activityText of activityTexts) {
@@ -172,8 +190,8 @@ function extractLearningActivities(data: ApiResponse): LiteratureLearningActivit
           const activity: LiteratureLearningActivity = {
             activity: activityText,
             unit: unitNumber,
-            areaOfStudy,
-            outcome: `Outcome ${unitNumber}` // Simple outcome assignment
+            areaOfStudy: areaOfStudyNumber,
+            outcome: outcome
           };
 
           activities.push(activity);
@@ -217,13 +235,8 @@ function extractDetailedExamples(data: ApiResponse): LiteratureDetailedExample[]
       
       if (!bodyContent) continue;
 
-      // Extract unit number from title
-      const unitMatch = title.match(/Unit\s+(\d+)/i);
-      const unitNumber = unitMatch ? parseInt(unitMatch[1]) : 1;
-
-      // Extract area of study from title
-      const areaOfStudyMatch = title.match(/Area of Study \d+[:\s]*([^:]+?)(?:\s*$)/i);
-      const areaOfStudy = areaOfStudyMatch ? areaOfStudyMatch[1].trim() : title.replace(/Unit\s+\d+[^\w]*/, '').trim();
+      // Parse unit and area of study from title
+      const { unit: unitNumber, areaOfStudy: areaOfStudyNumber } = parseUnitAreaTitle(title);
 
       // Parse the HTML content to find detailed examples
       const cleanContent = cleanHtmlContent(bodyContent);
@@ -249,8 +262,7 @@ function extractDetailedExamples(data: ApiResponse): LiteratureDetailedExample[]
               title: exampleTitle,
               content: exampleText,
               unit: unitNumber,
-              areaOfStudy,
-              outcome: `Outcome ${unitNumber}`
+              areaOfStudy: areaOfStudyNumber
             };
 
             examples.push(detailedExample);
