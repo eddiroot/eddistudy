@@ -787,279 +787,279 @@
   ],
   "extracontents": [
     {
-      "id": 18000,
+      "id": 19000,
       "description": "Qualitative characteristics: The International Accounting Standard Board’s (IASB) Conceptual Framework specifies six main qualitative characteristics that financial information in general-purpose financial reports should have. These are listed and described below.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18001,
+      "id": 19001,
       "description": "Relevance: Relevant information is that which directly assists the user in making decisions. Relevant financial information is related to making an economic decision and directly assists the user in forming predictions about outcomes of past, present or future events. It may also confirm or change previous evaluations through provision of suitable feedback.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18002,
+      "id": 19002,
       "description": "Faithful representation: The information reported must be a faithful representation of the real-world economic event it represents. This means that user is assured that the information presented is complete, free from material error, and neutral (without bias).",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18003,
+      "id": 19003,
       "description": "Comparability: Comparability is the qualitative characteristic that enables the user to identify and understand similarities and differences between items. Information about an entity is more useful if it can be compared with similar information about other entities, and with similar information about the same entity for another date or period.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18004,
+      "id": 19004,
       "description": "Verifiability: Verifiability refers to the ability to ensure that different knowledgeable and independent observers can reach a consensus that a particular depiction of an event is faithfully represented. Verifiability is maintained by retaining the source documents used to record the transaction, and is checked through auditing. The purpose of verifiability is to hold the accounting professional accountable for their work.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18005,
+      "id": 19005,
       "description": "Timeliness: Timeliness means that information is available to decision-makers in time to be capable of influence on decisions. Information being available sooner, rather than later, can enhance its capacity to influence decisions, while a lack of timeliness can rob information of its potential usefulness. Generally, the older the information, the less useful it is.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18006,
+      "id": 19006,
       "description": "Understandability: Understandability requires financial information to be comprehensible to users with reasonable knowledge of business and economic activities. To be understandable, information should be presented clearly and concisely.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18007,
+      "id": 19007,
       "description": "The accounting entity assumption: Under the accounting entity assumption, the records of assets, liabilities and business activities of an entity are kept completely separate from those of the owner of the entity, as well as from those of other entities. A separate set of accounting records is maintained for each entity, with each financial statement prepared providing information on the relevant individual entity only.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18008,
+      "id": 19008,
       "description": "The accrual basis assumption: Under the accrual basis assumption, revenue is recognised in the period in which the expected inflow of economic benefits can be measured in a faithful and verifiable manner; that is, revenue is recognised when it is earned. Expenses are recognised when the consumption of goods and services can be measured; that is, expenses are recognised when they are incurred. The accrual basis profit for an accounting period is determined by subtracting expenses incurred for a period from revenue earned in the same period.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18009,
+      "id": 19009,
       "description": "The going concern assumption: Under the going concern assumption, financial reports are prepared on the assumption that an existing entity will continue to operate into the future. It is assumed that the entity will not be wound up in the near future but will continue its activities.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18010,
+      "id": 19010,
       "description": "The period assumption: According to the period assumption, reports are prepared for a particular period of time, such as a month or a year, in order to obtain comparability of results. Profit determination involves a process of recognising the revenue for a period and deducting the expenses incurred for the same period. A distinction can be made between assets, that will provide benefit to future reporting periods, and expenses which are totally consumed within one reporting period.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18011,
+      "id": 19011,
       "description": "Assets: An asset is a present economic resource controlled by an entity as a result of past events. An economic resource is a right that has the potential to produce future economic benefits.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18012,
+      "id": 19012,
       "description": "Current assets: Current assets are cash and other types of assets held primarily for the purpose of sale or trading, or are reasonably expected to be converted to cash, sold or consumed by a business within 12 months after the end of the reporting period.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18013,
+      "id": 19013,
       "description": "Non-current assets: Non-current assets are expected to be used by the business entity for a number of years and are not held for resale.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18014,
+      "id": 19014,
       "description": "Liabilities: A liability is a present obligation of the entity to transfer an economic resource as a result of past events.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18015,
+      "id": 19015,
       "description": "Current liabilities: Current liabilities are obligations of the entity that are reasonably expected to be settled within 12 months after the end of the reporting period.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18016,
+      "id": 19016,
       "description": "Non-current liabilities: Non-current liabilities are obligations of the entity that are not required to be settled within 12 months after the end of the reporting period.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18017,
+      "id": 19017,
       "description": "Owner's equity: Owner's equity is the residual interest in the assets of the entity after deducting all its liabilities.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18018,
+      "id": 19018,
       "description": "Revenues: Revenues are increases in assets or decreases in liabilities that result in increases in owner's equity, other than those relating to contributions from the owner. Revenue arises in the course of the ordinary activities of a business and includes items such as sales, fees, interest, dividends, royalties and rent.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18019,
+      "id": 19019,
       "description": "Expenses: Expenses are decreases in assets or increases in liabilities, other than those relating to distributions to the owner, that result in a decrease in owner's equity. Expenses encompass losses as well as those expenses that arise in the course of the ordinary activities of a business. Expenses that arise in the course of the ordinary activities of an entity include cost of sales, wages and depreciation.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18020,
-      "description": "Gross Profit Marging: (gross pofit/net sales) x 100",
-      "curriculumSubjectId": 18000,
+      "id": 19020,
+      "description": "Gross Profit Margin: (gross profit/net sales) x 100",
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18021,
+      "id": 19021,
       "description": "Net Profit Margin: (net profit/net sales) x 100",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18022,
+      "id": 19022,
       "description": "Return on assets: (net profit/average total assets) x 100",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18023,
+      "id": 19023,
       "description": "Asset turnover: (net sales/average total assets) x 100",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18024,
+      "id": 19024,
       "description": "Return on Owner's Investment: (net profit/average capital) x 100",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18025,
+      "id": 19025,
       "description": "cash flow cover: (net cash from operating activities/average current liabilities) x 100",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18026,
+      "id": 19026,
       "description": "Working capital ratio: (current assets/current liabilities) x 100",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18027,
+      "id": 19027,
       "description": "Quick assets ratio: (current assets - (inventory + prepayments))/current liabilities x 100",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18028,
+      "id": 19028,
       "description": "Debt ratio: (total liabilities/total assets) x 100",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18029,
+      "id": 19029,
       "description": "Inventory turnover: (average inventory/cost of goods sold) x 365",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18030,
+      "id": 19030,
       "description": "Accounts payable turnover: (average accounts payable/net credit purchases (plus GST)) x 365",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18031,
+      "id": 19031,
       "description": "Accounts receivable turnover: (average accounts receivable/net credit sales (plus GST)) x 365",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18032,
+      "id": 19032,
       "description": "Documents for a business: Documents used by a business to record financial transactions include: electronic funds transfer (EFT) receipt; electronic funds transfer (EFT) payment; cash receipt; sales invoice; purchase invoice; credit note; memo; statement of account; bank statement; order, shipping and order confirmation; and delivery docket. These documents may be prepared manually or be computer generated. Many documents satisfy the requirements of a tax invoice, which contains specified items of information that are required for effective operation of the GST system.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18033,
+      "id": 19033,
       "description": "Goods and services tax: The goods and services tax (GST) is to be included throughout the study design, except where it has been specifically excluded, as indicated in the relevant key knowledge dot points.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18034,
+      "id": 19034,
       "description": "FIFO Inventory gain: Inventory gains are determined by using the latest cost price recorded in the IN column of the inventory card. This follows the qualitative characteristic of faithful representation.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18035,
+      "id": 19035,
       "description": "FIFO Inventory loss: Inventory losses are to be determined by assuming the inventory lost on the date of the count is calculated by using the oldest cost price of available inventory on hand recorded on the inventory card.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18036,
+      "id": 19036,
       "description": "FIFO Sales returns: The cost of each inventory item is calculated by using the latest cost prices shown in the OUT column of the inventory card (reversing the last out).",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18037,
+      "id": 19037,
       "description": "FIFO Purchases returns: The cost of inventory returned to suppliers is calculated by using the cost price identified by the supplier's credit note.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18038,
+      "id": 19038,
       "description": "Identified Cost method Inventory loss/gain: The number of inventory items and their cost is revealed by a physical count.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18039,
+      "id": 19039,
       "description": "Identified Cost method Sales returns: The cost of each inventory item is identified on the business document or inventory card.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18040,
+      "id": 19040,
       "description": "Identified cost method Purchases returns: The cost of inventory returned to suppliers is calculated by using the cost price identified by the supplier's credit note.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18041,
+      "id": 19041,
       "description": "Doubtful debts: An allowance for doubtful debts is created using a percentage of net credit sales. Bad debts are written off using the allowance method.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18042,
+      "id": 19042,
       "description": "Closing revenue accounts: Only one General Journal entry is required to close all revenues (including Sales Returns) to the Profit and Loss Summary account, resulting in one entry in the General Ledger account.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18043,
+      "id": 19043,
       "description": "Closing expense accounts: Only one General Journal entry is required to close all expenses to the Profit and Loss Summary account, resulting in one entry in the General Ledger account. One General Journal entry is required to transfer the profit/loss from the Profit and Loss Summary account to the Capital account.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18044,
+      "id": 19044,
       "description": "Information and communications technology: Information and communications technology (ICT) is an essential aspect of business operations increasingly used to capture, model, analyse and convey information. Students are required to be aware of the use of spreadsheets, the internet and multimedia software in relation to accounting. Commercial accounting software packages may be used. The use of word processing software by students to provide theoretical responses is not applicable to the ICT requirement of each unit. Each unit of VCE Accounting involves student application of ICT to record transactions; create reports; model possible outcomes; construct graphical representations and visualisations; and model alternative scenarios. As a guide, students would typically require a minimum of 15 hours of scheduled class time per unit involving ICT to be able to achieve the outcomes for each unit. Knowledge and use of spreadsheets is essential and should be integrated throughout Units 1 to 4. Spreadsheets are used in accounting practice in a variety of ways, including recording inventory; preparing income statements, variance reports, budgets and other accounting information in various formats; numeric calculation; constructing graphical representations (including charts); comparing the results of alternative business options; and analysing data to assist in decision-making. Financial modelling is used to make estimates of how future scenarios will influence the performance of a business through mathematical projections of the key variables affecting the business. ICT is an important tool used in modelling the potential consequences of different future scenarios when making business decisions. Modelling using ICT enables comparison and analysis of the potential consequences of different decisions. In contemporary society, it is essential for an accountant to use critical and creative thinking skills to explore alternatives, and effectively communicate these to key stakeholders, such as business owners.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     },
     {
-      "id": 18045,
+      "id": 19045,
       "description": "Ethical considerations: Business decisions will be influenced not only by financial considerations but also by ethical considerations, including those that are social and environmental in nature. Ethical considerations often have a direct impact on the financial performance of the business. In all consultations and communications, accountants are required to maintain their integrity, impartiality, objectivity and confidentiality.",
-      "curriculumSubjectId": 18000,
+      "curriculumSubjectId": 19000,
       "extraContentType": "definition"
     }
   ]
