@@ -45,13 +45,7 @@ const SUBJECT_FILE_MAPPING: Record<string, string> = {
 async function seedCompleteVCE() {
 	console.log('🌟 Starting complete VCE curriculum seeding...');
 
-	try {
-		// Step 1: Create VCE curriculum and structure
-		console.log('📚 Step 1: Seeding VCE curriculum structure...');
-		await seedVCECurriculumData();
-
-		// Step 2: Seed comprehensive content for all subjects
-		console.log('🎯 Step 2: Seeding comprehensive VCE content...');
+	
 		
 		// Import database utilities
 		const { drizzle } = await import('drizzle-orm/postgres-js');
@@ -63,6 +57,14 @@ async function seedCompleteVCE() {
 		if (!databaseUrl) {
 			throw new Error('DATABASE_URL is not set in environment variables');
 		}
+
+	try {
+		// Step 1: Create VCE curriculum and structure
+		console.log('📚 Step 1: Seeding VCE curriculum structure...');
+		await seedVCECurriculumData();
+
+		// Step 2: Seed comprehensive content for all subjects
+		console.log('🎯 Step 2: Seeding comprehensive VCE content...');
 		
 		const client = postgres.default(databaseUrl);
 		const db = drizzle(client, { schema });
