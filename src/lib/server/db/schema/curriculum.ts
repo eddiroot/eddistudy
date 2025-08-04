@@ -188,6 +188,20 @@ export const learningActivityLearningArea = pgTable('lrn_act_lrn_a', {
 
 export type LearningActivityLearningArea = typeof learningActivityLearningArea.$inferSelect;
 
+export const learningActivityLearningAreaContent = pgTable('lrn_act_lrn_a_cont', {
+	id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
+	curriculumLearningActivityId: integer('cur_lrn_act_id')
+		.notNull()
+		.references(() => curriculumLearningActivity.id, { onDelete: 'cascade' }),
+	learningAreaContentId: integer('lrn_a_cont_id')
+		.notNull()
+		.references(() => LearningAreaContent.id, { onDelete: 'cascade' }),
+	isArchived: boolean('is_archived').notNull().default(false),
+	...timestamps
+});
+
+export type LearningActivityLearningAreaContent = typeof learningActivityLearningAreaContent.$inferSelect;
+
 export const sampleAssessment = pgTable('sample_assessment', {
 	id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
 	title: text('title'),
@@ -256,6 +270,22 @@ export const sampleAssessmentKeySkill = pgTable('sample_assessment_key_skill', {
 	...timestamps	
 });
 
+export type SampleAssessmentKeySkill = typeof sampleAssessmentKeySkill.$inferSelect;
+
+export const sampleAssessmentLearningAreaContent = pgTable('sample_assessment_lrn_a_cont', {
+	id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
+	sampleAssessmentId: integer('sample_assessment_id')
+		.notNull()
+		.references(() => sampleAssessment.id, { onDelete: 'cascade' }),
+	learningAreaContentId: integer('lrn_a_cont_id')
+		.notNull()
+		.references(() => LearningAreaContent.id, { onDelete: 'cascade' }),
+	isArchived: boolean('is_archived').notNull().default(false),
+	...timestamps
+});
+
+export type SampleAssessmentLearningAreaContent = typeof sampleAssessmentLearningAreaContent.$inferSelect;
+
 export const detailedExample = pgTable('detailed_example', {
 	id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
 	title: text('title'),
@@ -296,6 +326,48 @@ export const detailedExampleLearningArea = pgTable('detailed_example_learning_ar
 });
 
 export type DetailedExampleLearningArea = typeof detailedExampleLearningArea.$inferSelect;
+
+export const detailedExampleKeyKnowledge = pgTable('detailed_example_key_knowledge', {
+	id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
+	detailedExampleId: integer('detailed_example_id')
+		.notNull()
+		.references(() => detailedExample.id, { onDelete: 'cascade' }),
+	keyKnowledgeId: integer('key_know_id')
+		.notNull()
+		.references(() => keyKnowledge.id, { onDelete: 'cascade' }),
+	isArchived: boolean('is_archived').notNull().default(false),
+	...timestamps
+});
+
+export type DetailedExampleKeyKnowledge = typeof detailedExampleKeyKnowledge.$inferSelect;
+
+export const detailedExampleKeySkill = pgTable('detailed_example_key_skill', {
+	id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
+	detailedExampleId: integer('detailed_example_id')
+		.notNull()
+		.references(() => detailedExample.id, { onDelete: 'cascade' }),
+	keySkillId: integer('key_skill_id')
+		.notNull()
+		.references(() => keySkill.id, { onDelete: 'cascade' }),
+	isArchived: boolean('is_archived').notNull().default(false),
+	...timestamps
+});
+
+export type DetailedExampleKeySkill = typeof detailedExampleKeySkill.$inferSelect;
+
+export const detailedExampleLearningAreaContent = pgTable('detailed_example_lrn_a_cont', {
+	id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
+	detailedExampleId: integer('detailed_example_id')
+		.notNull()
+		.references(() => detailedExample.id, { onDelete: 'cascade' }),
+	learningAreaContentId: integer('lrn_a_cont_id')
+		.notNull()
+		.references(() => LearningAreaContent.id, { onDelete: 'cascade' }),
+	isArchived: boolean('is_archived').notNull().default(false),
+	...timestamps
+});
+
+export type DetailedExampleLearningAreaContent = typeof detailedExampleLearningAreaContent.$inferSelect;
 
 
 

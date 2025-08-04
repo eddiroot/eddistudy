@@ -130,6 +130,23 @@ async function processSubjectFile(filePath: string, curriculumId: number) {
 			.returning();
 
 		learningAreaMap.set(learningArea.id, learningAreaRecord.id);
+
+		// Insert learning area content (dot points) if available
+		if (learningArea.content) {
+			for (let i = 0; i < learningArea.content.length; i++) {
+				const content = learningArea.content[i];
+				if (content.description) {
+					await db
+						.insert(schema.LearningAreaContent)
+						.values({
+							learningAreaId: learningAreaRecord.id,
+							description: content.description,
+							number: i + 1, // Sequential numbering starting from 1
+							isArchived: false
+						});
+				}
+			}
+		}
 	}
 
 	// Insert outcomes with indexed key knowledge and key skills
