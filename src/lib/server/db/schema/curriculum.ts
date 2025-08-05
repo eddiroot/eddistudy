@@ -37,7 +37,7 @@ export const learningArea = pgTable('learning_area', {
 
 export type LearningArea = typeof learningArea.$inferSelect;
 
-export const LearningAreaContent = pgTable('lrn_a_cont', {
+export const learningAreaContent = pgTable('lrn_a_cont', {
 	id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
 	learningAreaId: integer('lrn_a_id')
 		.notNull()
@@ -48,7 +48,7 @@ export const LearningAreaContent = pgTable('lrn_a_cont', {
 	...timestamps
 });
 
-export type LearningAreaContent = typeof LearningAreaContent.$inferSelect;
+export type LearningAreaContent = typeof learningAreaContent.$inferSelect;
 
 export const outcome = pgTable('outcome', {
 	id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
@@ -195,7 +195,7 @@ export const learningActivityLearningAreaContent = pgTable('lrn_act_lrn_a_cont',
 		.references(() => curriculumLearningActivity.id, { onDelete: 'cascade' }),
 	learningAreaContentId: integer('lrn_a_cont_id')
 		.notNull()
-		.references(() => LearningAreaContent.id, { onDelete: 'cascade' }),
+		.references(() => learningAreaContent.id, { onDelete: 'cascade' }),
 	isArchived: boolean('is_archived').notNull().default(false),
 	...timestamps
 });
@@ -279,7 +279,7 @@ export const sampleAssessmentLearningAreaContent = pgTable('sample_assessment_lr
 		.references(() => sampleAssessment.id, { onDelete: 'cascade' }),
 	learningAreaContentId: integer('lrn_a_cont_id')
 		.notNull()
-		.references(() => LearningAreaContent.id, { onDelete: 'cascade' }),
+		.references(() => learningAreaContent.id, { onDelete: 'cascade' }),
 	isArchived: boolean('is_archived').notNull().default(false),
 	...timestamps
 });
@@ -362,7 +362,7 @@ export const detailedExampleLearningAreaContent = pgTable('detailed_example_lrn_
 		.references(() => detailedExample.id, { onDelete: 'cascade' }),
 	learningAreaContentId: integer('lrn_a_cont_id')
 		.notNull()
-		.references(() => LearningAreaContent.id, { onDelete: 'cascade' }),
+		.references(() => learningAreaContent.id, { onDelete: 'cascade' }),
 	isArchived: boolean('is_archived').notNull().default(false),
 	...timestamps
 });
