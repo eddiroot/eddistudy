@@ -137,7 +137,7 @@ async function processSubjectFile(filePath: string, curriculumId: number) {
 				const content = learningArea.content[i];
 				if (content.description) {
 					await db
-						.insert(schema.LearningAreaContent)
+						.insert(schema.learningAreaContent)
 						.values({
 							learningAreaId: learningAreaRecord.id,
 							description: content.description,

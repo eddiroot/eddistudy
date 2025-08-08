@@ -50,7 +50,7 @@ export async function seedCurriculumDataWithRelationships(subjectName: string, d
 		// Get learning area content (dot points) for mapping
 		const learningAreaContents = await db
 			.select()
-			.from(schema.LearningAreaContent);
+			.from(schema.learningAreaContent);
 
 		// Get outcomes for this subject
 		const outcomes = await db
@@ -388,7 +388,7 @@ async function linkToAreasOfStudyAndContent(
 	areasOfStudy: Array<{ name?: string; contentDotPoints?: string[] }>, 
 	recordId: number, 
 	learningAreas: Array<typeof schema.learningArea.$inferSelect>, 
-	learningAreaContents: Array<typeof schema.LearningAreaContent.$inferSelect>, 
+	learningAreaContents: Array<typeof schema.learningAreaContent.$inferSelect>, 
 	type: 'assessment' | 'learningActivity'
 ) {
 	for (const areaOfStudy of areasOfStudy) {
