@@ -27,3 +27,6 @@ export * from './curriculum';
 
 // Resource schemas
 export * from './resource';
+
+// Module schemas
+export * from './module';

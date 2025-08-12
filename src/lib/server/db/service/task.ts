@@ -2,6 +2,7 @@ import * as table from '$lib/server/db/schema';
 import { db } from '$lib/server/db';
 import { desc, eq, and, gte, inArray, asc, sql } from 'drizzle-orm';
 import { verifyUserAccessToClass } from './user';
+import { taskBlockTypeEnum } from '$lib/server/db/schema';
 
 export async function addTasksToClass(
 	taskIds: number[],
@@ -1166,4 +1167,91 @@ export async function getUserTaskBlockResponses(
 		);
 
 	return responses;
+}
+
+// Helper function to create individual blocks from components
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function createBlockFromComponent(component: any, taskId: number) {
+	if (!component || !component.content || !component.content.type) {
+		console.warn('Invalid component structure:', component);
+		return;
+	}
+
+	const type = component.content.type;
+	const content = component.content.content;
+
+	let createdBlock;
+
+	switch (type) {
+		case 'h1':
+		case 'h2':
+		case 'h3':
+		case 'h4':
+		case 'h5': {
+			// Extract text content properly
+			const headingText = content?.text || content || 'Heading';
+			createdBlock = await createTaskBlock(taskId, type, headingText);
+			break;
+		}
+		case 'paragraph': {
+			// Extract paragraph content properly
+			const paragraphContent = content?.markdown || '';
+			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.markdown, paragraphContent);
+			break;
+		}
+		case 'math_input': {
+			// Math input is not currently supported in the schema, so we'll skip it
+			console.warn('Math input blocks are not currently supported, skipping...');
+			break;
+		}
+		case 'multiple_choice': {
+			// Validate and transform multiple choice content structure
+			const question = content?.question || '';
+			const options = content?.options || [];
+			const multiple = content?.multiple || false;
+			const answer = component.answer || [];
+			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.multipleChoice, { question, options, answer, multiple});
+			break;
+		}
+
+		case 'image': {
+			// Validate and transform image content structure
+			const url = content?.url || '';
+			const caption = content?.caption || '';
+			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.image, { url, caption });
+			break;
+		}
+
+		case 'video': {
+			const url = content?.url || '';
+			const caption = content?.caption || '';
+			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.video, { url, caption });
+			break;
+		}
+
+		case 'fill_in_blank': {
+			const sentence = content?.sentence || '';
+			const answer = component.answer || [];
+			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.fillInBlank, { sentence, answer });
+			break;
+		}
+
+		case 'matching': {
+			const instructions = content?.instructions || '';
+			const pairs = content?.pairs || [];
+			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.matching, { instructions, pairs });
+			break;
+		}
+		case 'short_answer': {
+			const question = content?.question || '';
+			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.shortAnswer, { question });
+			break;
+		}
+
+		default:
+			console.warn(`Unknown block type: ${type}, ignoring`);
+			return;
+	}
+
+	return createdBlock;
 }

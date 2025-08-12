@@ -6,7 +6,6 @@ import { geminiCompletion } from '$lib/server/ai';
 import { taskComponentSchema, taskCreationPrompts } from '$lib/server/taskSchema';
 import {
 	createTask,
-	createTaskBlock,
 	getTopics,
 	createCourseMapItem,
 	getLearningAreaStandardWithElaborationsByIds,
@@ -15,12 +14,13 @@ import {
 	type CurriculumStandardWithElaborations,
 	getSubjectYearLevelBySubjectOfferingId,
 	createAnswer,
-	createCriteria
+	createCriteria,
+	createBlockFromComponent
 } from '$lib/server/db/service';
 import { promises as fsPromises } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
-import { taskBlockTypeEnum, taskTypeEnum } from '$lib/server/db/schema';
+import { taskTypeEnum } from '$lib/server/db/schema';
 
 export const load = async ({ locals: { security }, params: { subjectOfferingId } }) => {
 	security.isAuthenticated();
@@ -58,7 +58,11 @@ async function createBlocksFromSchema(taskSchema: string, taskId: number) {
 		for (let i = 0; i < taskComponents.length; i++) {
 			const component = taskComponents[i];
 			try {
-				await createBlockFromComponent(component, taskId);
+				const createdBlock = await createBlockFromComponent(component, taskId);
+				// If block was created successfully, process answers and criteria
+				if (createdBlock) {
+					await processAnswersAndCriteria(component, createdBlock.id);
+				}
 			} catch (error) {
 				console.error(`Error creating block from component ${i + 1}:`, component, error);
 				// Continue processing other components even if one fails
@@ -67,98 +71,6 @@ async function createBlocksFromSchema(taskSchema: string, taskId: number) {
 	} catch (error) {
 		console.error('Error parsing or processing task schema:', error);
 		throw new Error(`Failed to process task schema: ${error instanceof Error ? error.message : 'Unknown error'}`);
-	}
-}
-
-// Helper function to create individual blocks from components
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function createBlockFromComponent(component: any, taskId: number) {
-	if (!component || !component.content || !component.content.type) {
-		console.warn('Invalid component structure:', component);
-		return;
-	}
-
-	const type = component.content.type;
-	const content = component.content.content;
-
-	let createdBlock;
-
-	switch (type) {
-		case 'h1':
-		case 'h2':
-		case 'h3':
-		case 'h4':
-		case 'h5': {
-			// Extract text content properly
-			const headingText = content?.text || content || 'Heading';
-			createdBlock = await createTaskBlock(taskId, type, headingText);
-			break;
-		}
-		case 'paragraph': {
-			// Extract paragraph content properly
-			const paragraphContent = content?.markdown || '';
-			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.markdown, paragraphContent);
-			break;
-		}
-		case 'math_input': {
-			// const question = content?.question || '';
-			// const answerLatex = content?.answer_latex || '';
-			// await createTaskBlock(taskId, 'math_input', { question, answer_latex: answerLatex });
-			break;
-		}
-		case 'multiple_choice': {
-			// Validate and transform multiple choice content structure
-			const question = content?.question || '';
-			const options = content?.options || [];
-			const multiple = content?.multiple || false;
-			const answer = component.answer || [];
-			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.multipleChoice, { question, options, answer, multiple});
-			break;
-		}
-
-		case 'image': {
-			// Validate and transform image content structure
-			const url = content?.url || '';
-			const caption = content?.caption || '';
-			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.image, { url, caption });
-			break;
-		}
-
-		case 'video': {
-			const url = content?.url || '';
-			const caption = content?.caption || '';
-			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.video, { url, caption });
-			break;
-		}
-
-		// Unsupported block types that we'll ignore for now
-		case 'fill_in_blank': {
-			const sentence = content?.sentence || '';
-			const answer = component.answer || [];
-			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.fillInBlank, { sentence, answer });
-			break;
-		}
-
-		case 'matching': {
-			const instructions = content?.instructions || '';
-			const pairs = content?.pairs || [];
-			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.matching, { instructions, pairs });
-			break;
-		}
-		case 'short_answer': {
-			const question = content?.question || '';
-			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.shortAnswer, { question });
-			break;
-		}
-
-		default:
-			console.warn(`Unknown block type: ${type}, ignoring`);
-			return;
-	}
-
-	// If block was created successfully, process answers and criteria
-	if (createdBlock) {
-		await processAnswersAndCriteria(component, createdBlock.id);
 	}
 }
 

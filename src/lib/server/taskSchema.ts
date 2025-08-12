@@ -344,6 +344,24 @@ export const taskComponentItems = [
 	shortAnswerComponent
 ];
 
+// Map block types to their corresponding schemas
+export const taskComponentSchemaMap = {
+	'multipleChoice': multipleChoiceComponent,
+	'fillInBlank': fillInBlankComponent,
+	'shortAnswer': shortAnswerComponent,
+	'matching': matchingComponent,
+	'mathInput': mathInputComponent,
+	'h1': headerComponent,
+	'h2': headerComponent,
+	'h3': headerComponent,
+	'h4': headerComponent,
+	'h5': headerComponent,
+	'h6': headerComponent,
+	'paragraph': paragraphComponent,
+	'image': imageComponent,
+	'video': videoComponent
+};
+
 export const taskLayoutItems = [
 	{
 		type: 'object',

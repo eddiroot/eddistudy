@@ -1,0 +1,257 @@
+{
+  "subject": "General Mathematics",
+  "examQuestions": [
+    {
+        "question": "A group of students were asked to name their favourite colour. The results are displayed in the percentage segmented bar chart below. The percentage of students who named blue as their favourite colour is closest to A. 14% В. 18% C. 26% D. 74%",
+        "answer": "B",
+        "learningArea": "U3AOS1",
+        "topic": "Data analysis"
+    },
+    {
+        "question": "Freddie organised a function at work. He surveyed the staff about their preferences. He asked them about their payment preference (cash or electronic payment) and their budget preference (less than $50 or more than $50). The variables in this survey, payment preference and budget preference, are A. both categorical variables. B. both numerical variables. C. categorical and numerical variables, respectively. D. numerical and categorical variables, respectively.",
+        "answer": "A",
+        "learningArea": "U3AOS1",
+        "topic": "Data analysis"
+    },
+    {
+        "question": "The histogram below displays the population density, in people per km², of the 27 countries in the European Union in 2021. The histogram has a logarithmic (base 10) scale. Question 3: The median value occurs in a column with a frequency of A. 2 B. 3 C. 6 D. 9",
+        "answer": "D",
+        "learningArea": "U3AOS1",
+        "topic": "Data analysis"
+    },
+    {
+        "question": "The histogram below displays the population density, in people per km², of the 27 countries in the European Union in 2021. The histogram has a logarithmic (base 10) scale. There is one outlier at the upper end of the histogram. This value could be A. 330 B. 1330 C. 2030 D. 2730",
+        "answer": "C",
+        "learningArea": "U3AOS1",
+        "topic": "Data analysis"
+    },
+    {
+        "question": "The number of siblings of each member of a class of 24 students was recorded. The results are displayed in the table below. 2 1 3 2 1 1 1 1 4 1 1 1 1 1 2 1 2 2 1 3 4 2 2 3 1. A boxplot was constructed to display the spread of the data. Which one of the following statements about this boxplot is correct? A. There are no outliers. B. The value of the interquartile range (IQR) is 1.5 C. The value of the median is 1.5 D. All of the five-number summary values are whole numbers.",
+        "answer": "C",
+        "learningArea": "U3AOS1",
+        "topic": "Data analysis"
+    },
+    {
+        "question": "More than 11,000 athletes from more than 200 countries competed in the Tokyo Summer Olympic Games. An analysis of the number of athletes per country produced the following five-number summary. Minimum 2, First quartile 5, Median 11, Third quartile 48, Maximum 613. The smallest number of athletes per country that would display as an outlier on a boxplot of this data is A. 49 B. 112 C. 113 D. 613",
+        "answer": "C",
+        "learningArea": "U3AOS1",
+        "topic": "Data analysis"
+    },
+    {
+        "question": "Fiona plays nine holes of golf each week, and records her score. Her mean score for all rounds in 2024 is 55.7. In one round, when she recorded a score of 48, her standardised score was z = -1.75. The standard deviation for score in 2024 is A. 1.1 B. 2.3 C. 4.4 D. 6.95",
+        "answer": "C",
+        "learningArea": "U3AOS1",
+        "topic": "Data analysis"
+    },
+    {
+        "question": "The scatterplot below displays the average number of female athletes per competing nation, females, against the number of the Summer Olympic Games, number, from the first Olympic Games, in 1896, to the 29th Olympic Games, held in 2021. A least squares line has been fitted to the scatterplot. The equation of the least squares line is closest to A. females = -4.87 + 1.02 × number B. females = -3.39 + 0.91 × number C. number = -3.39 + 0.91 × females D. number = -0.91 + 3.39 × females",
+        "answer": "B",
+        "learningArea": "U3AOS1",
+        "topic": "Data analysis"
+    },
+    {
+        "question": "The least squares equation for the relationship between the average number of male athletes per competing nation, males, and the number of the Summer Olympic Games, number, is males = 67.5 – 1.27 × number. The summary statistics for the variables number and males are shown in the table below. Mean: number 15.0, males 48.4. Standard deviation: number 8.51, males 19.0. The value of Pearson’s correlation coefficient, r, rounded to three decimal places, is closest to A. -0.569 B. -0.394 C. 0.394 D. 0.569.",
+        "answer": "A",
+        "learningArea": "U3AOS1",
+        "topic": "Data analysis"
+    },
+    {
+        "question": "The least squares equation for the relationship between the average number of male athletes per competing nation, males, and the number of the Summer Olympic Games, number, is males = 67.5 – 1.27 × number. At which Summer Olympic Games will the predicted average number of males be closest to 25.6? A. 31st B. 32nd C. 33rd D. 34th.",
+        "answer": "C",
+        "learningArea": "U3AOS1",
+        "topic": "Data analysis"
+    },
+    {
+        "question": "The number of breeding pairs of a small parrot species has been declining over recent years. The table below shows the number of breeding pairs counted, pairs, and the year number, year, for the last 12 years. The association between pairs and year is non-linear. Table: year: 1, pairs: 320; year: 2, pairs: 250; year: 3, pairs: 225; year: 4, pairs: 208; year: 5, pairs: 190; year: 6, pairs: 180; year: 7, pairs: 170; year: 8, pairs: 165; year: 9, pairs: 160; year: 10, pairs: 158; year: 11, pairs: 155; year: 12, pairs: 150. The scatterplot shows a decreasing, non-linear trend of pairs versus year, starting at (1, 320) and ending at (12, 150). Question 11: The scatterplot can be linearised using a logarithmic (base 10) transformation applied to the explanatory variable. The least squares equation calculated from the transformed data is closest to A. log₁₀(pairs) = 2.44 – 0.0257 × year B. log₁₀(pairs) = 151 – 303 × year C. pairs = 274 – 12.3 × log₁₀(year) D. pairs = 303 – 151 × log₁₀(year).",
+        "answer": "D",
+        "learningArea": "U3AOS1",
+        "topic": "Data analysis"
+    },
+    {
+        "question": "The number of breeding pairs of a small parrot species has been declining over recent years. The table below shows the number of breeding pairs counted, pairs, and the year number, year, for the last 12 years. The association between pairs and year is non-linear. Table: year: 1, pairs: 320; year: 2, pairs: 250; year: 3, pairs: 225; year: 4, pairs: 208; year: 5, pairs: 190; year: 6, pairs: 180; year: 7, pairs: 170; year: 8, pairs: 165; year: 9, pairs: 160; year: 10, pairs: 158; year: 11, pairs: 155; year: 12, pairs: 150. The scatterplot shows a decreasing, non-linear trend of pairs versus year, starting at (1, 320) and ending at (12, 150). A reciprocal transformation applied to the variable pairs can also be used to linearise the scatterplot. When a least squares line is fitted to the plot of 1/pairs versus year, the largest difference between the actual value and the predicted value occurs at year A. 1 B. 2 C. 11 D. 12.",
+        "answer": "A",
+        "learningArea": "U3AOS1",
+        "topic": "Data analysis"
+    },
+    {
+        "question": "A school runs an orientation program for new staff each January. The time series plot below shows the number of new staff, new, for each year, year, from 2011 to 2022 (inclusive). Data points: 2011: 14, 2012: 10, 2013: 8, 2014: 7, 2015: 9, 2016: 12, 2017: 13, 2018: 12, 2019: 9, 2020: 15, 2021: 12, 2022: 10. The time series is smoothed using seven-median smoothing. The smoothed value of new for the year 2016 is A. 10 B. 11 C. 12 D. 13",
+        "answer": "A",
+        "learningArea": "U3AOS1",
+        "topic": "Data analysis"
+    },
+    {
+        "question": "A school runs an orientation program for new staff each January. The time series plot below shows the number of new staff, new, for each year, year, from 2011 to 2022 (inclusive). Data points: 2011: 14, 2012: 10, 2013: 8, 2014: 7, 2015: 9, 2016: 12, 2017: 13, 2018: 12, 2019: 9, 2020: 15, 2021: 12, 2022: 10. The number of new staff in 2023 is added to the total number of new staff from the previous 12 years. For these 13 years, the mean number of new staff is 11. The number of new staff in 2023 is A. 11 B. 16 C. 17 D. 19.",
+        "answer": "B",
+        "learningArea": "U3AOS1",
+        "topic": "Data analysis"
+    },
+    {
+        "question": "The table below shows the total number of cans of soft drink sold each month at a suburban cafe in 2023. Table: Month 1: 316, 2: 321, 3: 365, 4: 306, 5: 254, 6: 308, 7: 354, 8: 357, 9: 381, 10: 355, 11: 365, 12: 324. The six-mean smoothed value of the number of cans sold, with centring, for month 5 is closest to A. 315 B. 318 C. 321 D. 324.",
+        "answer": "C",
+        "learningArea": "U3AOS1",
+        "topic": "Data analysis"
+    },
+    {
+        "question": "The table below shows the seasonal indices for the monthly takings of a bistro. Table: Month 1: 1.08, 2: 1.13, 3: ?, 4: 0.92, 5: 0.67, 6: ?, 7: 1.09, 8: 1.35, 9: 0.82, 10: 0.88, 11: 1.01, 12: 0.98. The seasonal index for month 3 is twice the seasonal index for month 6. The seasonal index for month 3 is closest to A. 0.69 B. 1.04 C. 1.38 D. 2.07.",
+        "answer": "C",
+        "learningArea": "U3AOS1",
+        "topic": "Data analysis"
+    },
+    {
+        "question": "A first-order linear recurrence relation of the form u₀ = a, uₙ₊₁ = R uₙ + d generates the terms of a sequence. A geometric sequence will be generated if A. R = 1 and d = -1 B. R = 1 and d = 1 C. R = 4 and d = -1 D. R = 2 and d = 0.",
+        "answer": "D",
+        "learningArea": "U3AOS2",
+        "topic": "Recursion and financial mathematics"
+    },
+    {
+        "question": "Trevor took out a reducing balance loan of $400,000, with interest calculated weekly. The balance of the loan, in dollars, after n weeks, Tₙ, can be modelled by the recurrence relation T₀ = 400,000, Tₙ₊₁ = 1.00075 Tₙ – 677.55. Assume that there are exactly 52 weeks in a year. The interest rate, per annum, for this loan is A. 0.75% B. 3.9% C. 4.5% D. 7.5%.",
+        "answer": "B",
+        "learningArea": "U3AOS2",
+        "topic": "Recursion and financial mathematics"
+    },
+    {
+        "question": "Liv bought a new car for $35,000. The value of the car will be depreciated by 18% per annum using the reducing balance method. A recurrence relation that models the year-to-year value of her car is of the form L₀ = 35,000, Lₙ₊₁ = k × Lₙ. The value of k is A. 0.0082 B. 0.18 C. 0.82 D. 1.18.",
+        "answer": "C",
+        "learningArea": "U3AOS2",
+        "topic": "Recursion and financial mathematics"
+    },
+    {
+        "question": "Dainika invested $2000 for three years at 4.4% per annum, compounding quarterly. To earn the same amount of interest in three years in a simple interest account, the annual simple interest rate would need to be closest to A. 4.60% B. 4.68% C. 4.84% D. 4.98%.",
+        "answer": "B",
+        "learningArea": "U3AOS2",
+        "topic": "Recursion and financial mathematics"
+    },
+    {
+        "question": "Lee took out a loan of $121,000, with interest compounding monthly. He makes monthly repayments of $2228.40 for five years until the loan is repaid in full. The total interest paid by Lee is closest to A. $4434 B. $5465 C. $10,539 D. $12,704.",
+        "answer": "D",
+        "learningArea": "U3AOS2",
+        "topic": "Recursion and financial mathematics"
+    },
+    {
+        "question": "Stewart takes out a reducing balance loan of $240,000, with interest calculated monthly. Stewart makes regular monthly repayments. Three lines of the amortisation table are shown below: Payment number 0: Payment $0.00, Interest $0.00, Principal reduction $0.00, Balance $240,000.00; Payment number 1: Payment $2741.05, Interest $960.00, Principal reduction $1781.05, Balance $238,218.95; Payment number 2: Payment $2741.05, Interest not shown, Principal reduction not shown, Balance not shown. The principal reduction associated with Payment number 2 is closest to A. $1773.93 B. $1781.05 C. $1788.17 D. $2741.05.",
+        "answer": "C",
+        "learningArea": "U3AOS2",
+        "topic": "Recursion and financial mathematics"
+    },
+    {
+        "question": "Stewart takes out a reducing balance loan of $240,000, with interest calculated monthly. Stewart makes regular monthly repayments. Three lines of the amortisation table are shown below: Payment number 0: Payment $0.00, Interest $0.00, Principal reduction $0.00, Balance $240,000.00; Payment number 1: Payment $2741.05, Interest $960.00, Principal reduction $1781.05, Balance $238,218.95; Payment number 2: Payment $2741.05, Interest not shown, Principal reduction not shown, Balance not shown. The number of years that it will take Stewart to repay the loan in full is closest to A. 9 B. 10 C. 11 D. 12.",
+        "answer": "A",
+        "learningArea": "U3AOS2",
+        "topic": "Recursion and financial mathematics"
+    },
+    {
+        "question": "André invested $18,000 in an account for five years, with interest compounding monthly. He adds an extra payment into the account each month immediately after the interest is calculated. For the first two years, the balance of the account, in dollars, after n months, Aₙ, can be modelled by the recurrence relation A₀ = 18,000, Aₙ₊₁ = 1.002Aₙ + 100. After two years, André decides he would like the account to reach a balance of $30,000 at the end of the five years. He must increase the value of the monthly extra payment to achieve this. The minimum value of the new payment for the last three years is closest to A. $189.55 B. $195.45 C. $202.35 D. $246.55.",
+        "answer": "A",
+        "learningArea": "U3AOS2",
+        "topic": "Recursion and financial mathematics"
+    },
+    {
+        "question": "Matrix J is a 2 × 3 matrix. Matrix K is a 3 × 1 matrix. Matrix L is added to the product JK. The order of matrix L is A. 1 × 3 B. 2 × 1 C. 2 × 3 D. 3 × 2.",
+        "answer": "B",
+        "learningArea": "U4AOS1",
+        "topic": "Matrices"
+    },
+    {
+        "question": "A market stall sells three types of candles. The cost of each type of candle is shown in matrix C below: C = [25 32 43]. Towards the end of the day, the cost of each item is discounted by 15%. Which one of the following expressions can be used to determine each discounted price? A. 0.15C B. 0.85C C. 8.5C D. 15C.",
+        "answer": "B",
+        "learningArea": "U4AOS1",
+        "topic": "Matrices"
+    },
+    {
+        "question": "Consider the following matrix, where h ≠ 0: [ [4, g], [8, h] ]. The inverse of this matrix does not exist when g is equal to A. -2h B. h/2 C. h D. 2h.",
+        "answer": "B",
+        "learningArea": "U4AOS1",
+        "topic": "Matrices"
+    },
+    {
+        "question": "Matrix J is a 2 × 3 matrix. Matrix K is a 3 × 1 matrix. Matrix L is added to the product JK. The order of matrix L is A. 1 × 3 B. 2 × 1 C. 2 × 3 D. 3 × 2.",
+        "answer": "B",
+        "learningArea": "U4AOS1",
+        "topic": "Matrices"
+    },
+    {
+        "question": "A primary school is hosting a sports day. Students represent one of four teams: blue (B), green (G), red (R), or yellow (Y). Students compete in one of three sports: football (F), netball (N), or tennis (T). Matrix W shows the number of students competing in each sport and the team they represent: W = [ [85, 60, 64, 71], [62, 74, 80, 64], [63, 76, 66, 75] ], where the columns are B, G, R, Y and the rows are F, N, T. Matrix W is multiplied by the column matrix [1, 1, 1, 1] to produce matrix X. Element x₃₁ indicates that A. 210 students represent the blue team. B. 210 students compete in netball. C. 280 students compete in tennis. D. 280 students compete in football.",
+        "answer": "C",
+        "learningArea": "U4AOS1",
+        "topic": "Matrices"
+    },
+    {
+        "question": "A tennis team consists of five players: Quinn, Rosie, Siobhan, Trinh and Ursula. When the team competes, players compete in the order of first, then second, then third, then fourth. The fifth player has a bye (does not compete). On week 1 of the competition, the players competed in the following order: First: Quinn, Second: Rosie, Third: Siobhan, Fourth: Trinh, Bye: Ursula. This information can be represented by matrix G₁ = [Q R S T U]. Let Gₙ be the order of play in week n. The playing order changes each week and can be determined by the rule Gₙ₊₁ = Gₙ × P, where P = [ [0 1 0 0 0], [0 0 0 0 1], [1 0 0 0 0], [0 0 1 0 0], [0 0 0 1 0] ]. Which player has a bye in week 4? A. Quinn B. Rosie C. Siobhan D. Trinh.",
+        "answer": "C",
+        "learningArea": "U4AOS1",
+        "topic": "Matrices"
+    },
+    {
+        "question": "Data has been collected on the female population of a species of mammal on a remote island. The female population has been divided into three age groups, with the initial population (at the time of data collection), the birth rate, and the survival rate of each age group shown in the table: Age group (years): 0–2, 2–4, 4–6; Initial population: 2100, 6400, 4260; Birth rate: 0, 1.8, 1.2; Survival rate: 0.7, 0.6, 0. The Leslie matrix (L) that may be used to model this particular population is A. L = [ [0, 1.8, 0], [0.7, 0, 1.2], [0, 0.6, 0] ] B. L = [ [0, 1.8, 1.2], [0.7, 0, 0], [0, 0.6, 0] ] C. L = [ [0, 1.8, 1.2], [0.7, 0.6, 0], [0, 0, 0] ] D. L = [ [2100, 6400, 4260], [0, 1.8, 1.2], [0.7, 0.6, 0] ].",
+        "answer": "B",
+        "learningArea": "U4AOS1",
+        "topic": "Matrices"
+    },
+    {
+        "question": "The matrix below shows the results of a round-robin chess tournament between five players: H, I, J, K, and L. In each game, there is a winner and a loser. Two games still need to be played. Matrix: rows and columns are H, I, J, K, L. H row: [0, 1, 0, 1, 0]; I row: [0, 0, …, 1, …]; J row: [1, …, 0, 1, 0]; K row: [0, 0, 0, 0, 1]; L row: [1, …, 1, 0, 0]. A ‘1’ in the matrix shows that the player named in that row defeated the player named in that column. A ‘…’ in the matrix shows that the player named in that row has not yet competed against the player in that column. At the end of the tournament, players will be ranked by calculating the sum of their one-step and two-step dominances. The player with the highest sum will be ranked first. The player with the second-highest sum will be ranked second, and so on. Which one of the following is not a potential outcome after the final two games have been played? A. Player I will be ranked first. B. Player I will be ranked fifth. C. Player J will be ranked first. D. Player J will be ranked fifth.",
+        "answer": "D",
+        "learningArea": "U4AOS1",
+        "topic": "Matrices"
+    },
+    {
+        "question": "A large sporting event is held over four consecutive days: Thursday, Friday, Saturday, and Sunday. People can watch the event at four different sites: Botanical Gardens (G), City Square (C), Riverbank (R), or Main Beach (M). Let Sₙ be the state matrix showing the number of people at each location n days after Thursday. The expected number of people at each location can be determined by the matrix recurrence rule Sₙ₊₁ = T Sₙ + A, where T = [ [0.4, 0.2, 0.4, 0], [0.4, 0.1, 0.3, 0.3], [0.1, 0.4, 0.1, 0.2], [0.1, 0.3, 0.2, 0.5] ] and A = [300, 200, 100, 300]. Given the state matrix S₃ = [5620 (G), 6386 (C), 4892 (R), 6902 (M)], the number of people watching the event at the Botanical Gardens (G) from Thursday to Sunday has A. decreased by 162 B. decreased by 212 C. increased by 124 D. increased by 696.",
+        "answer": "D",
+        "learningArea": "U4AOS1",
+        "topic": "Matrices"
+    },
+    {
+        "question": "Consider the following graph (a simple undirected graph with 6 vertices, one of which is isolated, and one vertex has a loop). The sum of the degrees of the vertices is A. 10 B. 11 C. 12 D. 13.",
+        "answer": "C",
+        "learningArea": "U4AOS1",
+        "topic": "Graphs and networks"
+    },
+    {
+        "question": "Consider the following graph (vertices A, B, C, D, E, F, with edges connecting A-B, A-C, B-C, B-D, C-D, C-F, D-E, D-F, E-F). A Eulerian trail through this graph could be A. ABCDEF B. ACBDCFDEF C. BACBDCFDEF D. BDCABCDFCDFEF.",
+        "answer": "C",
+        "learningArea": "U4AOS1",
+        "topic": "Graphs and networks"
+    },
+    {
+        "question": "Consider the following graph (a simple undirected graph with 6 vertices, one of which is isolated, and one vertex has a loop). The sum of the degrees of the vertices is A. 10 B. 11 C. 12 D. 13.",
+        "answer": "C",
+        "learningArea": "U4AOS1",
+        "topic": "Graphs and networks"
+    },
+    {
+        "question": "Consider the following graph (a planar connected graph with 7 vertices and 12 edges, forming several regions). The number of faces is A. 5 B. 6 C. 7 D. 8.",
+        "answer": "B",
+        "learningArea": "U4AOS1",
+        "topic": "Graphs and networks"
+    },
+    {
+        "question": "Eight houses in an estate are to be connected to the internet via underground cables. The network below shows the possible connections between the houses, with vertices A, B, C, D, E, F, G, H and edge weights representing cable lengths in metres: AB 15, AC 16, AD 20, BC 16, BG 19, CF 18, CG 14, CH 17, DE 19, DF 18, EF 20, EH 20, FG 18, FH 19, GH 18. The graph that represents the minimum length of cable needed to connect all the houses is A. a spanning tree connecting A-B, B-G, G-F, F-C, C-D, D-E, E-H B. a spanning tree connecting A-B, B-G, G-F, F-C, C-E, E-D, D-H C. a spanning tree connecting A-B, B-G, G-F, F-C, C-D, D-E, E-H D. a spanning tree connecting A-B, B-G, G-F, F-C, C-E, E-D, D-H.",
+        "answer": "D",
+        "learningArea": "U4AOS1",
+        "topic": "Graphs and networks"
+    },
+    {
+        "question": "The network below represents paths through a park from the carpark to a lookout. The vertices represent various attractions, and the numbers on the edges represent the distances between them in metres. The network is a weighted undirected graph with edges: carpark to first node (10), carpark to second node (7), carpark to third node (7), carpark to fourth node (x), first node to second node (11), first node to third node (5), first node to fourth node (8), second node to third node (8), second node to lookout (y), third node to fourth node (13), third node to lookout (7), fourth node to lookout (9), fourth node to third node (5), fourth node to lookout (8), third node to lookout (12), lookout to third node (7). The shortest path from the carpark to the lookout is 34 m. This can be achieved when A. x = 8 and y = 8 B. x = 9 and y = 7 C. x = 10 and y = 6 D. x = 11 and y = 5.",
+        "answer": "D",
+        "learningArea": "U4AOS1",
+        "topic": "Graphs and networks"
+    },
+    {
+        "question": "A connected graph has six vertices and six edges. How many of the following four statements must always be true? - the graph has no vertices of odd degree - the graph contains a Eulerian trail - the graph contains a Hamiltonian path - the sum of the degrees of the vertices is 12. A. 1 B. 2 C. 3 D. 4.",
+        "answer": "A",
+        "learningArea": "U4AOS1",
+        "topic": "Graphs and networks"
+    },
+    {
+        "question": "Anush, Blake, Carly and Dexter are workers on a construction site. They are each allocated one task. The time, in hours, it takes for each worker to complete each task is shown in the table: Task 1: Anush 12, Blake 10, Carly 11, Dexter 10; Task 2: Anush 8, Blake 7, Carly 10, Dexter 14; Task 3: Anush 16, Blake 15, Carly 18, Dexter 16; Task 4: Anush 9, Blake 10, Carly 12, Dexter 11. The tasks must be completed sequentially and in numerical order: Task 1, Task 2, Task 3, then Task 4. Management makes an initial allocation of tasks to minimise the amount of time required, but then decides that it takes the workers too long. Another worker, Edgar, is brought in to complete one of the tasks. His completion times, in hours, are: Task 1: 9, Task 2: 5, Task 3: 14, Task 4: 8. When a new allocation is made and Edgar takes over one of the tasks, the minimum total completion time compared to the initial allocation will be reduced by A. 1 hour B. 2 hours C. 3 hours D. 4 hours.",
+        "answer": "D",
+        "learningArea": "U4AOS1",
+        "topic": "Graphs and networks"
+    },
+    {
+        "question": "A project has 15 activities, A–O, that need to be completed. The directed network that represents this project is shown (a directed acyclic graph from start to finish with 15 nodes and multiple dependencies). Four possible activity tables are given. Table A: A–, B–, C–, D–, E:A, F:B, G:E,F,C,H, H:D, I:A, J:D, K:H, L:D, M:L, N:I,G,K,L, O:L. Table B: A:C, B:A, C–, D–, E:A, F:B,K,M,L, G:D, H–, I–, J:I, K:E,G,H,J, L:N, M:I, N:I, O:N. Table C: A:C, B:A, C–, D–, E:A, F:B,K,M,L, G:D, H–, I–, J:I, K:D,G,H,J, L:N, M:I, N:I, O:N. Table D: A:C, B:A, C–, D–, E:A, F:B,K,J,L, G:D, H–, I–, J:I, K:E,G,H,J, L:N, M:N, N:I, O:I.",
+        "answer": "B",
+        "learningArea": "U4AOS1",
+        "topic": "Graphs and networks"
+    }
+    ]
+}
