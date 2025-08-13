@@ -1,0 +1,218 @@
+[
+  {
+    "question": "Jo is standing inside a lift that is travelling vertically upwards at a constant speed of 2.0 m s⁻¹ as shown in the diagram. The diagram shows a rectangular lift with a person (Jo) standing inside, with an upward arrow indicating the lift's movement at 2.0 m s⁻¹. Jo has a mass of 75 kg. Which one of the following is closest to the force exerted on Jo by the lift floor? A. 0 N B. 590 N C. 740 N D. 890 N"
+  },
+  {
+    "question": "A space-based observatory (SBO) of mass M has a circular orbital radius R around Earth. Modifications to the SBO have doubled its mass, but its orbital speed is kept constant. Which one of the following is closest to the orbital radius of the SBO after the modifications have been made? A. R/4 B. R C. 2R D. 4R"
+  },
+  {
+    "question": "The diagram below shows a small ball travelling at a constant speed on a horizontal circular path while suspended from the ceiling by a string. The diagram shows a ceiling at the top (represented by hatched lines), with a string attached to it. The string extends down at an angle to a black ball. The ball is shown moving in a horizontal circular path (indicated by a dashed circular line with arrows showing the direction of motion). Vertical dashed lines show the center of the circular path. Which one of the following best represents the force(s) acting on the ball as seen from a front-on view? A. Shows a ball with an upward diagonal arrow and a downward vertical arrow. B. Shows a ball with a horizontal arrow pointing right. C. Shows a ball with an upward diagonal arrow, a horizontal arrow pointing right, and a downward vertical arrow. D. Shows a ball with an upward diagonal arrow, a horizontal arrow pointing left, and a downward vertical arrow."
+  },
+  {
+    "question": "The diagram below shows a 50 g ball and a spring inside a horizontal launching tube. Assume that the launching tube is frictionless and the mass of the spring is negligible. The diagram shows a horizontal tube containing a coiled spring on the left side and a ball on the right side of the spring. A force vs compression graph for the spring is shown below. Consider the spring to be ideal. The graph shows force (N) on the y-axis ranging from 0 to 40, and compression (cm) on the x-axis ranging from 0 to 10.0. The graph shows a straight line starting from the origin (0,0) and increasing linearly to approximately (10.0, 40), indicating a linear relationship between force and compression. The spring is initially compressed by a distance of 10.0 cm, with the ball in contact with the compressed spring. A short time later the spring is released. The second diagram shows the spring in its released state with the ball positioned 10.0 cm away from the spring. Which one of the following is closest to the speed of the ball as it leaves the tube? A. 2.8 m s⁻¹ B. 4.9 m s⁻¹ C. 8.9 m s⁻¹ D. 12.6 m s⁻¹"
+  },
+  {
+    "question": "A rock is dropped from rest at the top of a cliff towards the ocean, as shown below. The diagram shows a cliff edge with a rock at the top marked with v = 0 (indicating zero initial velocity). A dashed vertical line with an arrow shows the rock's downward path toward the ocean below, which is represented by wavy lines and a shaded area. Which one of the following graphs best represents the rock's total energy as it falls towards the ocean from the top of the cliff? Ignore air resistance. A. Shows a horizontal line (constant total energy over time). B. Shows a downward sloping line (decreasing total energy over time). C. Shows an upward curving line (increasing total energy over time with increasing rate). D. Shows an upward straight line (linearly increasing total energy over time)."
+  },
+  {
+    "question": "Two magnets are placed as shown in the diagram below. The magnets are identical and point X is exactly halfway between the two S poles. The diagram shows two rectangular magnets positioned horizontally. The left magnet has N on the left side and S on the right side. The right magnet has S on the left side and N on the right side. Point X is marked exactly in the center between the two S poles (which are facing each other). Which one of the following best describes the strength of the magnetic field at point X? A. It is very close to zero. B. It is half the magnetic field strength due to one magnet only. C. It is twice the magnetic field strength due to one magnet only. D. It is about the same as the magnetic field strength due to one magnet only."
+  },
+  {
+    "question": "Diagram A shows a single loop of wire carrying a current, I, within a uniform magnetic field. Diagram B shows the same loop rotated clockwise through 90°. Diagram A shows a parallelogram-shaped loop of wire with vertices labeled P and Q, with current I flowing through it. The loop is positioned within a uniform magnetic field represented by horizontal arrows pointing to the right. Diagram B shows the same loop rotated 90° clockwise, now appearing as a different parallelogram orientation, still with vertices P and Q and current I, within the same rightward-pointing magnetic field. The magnitude of the force, F, on side PQ and the magnitude of the torque, τ, on the loop in Diagram B (FB and τB) are compared to those in Diagram A (FA and τA). Which one of the following rows in the table below best describes the comparison? A. FA = FB and τA = τB B. FA > FB and τA < τB C. FA < FB and τA = τB D. FA = FB and τA > τB"
+  },
+  {
+    "question": "A straight wire, P, 4.0 cm long and carrying a current of 5.0 A, is completely placed in a uniform magnetic field of magnitude 2.0 × 10⁻³ T, as shown below. The diagram shows a vertical wire labeled P with current flowing upward (5.0 A marked with an upward arrow). The wire is surrounded by a uniform magnetic field represented by horizontal arrows pointing to the right. Which one of the following is closest to the magnitude of the force acting on the 4.0 cm long wire in the magnetic field? A. 4.0 × 10⁻² N B. 4.0 × 10⁻³ N C. 4.0 × 10⁻⁴ N D. 4.0 × 10⁻⁶ N"
+  },
+  {
+    "question": "Two equal positive electric charges separated by a distance, d, exert a force, F, on each other. The distance is changed so that the two charges now exert a force of 6F on each other. The diagram shows two positive charges (+q) separated by distance d with a dashed line between them. Which one of the following is closest to the new distance between the charges? A. 0.17d B. 0.41d C. 0.54d D. 0.78d"
+  },
+  {
+    "question": "The graph below shows the induced current through a coil of conducting wire as a function of time. The graph shows induced current on the y-axis and time on the x-axis. The current starts at zero, rises to a positive constant value for a period, then drops back to zero briefly, then rises to the same positive constant value again, and finally drops back to zero. This creates a rectangular pulse pattern with a gap in the middle. Which one of the following magnetic flux graphs corresponds to the graph of the induced current shown above? A. Shows magnetic flux rising to a constant level, staying constant, then dropping back to zero (similar rectangular pattern to current). B. Shows magnetic flux rising to one level, then rising to a higher level, then dropping back to the first level, then dropping to zero (step pattern). C. Shows magnetic flux starting at zero and increasing in a curved upward trend over time. D. Shows magnetic flux rising to a peak then decreasing back to zero in a triangular pattern."
+  },
+  {
+    "question": "In Victoria, the electrical energy generated at the Loy Yang A power station is transmitted to Melbourne, approximately 170 km away, using 500 kV transmission lines. Which one of the following best describes the reason for the use of high-voltage transmission of electrical energy over long distances? A. Transformers can be used to increase the voltage. B. High voltages reduce energy losses in the transmission lines. C. High voltages can easily carry the large power required by cities. D. High voltages reduce the overall total resistance in the transmission lines."
+  },
+  {
+    "question": "The diagram below shows a coil moving upwards from the north pole of a stationary bar magnet. The diagram shows a cylindrical coil with multiple wire windings connected to an ammeter (labeled A). The coil is positioned above a bar magnet with the north pole (N) at the top. An upward arrow indicates the coil's motion away from the north pole. An eye symbol indicates the viewing perspective from above the coil. Which one of the following correctly identifies both the direction of the induced current, as observed from the top of the coil, and the direction of the magnetic field produced by the induced current inside the coil, as observed from the side of the coil? A. Current direction: clockwise, Induced magnetic field direction: ↓ (downward) B. Current direction: clockwise, Induced magnetic field direction: ↑ (upward) C. Current direction: anticlockwise, Induced magnetic field direction: ↑ (upward) D. Current direction: anticlockwise, Induced magnetic field direction: ↓ (downward)"
+  },
+  {
+    "question": "The diagram below shows a simple generator made from a loop of wire, a commutator and magnets. A mechanical energy source rotates the loop smoothly. The magnetic field is constant and uniform. The output is displayed on an oscilloscope. The diagram shows a generator setup with a north (N) and south (S) magnet creating a magnetic field. Between the magnets is a rotating wire loop connected to a commutator system. The output connects to an oscilloscope. Which one of the following best describes the output that will be observed on the oscilloscope? A. DC voltage with a varying value B. AC voltage with a varying value C. AC voltage with a constant value D. DC voltage with a constant value"
+  },
+  {
+    "question": "A rocket passes a space station at a horizontal speed of 0.85c parallel to the side of the space station. There is a circular window on the space station, as shown in the diagram below. The diagram shows a circular window on a space station with an arrow indicating the direction of the rocket moving horizontally past it at 0.85c. A person inside the passing rocket observes and measures the window of the space station. Which one of the following statements best describes the measurements taken of the window of the space station? A. Both the horizontal and vertical measurements will be less than the actual window. B. Both the horizontal and vertical measurements will be the same as the actual window. C. The horizontal measurement will be the same as the actual window but the vertical measurement will be less than the actual window. D. The horizontal measurement will be less than the actual window but the vertical measurement will be the same as the actual window."
+  },
+  {
+    "question": "At the Australian Synchrotron, electrons are accelerated to close to the speed of light, c, by the linear accelerator. Consider electrons that enter the Australian Synchrotron booster ring with a Lorentz factor γ = 200, and as a result of further acceleration in that ring reach a much higher value, with a Lorentz factor γ = 2000. Which one of the following best describes the effect of the booster ring on each electron's speed and energy? A. The electron's speed increases by a large amount and its energy increases by a large amount. B. The electron's speed increases by a small amount and its energy increases by a large amount. C. The electron's speed increases by a large amount and its energy increases by a small amount. D. The electron's speed increases by a small amount and its energy increases by a small amount."
+  },
+  {
+    "question": "Diagram P shows five energy levels of an atom (labeled E1 through E5 from bottom to top), with five transitions indicated by arrows pointing downward from higher to lower energy levels. The transitions shown are: E5 to E1, E4 to E1, E3 to E2, E4 to E2, and E3 to E1. Diagram Q shows four possible sets of spectral frequency lines labeled A, B, C, and D, each showing vertical lines at different positions along a frequency scale from low to high frequency. Which one of the frequency spectra shown in Diagram Q best corresponds to the transitions shown in Diagram P? A. spectrum A B. spectrum B C. spectrum C D. spectrum D"
+  },
+  {
+    "question": "The diagram shows a standing wave on a stretched string between two fixed ends at time t = 0. The frequency of vibration of the string is 50 Hz. The standing wave pattern shows one complete wavelength with nodes at both ends and an antinode in the middle. Which one of the following diagrams correctly shows the position of the string at time t = 0.010 s? A. Shows the same standing wave pattern as the initial diagram. B. Shows a standing wave pattern with one and a half wavelengths. C. Shows a flat horizontal line (no displacement). D. Shows a standing wave pattern that is inverted compared to the initial diagram."
+  },
+  {
+    "question": "An interference pattern produced by monochromatic light is viewed on a screen placed a distance, L, from a double slit system with a slit separation, d. The distance between the centres of two adjacent bright bands is Δx. The diagram shows a laser beam passing through two parallel slits and creating an interference pattern on a screen, with the distance L marked between the slits and screen, the slit separation d marked, and the distance Δx between adjacent bright bands marked on the screen. The distance, L, is doubled and the slit separation, d, is halved. Which one of the following is closest to the new distance between the centres of two adjacent bright bands? A. Δx/4 B. Δx C. 2Δx D. 4Δx"
+  },
+  {
+    "question": "The orbital velocity, v, of a satellite in an orbital radius, r, around a planet of mass M is given by v = √(GM/r). Which one of the following linear graphs is consistent with this relationship? A. Graph showing v versus r with a positive linear relationship. B. Graph showing v² versus r with a positive linear relationship. C. Graph showing v versus 1/r with a positive linear relationship. D. Graph showing v² versus 1/r with a positive linear relationship."
+  },
+  {
+    "question": "Data can be described as precise when: A. it is the result of a careful investigation. B. the experiment is repeated many times, and the results show little variation. C. the same experimental methodology is used by different investigators. D. it is close to the scientifically accepted value of the quantity being measured."
+  },
+  {
+    "question": "Tug boats often have to tow other boats around the Port of Melbourne. Boat 1, a tug boat, with a mass of 2.5 × 10⁵ kg, is towing two larger boats, as shown in the diagram. All three boats are moving in a straight line and Boats 2 and 3 do not have their engines on. Boat 2 has a mass of 5.0 × 10⁵ kg and Boat 3 has a mass of 6.0 × 10⁵ kg. A resistance force of 1.2 × 10⁴ N acts on Boat 2 and a resistance force of 1.4 × 10⁴ N acts on Boat 3. The tension in Rope 1 is 9.2 × 10⁴ N. The diagram shows three boats connected by ropes, with Boat 1 (tug boat) pulling Boat 2, which is connected to Boat 3. Arrows indicate the tension forces and resistance forces. Show that the acceleration of the two boats being towed, Boat 2 and Boat 3, is 6.0 × 10⁻² m s⁻²."
+  },
+  {
+    "question": "Continuing with the tug boat scenario: Boat 1, a tug boat, with a mass of 2.5 × 10⁵ kg, is towing two larger boats. All three boats are moving in a straight line and Boats 2 and 3 do not have their engines on. Boat 2 has a mass of 5.0 × 10⁵ kg and Boat 3 has a mass of 6.0 × 10⁵ kg. A resistance force of 1.2 × 10⁴ N acts on Boat 2 and a resistance force of 1.4 × 10⁴ N acts on Boat 3. The tension in Rope 1 is 9.2 × 10⁴ N. The acceleration of the two boats being towed is 6.0 × 10⁻² m s⁻². Calculate the tension, T, in Rope 2. Show your working."
+  },
+  {
+    "question": "Engineers are testing a new high-speed electric vehicle (EV) on a high-speed test track. In one test, the EV travels around a circular banked track with a radius of 1.2 km. The angle of bank is 33°. The diagram shows an electric vehicle on a banked track with the radius labeled as 1.2 km and the banking angle shown as 33°. Calculate the maximum speed the car can travel around this banked track if there is no sideways friction between the wheels and the track. Show your working."
+  },
+  {
+    "question": "Continuing with the banked track scenario: Engineers are testing a new high-speed electric vehicle (EV) on a high-speed test track. The EV travels around a circular banked track with a radius of 1.2 km and a banking angle of 33°. Explain how the normal force from the banked track provides the centripetal force on the car."
+  },
+  {
+    "question": "A golf ball near the edge of a cliff is hit at a speed of 48 m s⁻¹ and at an angle of 35° to the horizontal. The golf ball lands on the ground 6.2 s after it is hit. Ignore air resistance. The diagram shows a golfer hitting a ball from a cliff edge, with the initial velocity of 48 m s⁻¹ at 35° to the horizontal, the height of the cliff marked as h, and the horizontal distance marked as x. The ball follows a parabolic trajectory to land on the ground below. Determine the height, h, of the cliff."
+  },
+  {
+    "question": "Continuing with the golf ball scenario: A golf ball near the edge of a cliff is hit at a speed of 48 m s⁻¹ and at an angle of 35° to the horizontal. The golf ball lands on the ground 6.2 s after it is hit. Ignore air resistance. Calculate the horizontal distance, x, that the golf ball travels before it reaches the ground below."
+  },
+  {
+    "question": "Continuing with the golf ball scenario: A golf ball near the edge of a cliff is hit at a speed of 48 m s⁻¹ and at an angle of 35° to the horizontal. The golf ball lands on the ground 6.2 s after it is hit. In this scenario, air resistance was ignored. Describe how, in real life, air resistance would affect the golf ball's flight path."
+  },
+  {
+    "question": "The safety of passenger cars can be assessed using simulated collisions, with a crash test dummy in the passenger's seat. A diagram shows a dummy (without a seatbelt) in a car traveling towards a fixed solid wall. During an initial test, the dummy is seated in a car with no front airbags fitted. When the car hits the wall, the dummy experiences a force as it collides with the interior dashboard of the car. This force varies with time as shown on a graph with force (N) on the y-axis from 0 to 30000 N and time (ms) on the x-axis from 0 to 500 ms. The graph shows a triangular force profile that starts at 0, increases linearly to a peak of approximately 24000 N at 100 ms, then decreases linearly back to 0 at 200 ms. Determine the impulse on the dummy during this initial test."
+  },
+  {
+    "question": "Continuing with the crash test scenario: The safety of passenger cars can be assessed using simulated collisions, with a crash test dummy in the passenger's seat. During an initial test, the dummy experiences a triangular force profile when colliding with the dashboard, peaking at approximately 24000 N at 100 ms and returning to zero at 200 ms. In a second test, the dummy is seated in an identical car traveling at the same speed as the initial test, again without a seatbelt, but with front airbags fitted. The collision duration for the dummy in this second test as it collides with the airbag is double the time of the initial test without the airbags. A blank graph is provided with the same axes as the initial test (force vs time from 0-500 ms, 0-30000 N), showing the results of the initial test as dashed lines. Sketch on the graph how the force on the dummy could vary with time during this second test with airbags."
+  },
+  {
+    "question": "A basketball of mass 0.63 kg, travelling vertically down, hits the floor at a speed of 12 m s⁻¹ and rebounds at a speed of 10 m s⁻¹, as shown in Figure 7. The figure shows a basketball with arrows indicating 12 m s⁻¹ downward velocity before impact and 10 m s⁻¹ upward velocity after bouncing off a hatched floor surface. Calculate the magnitude and direction of the change in momentum of the basketball."
+  },
+  {
+    "question": "A basketball of mass 0.63 kg, travelling vertically down, hits the floor at a speed of 12 m s⁻¹ and rebounds at a speed of 10 m s⁻¹. Is the collision elastic or inelastic? Justify your answer. No calculations are required."
+  },
+  {
+    "question": "Jenny and Kwan are discussing how the International Space Station (ISS) supply-craft missions operate. The station is resupplied with food, water, air, fuel, scientific equipment and other necessities every three months. Kwan suggests that the supply craft could initially be put into a circular orbit relative to the ISS, as shown in Figure 8, before it eventually docks. Figure 8 shows a circular dotted orbit around the ISS (at center) with radius r = 500 m, and a supply craft positioned on the orbit with velocity v = 0.436 m s⁻¹. The centripetal force needed to keep the supply craft in orbit, Kwan argues, is provided by the gravitational attraction between the supply craft and the ISS. Kwan calculates that an orbital radius of 500 m could be achieved with the supply craft travelling at a speed of 0.436 m s⁻¹. The mass of ISS is 4.50 × 10⁵ kg, and the mass of the supply craft is 1.50 × 10⁴ kg. Will Kwan's suggestion work? Justify your answer with appropriate calculations."
+  },
+  {
+    "question": "An electron is accelerated from rest through an electric field. It enters an area of constant magnetic field, B, of magnitude 5.00 mT, which is perpendicular to the electron's path. Once within the magnetic field, the electron follows a circular path of radius 1.50 cm, as shown in Figure 9. Figure 9 shows an electron source on the left, with the electron being accelerated through V₀, then entering a region with magnetic field B = 5.00 mT (shown as crosses indicating field into the page) where it follows a circular path with r = 1.50 cm. You may ignore relativistic effects. Show that the electron's speed, v, as it enters the magnetic field is 1.32 × 10⁷ m s⁻¹."
+  },
+  {
+    "question": "An electron is accelerated from rest through an electric field and enters a magnetic field of 5.00 mT, following a circular path of radius 1.50 cm. The electron's speed as it enters the magnetic field is 1.32 × 10⁷ m s⁻¹. Calculate the accelerating voltage, V₀, needed for the electron to reach a speed of 1.32 × 10⁷ m s⁻¹."
+  },
+  {
+    "question": "The electron is replaced by a proton travelling at the same speed. A proton has a mass of 1.67 × 10⁻²⁷ kg and a charge of +1.60 × 10⁻¹⁹ C. Describe the path the proton takes after entering the constant magnetic field compared to the path taken by the electron. Justify your answers. No calculations are required."
+  },
+  {
+    "question": "Electrical activity in thunderstorms can be modelled as charge separation, causing an electric field to form between the base of the thundercloud and the ground, similar to two charged parallel plates. Figure 10 shows the base of a thundercloud that is 850 m above the ground. The figure shows a thundercloud with negative charges along its base, positioned 850 m above the ground which has positive charges, creating a parallel plate capacitor configuration. Using arrows, sketch on Figure 10 above at least five electric field lines between the ground and the base of the thundercloud."
+  },
+  {
+    "question": "A thundercloud is 850 m above the ground, creating an electric field between them like parallel plates. The potential difference between the ground and the base of the thundercloud is 1.20 GV. Calculate the magnitude of the electric field between the ground and the base of the thundercloud."
+  },
+  {
+    "question": "A 1.20 GV lightning bolt discharges to Earth from the thundercloud with a current of 30.0 kA for a duration of 60.0 μs. Calculate the total energy transferred by this lightning bolt. Give your answer to three significant figures."
+  },
+  {
+    "question": "Students build a simple DC electric motor, consisting of a single coil of wire in a uniform magnetic field. The coil is initially at rest, and orientated in a horizontal position, as shown in Figure 11. The coil can be rotated about the axis of rotation shown. Figure 11 shows a rectangular coil positioned horizontally between N and S magnetic poles, with points F, G, H, E marked on the coil, an axis of rotation through the center, and a 6.0 V battery connected. Describe one orientation of the coil, if any, where the magnetic force on side FG is zero. Justify your answer."
+  },
+  {
+    "question": "Students build a simple DC electric motor with a coil in a uniform magnetic field connected to a 6.0 V battery. Describe one starting orientation of the coil, if any, where the coil will not start to rotate from rest. Justify your answer."
+  },
+  {
+    "question": "For the DC electric motor with a single coil and 6.0 V battery shown in Figure 11, suggest one way that the torque of the DC electric motor could be increased using exactly the same single coil and the same 6.0 V battery."
+  },
+  {
+    "question": "Two Physics students, Aroha and Taylor, are investigating electromagnetic induction. They use the apparatus shown in Figure 12, which consists of a single coil of wire in a uniform magnetic field connected to slip rings X and Y. Figure 12 shows a coil between N and S magnetic poles, with slip rings X and Y connected to an oscilloscope. Explain the purpose of the slip rings shown in Figure 12."
+  },
+  {
+    "question": "Taylor rotates the single coil of wire within the uniform magnetic field at a constant rate while Aroha measures the output voltage, ε, versus time, t, on an oscilloscope. The oscilloscope display is shown in Figure 13. Figure 13 shows a sinusoidal voltage trace with peak values of +4V and -4V, with the voltage crossing zero at 0.1s, 0.2s, 0.3s, and 0.4s. From the oscilloscope trace shown in Figure 13, determine the peak-to-peak voltage produced by the apparatus and the frequency of rotation of the single coil."
+  },
+  {
+    "question": "Taylor makes a modification to the apparatus in Figure 12. Aroha sees the new oscilloscope trace as shown in Figure 14. The dotted line shows the original voltage before any changes are made by Taylor. Figure 14 shows two sinusoidal traces - the original solid line with amplitude ±8V and a new dotted line with amplitude ±4V, both with the same frequency. Explain two possible ways that Taylor could have modified the apparatus to create the oscilloscope trace shown in Figure 14. Justify your answers."
+  },
+  {
+    "question": "Jia charges a 36 V battery used for her electric bicycle from a mains 230 V_RMS power point. The transformer part of the battery charger circuit is shown schematically in Figure 15. Assume that the transformer is ideal. Figure 15 shows a transformer schematic with 230 V_RMS on the primary side and 36 V_RMS on the secondary side. Calculate the number of turns required on the secondary coil if there are 460 turns in the primary coil."
+  },
+  {
+    "question": "For the ideal transformer charging a 36 V battery from 230 V_RMS mains, with 460 turns in the primary coil, the RMS output current from the transformer to charge the battery is 0.80 A. Calculate the RMS input current to the transformer."
+  },
+  {
+    "question": "For the transformer used to charge the electric bicycle battery, explain why the transformer requires AC input and would not work if the input was constant DC."
+  },
+  {
+    "question": "A general store in country Victoria is connected to the mains 230 V electricity supply. The owners decide to install an array of solar photovoltaic (PV) panels to decrease their electricity bills. The maximum output of each PV panel is rated as 600 W in full sunlight, with a maximum voltage output of 20 V. The owners install 50 PV panels connected in a 10 × 5 array, as shown in Figure 16. The array consists of a bank of five strings connected in parallel, with each single string consisting of 10 PV panels connected in series. The total output of the array is connected to an inverter. [Figure 16 shows a diagram of 50 solar panels arranged in a 10×5 grid (10 columns, 5 rows), with each panel represented as a small grid pattern, all connected to an inverter box below] Calculate the maximum possible total output power from this array. Give your answer in kW."
+  },
+  {
+    "question": "A general store in country Victoria is connected to the mains 230 V electricity supply. The owners decide to install an array of solar photovoltaic (PV) panels to decrease their electricity bills. The maximum output of each PV panel is rated as 600 W in full sunlight, with a maximum voltage output of 20 V. The owners install 50 PV panels connected in a 10 × 5 array. The array consists of a bank of five strings connected in parallel, with each single string consisting of 10 PV panels connected in series. Calculate the maximum output voltage, and maximum output current, from one string of 10 PV panels connected in series in full sunlight. Show your working."
+  },
+  {
+    "question": "A general store in country Victoria is connected to the mains 230 V electricity supply. The owners decide to install an array of solar photovoltaic (PV) panels to decrease their electricity bills. The maximum output of each PV panel is rated as 600 W in full sunlight, with a maximum voltage output of 20 V. The owners install 50 PV panels connected in a 10 × 5 array. The array consists of a bank of five strings connected in parallel, with each single string consisting of 10 PV panels connected in series. Determine the maximum output voltage, and maximum output current, from the whole array in full sunlight."
+  },
+  {
+    "question": "A general store in country Victoria is connected to the mains 230 V electricity supply. The owners decide to install an array of solar photovoltaic (PV) panels to decrease their electricity bills. The maximum output of each PV panel is rated as 600 W in full sunlight, with a maximum voltage output of 20 V. The owners install 50 PV panels connected in a 10 × 5 array. The array consists of a bank of five strings connected in parallel, with each single string consisting of 10 PV panels connected in series. The total output of the array is connected to an inverter. What is the function of the inverter?"
+  },
+  {
+    "question": "When energetic cosmic rays from space interact with Earth's upper atmosphere, subatomic particles known as muons are produced. These muons are unstable and have been observed to rapidly decay. They decay with a mean lifetime of 2.20 μs. As a result of their short half-life, physicists have used the muons produced in Earth's upper atmosphere to test Einstein's special theory of relativity. In one experiment, physicists placed a muon detector at the top of a mountain at a height of 6500 m. The muons produced in the upper atmosphere, at a height of 9700 m above Earth's surface, travel downwards at a speed of 0.985c. [Figure 17 shows a diagram with the upper atmosphere at 9700m height with arrows showing muons traveling downward, and a mountain with a muon detector at 6500m height] Using classical mechanics, show that a muon would reach the muon detector at the top of the mountain in 10.8 μs."
+  },
+  {
+    "question": "When energetic cosmic rays from space interact with Earth's upper atmosphere, subatomic particles known as muons are produced. These muons are unstable and have been observed to rapidly decay. They decay with a mean lifetime of 2.20 μs. The muons produced in the upper atmosphere, at a height of 9700 m above Earth's surface, travel downwards at a speed of 0.985c. According to classical mechanics, is a muon likely to reach the muon detector at the top of the mountain? Justify your answer."
+  },
+  {
+    "question": "Experiments conducted by physicists show that a significant number of muons, created at a height of 9700 m above Earth's surface and travelling at a speed of 0.985c, consistently arrive at the muon detector at the top of the mountain. Calculate the Lorentz factor (γ) for a muon travelling at 0.985c."
+  },
+  {
+    "question": "Experiments conducted by physicists show that a significant number of muons, created at a height of 9700 m above Earth's surface and travelling at a speed of 0.985c, consistently arrive at the muon detector at the top of the mountain. What is the mean half-life of the muon in the physicists' frame of reference?"
+  },
+  {
+    "question": "Experiments conducted by physicists show that a significant number of muons, created at a height of 9700 m above Earth's surface and travelling at a speed of 0.985c, consistently arrive at the muon detector at the top of the mountain. Explain how Einstein's special theory of relativity accounts for the experimental evidence that a significant number of muons, created at a height of 9700 m and travelling at a speed of 0.985c, consistently arrive at the muon detector at the top of the mountain."
+  },
+  {
+    "question": "PET (positron emission tomography) scanners are used in medical imaging. They rely on an electron and a positron colliding and completely annihilating each other to produce two gamma rays. The electron and positron have the same mass. Assuming that the electron and positron are travelling at a negligible speed when they collide, calculate the total energy released in the annihilation."
+  },
+  {
+    "question": "PET (positron emission tomography) scanners are used in medical imaging. They rely on an electron and a positron colliding and completely annihilating each other to produce two gamma rays. The electron and positron have the same mass. The two gamma rays produced travel in opposite directions with exactly the same wavelength and energy, as shown in Figure 18. [Figure 18 shows a diagram with two wavy lines representing gamma rays traveling in opposite directions from a central annihilation point, with arrows indicating their opposite directions] Explain why the gamma rays travel in opposite directions."
+  },
+  {
+    "question": "An electron gun forms part of a transmission electron microscope, which uses the wave properties of electrons to study specimens that are too small to be observed using an optical microscope. Figure 19 shows a beam of electrons passing from an electron gun through two plates, Plate A and Plate B. The electrons reach Plate A with negligible speed and are accelerated by the potential difference between the plates, V₀, emerging from Plate B with a speed, v. [Figure 19 shows a schematic with an electron gun on the left, followed by Plate A and Plate B with a potential difference V₀ between them, and a beam of electrons emerging with speed v] The de Broglie wavelength of the electrons in a particular beam is 2.00 × 10⁻¹⁰ m. Calculate the momentum of an electron in the beam."
+  },
+  {
+    "question": "An electron gun forms part of a transmission electron microscope. The de Broglie wavelength of the electrons in a particular beam is 2.00 × 10⁻¹⁰ m. The electron beam is passed through a crystal with an interatomic spacing of 3.00 × 10⁻¹⁰ m. Two Physics students, Sally and Max, are discussing their predictions for diffraction patterns produced by the electron beam. Sally claims that since the wavelength is less than the interatomic spacing, there will not be a detectable diffraction pattern formed. Max disagrees and claims that they will obtain a useful diffraction pattern. Who is correct? Justify your answer."
+  },
+  {
+    "question": "Sally and Max now change the potential difference in the electron gun to generate electrons with an energy of 600 eV and a corresponding de Broglie wavelength of 5.01 × 10⁻¹¹ m. This adjusted electron beam is then directed through a thin foil, resulting in the diffraction pattern shown in Figure 20a. The students decide to contrast this pattern with the pattern produced by passing X-rays through an identical foil, shown in Figure 20b. They note that the electrons and the X-rays produce patterns with the same dimensions. [Figure 20a shows a circular diffraction pattern with concentric rings of varying intensity, appearing more diffuse. Figure 20b shows a similar circular pattern with concentric rings but appearing more uniform and defined] Explain how the electrons and the X-rays can produce almost identical patterns."
+  },
+  {
+    "question": "Sally and Max now change the potential difference in the electron gun to generate electrons with an energy of 600 eV and a corresponding de Broglie wavelength of 5.01 × 10⁻¹¹ m. The students decide to contrast the electron diffraction pattern with the pattern produced by passing X-rays through an identical foil. They note that the electrons and the X-rays produce patterns with the same dimensions. Calculate the energy, in eV, of the X-ray photons used to produce the image shown in Figure 20b."
+  },
+  {
+    "question": "Nicola is conducting an experiment to investigate the photoelectric effect using the apparatus shown in Figure 21. [Figure 21 shows a photoelectric effect experimental setup with: a light source on the left, followed by a filter, then a photocell containing a metal plate, connected to an ammeter (A) and voltmeter (V) in a circuit. The circuit also includes a variable DC voltage source. There is a collector electrode at the bottom of the photocell.] She uses various filters to shine electromagnetic radiation of particular frequencies on the photocell. Nicola increases the voltage, V, until the current reaches zero and records this voltage. She repeats this process for different frequencies. The variables in this experiment can be classified as controlled, dependent or independent. Complete the table below by providing one variable from the experiment for each classification: controlled, dependent, independent."
+  },
+  {
+    "question": "Nicola is conducting a photoelectric effect experiment where she shines electromagnetic radiation of different frequencies on a photocell and measures the stopping voltage (voltage needed to reduce current to zero). Her results are shown in the table below: Frequency (Hz): 6.0 × 10¹⁴ (Voltage 0.1 V), 7.0 × 10¹⁴ (Voltage 0.5 V), 8.0 × 10¹⁴ (Voltage 0.9 V), 9.0 × 10¹⁴ (Voltage 1.2 V), 10.0 × 10¹⁴ (Voltage 1.4 V). The uncertainty in the measurement of the voltage is ± 0.1 V. On the axes below (Figure 22), plot Nicola's data, including uncertainty bars, and draw a straight line of best fit. [Figure 22 shows a blank graph with V (V) on the y-axis ranging from -2.0 to 2.0, and f (×10¹⁴ Hz) on the x-axis ranging from 0 to 10.0, with a grid pattern for plotting data points.]"
+  },
+  {
+    "question": "In a photoelectric effect experiment, Nicola obtained data showing the relationship between frequency (f) and stopping voltage (V). From a graph plotting this data (V vs f), with voltage on the y-axis and frequency on the x-axis, showing a linear relationship with positive slope, determine the value Nicola would find for Planck's constant. The data points are: Frequency (Hz): 6.0 × 10¹⁴ (Voltage 0.1 V), 7.0 × 10¹⁴ (Voltage 0.5 V), 8.0 × 10¹⁴ (Voltage 0.9 V), 9.0 × 10¹⁴ (Voltage 1.2 V), 10.0 × 10¹⁴ (Voltage 1.4 V). Show your working. Answer should be in eV s."
+  },
+  {
+    "question": "In a photoelectric effect experiment, Nicola obtained data showing the relationship between frequency (f) and stopping voltage (V). From a graph plotting this data (V vs f), with voltage on the y-axis and frequency on the x-axis, showing a linear relationship that would intercept the x-axis at the threshold frequency, determine the threshold frequency. The data points are: Frequency (Hz): 6.0 × 10¹⁴ (Voltage 0.1 V), 7.0 × 10¹⁴ (Voltage 0.5 V), 8.0 × 10¹⁴ (Voltage 0.9 V), 9.0 × 10¹⁴ (Voltage 1.2 V), 10.0 × 10¹⁴ (Voltage 1.4 V). Answer should be in Hz."
+  },
+  {
+    "question": "In a photoelectric effect experiment, Nicola obtained data showing the relationship between frequency (f) and stopping voltage (V). From a graph plotting this data (V vs f), with voltage on the y-axis and frequency on the x-axis, showing a linear relationship, determine the work function of the metal. The data points are: Frequency (Hz): 6.0 × 10¹⁴ (Voltage 0.1 V), 7.0 × 10¹⁴ (Voltage 0.5 V), 8.0 × 10¹⁴ (Voltage 0.9 V), 9.0 × 10¹⁴ (Voltage 1.2 V), 10.0 × 10¹⁴ (Voltage 1.4 V). Answer should be in eV."
+  },
+  {
+    "question": "In a photoelectric effect experiment, Nicola measures the stopping voltage (the voltage needed to reduce the photocurrent to zero) for different frequencies of incident light. Explain what information is given about the emitted photoelectrons by the recorded voltage measurements."
+  },
+  {
+    "question": "Nicola conducted a photoelectric effect investigation and created a graph plotting stopping voltage (V) versus frequency (f), showing a linear relationship. If Nicola had carried out the investigation using a photocell with a plate made from a different metal, explain what effect, if any, this would have had on the graph. Consider how the slope and intercepts might change."
+  },
+  {
+    "question": "In carrying out her photoelectric effect investigation, Nicola initially used a green filter and produced a graph of photocurrent (I) versus voltage (V) as shown in Figure 23. [Figure 23 shows a graph with photocurrent I (mA) on the y-axis and voltage V (volts) on the x-axis. The curve starts at point P on the negative voltage axis (around -1V), curves upward crossing the voltage axis at the origin, passes through point N on the positive current axis (around +0.5 mA), and then levels off horizontally at point M, creating a plateau at maximum current.] She then replaced the green filter with a blue filter, keeping the light output power of the blue light at the photocell exactly the same as the light output power of the green light. Will the position of P, as shown on the graph in Figure 23, move to the left, remain the same, or move to the right? Justify your answer. No calculations or numerical values are required."
+  },
+  {
+    "question": "In a photoelectric effect experiment, Nicola initially used a green filter and produced a graph of photocurrent (I) versus voltage (V) as shown in Figure 23. [Figure 23 shows a graph with photocurrent I (mA) on the y-axis and voltage V (volts) on the x-axis. The curve starts at point P on the negative voltage axis, curves upward through the origin, passes through point N on the positive current axis, and then levels off horizontally at point M, creating a plateau representing the saturation current.] She then replaced the green filter with a blue filter, keeping the light output power of the blue light at the photocell exactly the same as the light output power of the green light. Will the horizontal line NM on the graph shown in Figure 23 indicate a photocurrent that is greater than, the same as, or lower than the line for green light? Justify your answer. No calculations or numerical values are required."
+  },
+  {
+    "question": "The results of photoelectric effect experiments provided strong evidence for the particle-like nature of light. State one feature of the results that provided this evidence. Your response should explain: • why the wave model does not satisfactorily explain this feature • how the particle-like nature of light does explain this feature."
+  }
+]
