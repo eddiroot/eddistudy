@@ -60,7 +60,7 @@
         {
           "id": 3023,
           "outcomeId": 3006,
-          "name": "redox reactions as simultaneous oxidation and reduction processes, and the use of oxidation numbers to identify the reducing agent, oxidising agent and conjugate redox pairs"
+          "name": "Primary galvanic cells and fuel cells as sources of energy"
         }
       ],
       "keyKnowledge": [
@@ -183,6 +183,12 @@
           "description": "contemporary responses to challenges and the role of innovation in the design of fuel cells to meet society’s energy needs, with reference to green chemistry principles: design for energy efficiency, and use of renewable feedstocks",
           "outcomeId": 3006,
           "outcomeTopicId": 3023
+        },
+        {
+          "id": 3085,
+          "description": "redox reactions as simultaneous oxidation and reduction processes, and the use of oxidation numbers to identify the reducing agent, oxidising agent and conjugate redox pairs",
+          "outcomeId": 3006,
+          "outcomeTopicId": 3023
         }
       ]
     },
@@ -206,11 +212,6 @@
           "id": 3026,
           "outcomeId": 3007,
           "name": "Production of chemicals using electrolysis"
-        },
-        {
-          "id": 3027,
-          "outcomeId": 3007,
-          "name": "Satisfactory completion"
         }
       ],
       "keyKnowledge": [
