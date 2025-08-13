@@ -406,11 +406,6 @@
           "name": "Laboratory analysis of organic compounds"
         },
         {
-          "id": 3030,
-          "outcomeId": 3009,
-          "name": "volumetric analysis, including calculations of excess and limiting reactants using redox titrations (excluding back titrations)"
-        },
-        {
           "id": 3031,
           "outcomeId": 3009,
           "name": "Instrumental analysis of organic compounds"
@@ -439,6 +434,12 @@
           "description": "measurement of the degree of unsaturation of compounds using iodine",
           "outcomeId": 3009,
           "outcomeTopicId": 3029
+        },
+        {
+          "id": 3084,
+          "description": "volumetric analysis, including calculations of excess and limiting reactants using redox titrations (excluding back titrations)",
+          "outcomeId": 3009,
+          "outcomeTopicId": 3031
         },
         {
           "id": 3136,
