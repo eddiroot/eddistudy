@@ -33,13 +33,8 @@ export const module = pgTable('module', {
     outcomeIds: jsonb('outcome_ids').$type<number[]>().default([]),
     keyKnowledgeIds: jsonb('key_knowledge_ids').$type<number[]>().default([]),
     keySkillIds: jsonb('key_skill_ids').$type<number[]>().default([]),
-    curriculumLearningActivityIds: jsonb('curriculum_learning_activity_ids').$type<number[]>().default([]),
-    sampleAssessmentTaskIds: jsonb('sample_assessment_task_ids').$type<number[]>().default([]),
-
     // Module metadata
-    estimatedMinutes: integer('estimated_minutes').default(30),
     orderIndex: integer('order_index').notNull().default(0),
-    
     isPublished: boolean('is_published').default(false),
     ...timestamps
 });
@@ -52,16 +47,10 @@ export const moduleSubSection = pgTable('module_sub_section', {
         .references(() => module.id),
     title: text('title').notNull(), // topic name
     description: text('description'),
+    focus: text('focus'),
     orderIndex: integer('order_index').notNull(),
-    
-    // Specific curriculum connections for this subsection
-    learningAreaIds: jsonb('learning_area_ids').$type<number[]>().default([]),
     keyKnowledgeIds: jsonb('key_knowledge_ids').$type<number[]>().default([]),
     keySkillIds: jsonb('key_skill_ids').$type<number[]>().default([]),
-    curriculumLearningActivityIds: jsonb('curriculum_learning_activity_ids').$type<number[]>().default([]),
-    sampleAssessmentTaskIds: jsonb('sample_assessment_task_ids').$type<number[]>().default([]),
-
-    // Generated content
     ...timestamps
 });
 
@@ -77,22 +66,18 @@ export const moduleTaskBlock = pgTable('module_task_block', {
     orderIndex: integer('order_index').notNull(),
     
     // Hints for progressive disclosure
-    hints: jsonb('hints').$type<string[]>().default([]),
+    hints: text('hints').$type<string[]>().default([]),
+    steps: text('steps').$type<string[]>().default([]),
     ...timestamps
 });
 
 // Module question pool
 export const moduleQuestion = pgTable('module_question', {
     id: serial('id').primaryKey(),
-    moduleId: integer('module_id')
+    moduleTaskBlockId: integer('module_task_block_id')
         .notNull()
-        .references(() => module.id),
-    subSectionId: integer('sub_section_id')
-        .references(() => moduleSubSection.id),
-    taskBlockId: integer('task_block_id')
-        .notNull()
-        .references(() => table.taskBlock.id),
-    
+        .references(() => table.moduleTaskBlock.id),
+
     difficulty: difficultyLevelEnum('difficulty').notNull().default('intermediate'),
     
     // Metadata for agent selection
@@ -113,12 +98,10 @@ export const moduleSession = pgTable('module_session', {
         .notNull()
         .references(() => module.id),
     sessionType: varchar('session_type', { length: 10 }).notNull(), // 'teach' or 'train'
-    
     // Current position
     currentSubSectionId: integer('current_sub_section_id')
         .references(() => moduleSubSection.id),
     currentTaskIndex: integer('current_task_index').default(0),
-    
     // Session state (temporary storage)
     agentMemory: jsonb('agent_memory').$type<{
         recentResponses: number[]; // IDs of moduleResponse records
@@ -153,7 +136,6 @@ export const moduleResponse = pgTable('module_response', {
     response: jsonb('response').notNull(),
     evaluation: evaluationResultEnum('evaluation'),
     score: real('score'), // 0-1 normalized score
-    
     ...timestamps
 });
 

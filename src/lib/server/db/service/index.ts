@@ -24,3 +24,6 @@ export * from './resource.js';
 
 // Curriculum
 export * from './curriculum.js';
+
+// Module
+export * from './module.js';

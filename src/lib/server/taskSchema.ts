@@ -362,6 +362,24 @@ export const taskComponentSchemaMap = {
 	'video': videoComponent
 };
 
+// Interactive components only (for module generation)
+export const interactiveTaskComponents = [
+	multipleChoiceComponent,
+	fillInBlankComponent,
+	shortAnswerComponent,
+	matchingComponent,
+	mathInputComponent
+];
+
+// Map interactive block types to their corresponding schemas
+export const interactiveComponentSchemaMap = {
+	'multipleChoice': multipleChoiceComponent,
+	'fillInBlank': fillInBlankComponent,
+	'shortAnswer': shortAnswerComponent,
+	'matching': matchingComponent,
+	'mathInput': mathInputComponent
+};
+
 export const taskLayoutItems = [
 	{
 		type: 'object',

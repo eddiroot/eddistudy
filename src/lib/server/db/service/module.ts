@@ -3,147 +3,174 @@ import * as table from '$lib/server/db/schema';
 import { db } from '$lib/server/db';
 import { eq, and, inArray, isNull, isNotNull, lt } from 'drizzle-orm';
 import { geminiCompletion } from '$lib/server/ai';
-import {
-    paragraphComponent,
-    taskComponentSchemaMap
-} from '$lib/server/taskSchema';
-
-// Import curriculum service functions
-import {
-    getLearningActivitiesByLearningArea,
-    getSampleAssessmentsByLearningArea
-} from './curriculum';
 import { createTaskBlock, createAnswer, createCriteria, createBlockFromComponent } from './task';
+import { formatCompleteCurriculumContext, formatExamQuestionsByContext, formatSampleAssessmentsByContext, formatSubSectionContext } from './curriculum';
+import { interactiveTaskComponents } from '$lib/server/taskSchema';
 
-/**
- * Generate a complete Teach Me module from curriculum data
- */
+
+// Update the main generation function to store IDs instead of text
 export async function generateTeachMeModule(
     curriculumSubjectId: number,
     title: string,
+    description: string,
     learningAreaIds: number[],
     outcomeIds: number[],
     keyKnowledgeIds: number[],
     keySkillIds: number[],
-    curriculumLearningActivityIds: number[],
-    sampleAssessmentTaskIds: number[]
+    amount?: number,
 ) {
-    // Create the module
-    const [module] = await db
-        .insert(table.module)
-        .values({
-            curriculumSubjectId,
-            title,
-            learningAreaIds,
-            outcomeIds,
-            keyKnowledgeIds,
-            keySkillIds,
-            curriculumLearningActivityIds,
-            sampleAssessmentTaskIds
-        })
-        .returning();
-
-    // Gather all curriculum context
-    const context = await gatherCurriculumContext(
+    // Phase 1: Generate module structure using formatted context
+    const moduleStructure = await generateModuleStructure(
+        title,
+        description,
         learningAreaIds,
         outcomeIds,
         keyKnowledgeIds,
         keySkillIds
     );
+    
+    // Create module record - store only IDs, not text
+    const [module] = await db
+        .insert(table.module)
+        .values({
+            curriculumSubjectId,
+            title,
+            description: moduleStructure.overallDescription,
+            learningAreaIds,
+            outcomeIds,
+            keyKnowledgeIds,
+            keySkillIds,
+        })
+        .returning();
+    
+    // Phase 2 & 3: Generate content for each section
+    for (const sectionDef of moduleStructure.sections) {
+        // Create subsection - store only IDs
+        const [subSection] = await db
+            .insert(table.moduleSubSection)
+            .values({
+                moduleId: module.id,
+                title: sectionDef.title,
+                description: sectionDef.description,
+                orderIndex: sectionDef.orderIndex,
+                keyKnowledgeIds: sectionDef.relatedKnowledgeIds,
+                keySkillIds: sectionDef.relatedSkillIds,
+                focus: sectionDef.focus
+            })
+            .returning();
 
-    // Determine if we need subsections
-    const subSkills = await identifySubSkills(context, title);
-
-    // Generate complete module content with all subsections
-    const moduleContent = await generateCompleteModuleContent(
-        title,
-        subSkills,
-        context
-    );
-
-    // Create subsections and their task blocks
-    for (const sectionContent of moduleContent.sections) {
-        await createSubSectionWithContent(
-            module.id,
-            sectionContent,
-            context
+        // Generate learning content with ID references
+        const learningContent = await generateSectionLearningContent(
+            sectionDef,
+            amount
         );
-    }
 
+        let precedingContent = ''
+        let orderIndex = 0;
+        // Create learning content blocks
+        for (const block of learningContent.contentBlocks) {
+            precedingContent += block.content;
+            await createTaskBlock(
+                subSection.id,
+                table.taskBlockTypeEnum[block.type as keyof typeof table.taskBlockTypeEnum],
+                block.content,
+                block.orderIndex
+            );
+            await db.insert(table.moduleTaskBlock).values({
+                subSectionId: subSection.id,
+                taskBlockId: block.id,
+                orderIndex: block.orderIndex
+            });
+            orderIndex++;
+        }
+        // 
+        
+        // Generate interactive components
+        const interactiveComponents = await generateInteractiveComponents(
+            sectionDef,
+            precedingContent,
+            amount
+        );
+        
+        // Create interactive blocks and module questions
+        for (const component of interactiveComponents.interactiveBlocks) {
+            const taskBlock = await createBlockFromComponent(component, subSection.id);
+            
+            if (taskBlock) {
+                // Create answer
+                if (component.answer) {
+                    await createAnswer(taskBlock.id, component.answer, component.marks);
+                }
+                
+                // Create criteria
+                if (component.criteria) {
+                    for (const criterion of component.criteria) {
+                        await createCriteria(taskBlock.id, criterion.description, criterion.marks);
+                    }
+                }
+                const [moduleTaskBlock] = await db.insert(table.moduleTaskBlock).values({
+                    subSectionId: subSection.id,
+                    taskBlockId: taskBlock.id,
+                    orderIndex: orderIndex + component.orderIndex,
+                    hints: component.hints,
+                    steps: component.steps
+                })
+                .returning();
+
+                // Create module question
+                await db.insert(table.moduleQuestion).values({
+                    moduleTaskBlockId: moduleTaskBlock.id,
+                    difficulty: component.difficulty,
+                });
+            }
+        }
+    }
+    
     return module;
 }
 
 /**
- * Identify sub-skills within a module using AI
+ * Phase 1: Generate module structure and identify sub-skills
  */
-async function identifySubSkills(context: any, moduleTitle: string) {
-    const prompt = `
-        Analyze this curriculum content for the module "${moduleTitle}" and identify if there are distinct sub-skills that should be taught separately.
-        
-        Context:
-        ${JSON.stringify(context, null, 2)}
-        
-        If there are clear sub-skills (e.g., for language analysis: quote extraction, integration with response), 
-        return them as separate sections. Otherwise, return a single section.
-        
-        Consider the logical learning progression and group related concepts together.
-    `;
-
-    const response = await geminiCompletion(prompt, undefined, {
-        type: 'array',
-        items: {
-            type: 'object',
-            properties: {
-                title: { type: 'string' },
-                description: { type: 'string' },
-                keyKnowledgeIds: { type: 'array', items: { type: 'number' } },
-                keySkillIds: { type: 'array', items: { type: 'number' } },
-                learningAreaIds: { type: 'array', items: { type: 'number' } },
-                curriculumLearningActivityIds: { type: 'array', items: { type: 'number' } },
-                sampleAssessmentTaskIds: { type: 'array', items: { type: 'number' } }
-            }
-        }
-    });
-
-    return JSON.parse(response); // sub skills 
-}
-
-/**
- * Generate complete module content structure
- */
-async function generateCompleteModuleContent(
+async function generateModuleStructure(
     moduleTitle: string,
-    subSkills: any[], // name description with ids 
-    context: any // full context from the curriculum
+    moduleDescription: string,
+    learningAreaIds: number[],
+    outcomeIds: number[],
+    keyKnowledgeIds: number[],
+    keySkillIds: number[]
 ) {
+    // Format context using IDs
+    const formattedContext = await formatCompleteCurriculumContext({
+        learningAreaIds,
+        outcomeIds,
+        keyKnowledgeIds,
+        keySkillIds
+    });
+    
     const prompt = `
-    Generate a complete teaching module for "${moduleTitle}" with the following subsections:
-    ${JSON.stringify(subSkills, null, 2)}
-
-    Context from curriculum:
-    ${JSON.stringify(context, null, 2)}
-
-    Create a coherent learning progression across all sections. For each section, generate:
-    1. Learning content (explanatory task blocks)
-    2. Interactive exercises (quiz task blocks)
+    Analyze this curriculum content for module "${moduleTitle}":
+    Description: ${moduleDescription}
     
-    Structure the content as task blocks following the schema. Include:
-    - Headers (h1, h2, h3) for organization
-    - Paragraphs for explanations
-    - Images where relevant (provide descriptive placeholders)
-    - Interactive components: multiple_choice, fill_in_blank, short_answer, matching
+    ${formattedContext}
     
-    For each interactive component, include:
-    - The question/prompt
-    - Difficulty level (beginner, intermediate, advanced)
+    First, generate an overall comprehensive description that summarizes the module's learning objectives, key concepts, and educational goals based on the provided curriculum content.
     
-    Ensure logical flow and increasing complexity throughout the module.
-    Return JSON matching the task block schema.
+    Then identify distinct sub-skills that should be taught separately.
+    Consider logical learning progression and group related concepts.
+    Return subsections with their focus areas.
+    Map each subsection to the relevant ID numbers from the provided context.
+    
+    The overall description should provide a clear overview of what students will learn and achieve through this module.
     `;
 
     const schema = {
         type: 'object',
         properties: {
+            overallDescription: { 
+                type: 'string',
+                description: 'A comprehensive description of the module based on the curriculum content and learning objectives'
+            },
             sections: {
                 type: 'array',
                 items: {
@@ -151,31 +178,65 @@ async function generateCompleteModuleContent(
                     properties: {
                         title: { type: 'string' },
                         description: { type: 'string' },
+                        focus: { type: 'string', enum: ['conceptual', 'practical', 'analytical'] },
                         orderIndex: { type: 'number' },
-                        subSkillIds: {
+                        learningAreaIds: { type: 'array', items: { type: 'number' } },
+                        outcomeIds: { type: 'array', items: { type: 'number' } },
+                        relatedKnowledgeIds: { type: 'array', items: { type: 'number' } },
+                        relatedSkillIds: { type: 'array', items: { type: 'number' } }
+                    }
+                }
+            }
+        }
+    };
+
+    const response = await geminiCompletion(prompt, undefined, schema);
+    return JSON.parse(response);
+}
+
+/**
+ * Phase 2: Generate learning content for each section
+ */
+async function generateSectionLearningContent(
+    section: any,
+    amount?: number
+) {
+    // Format only the relevant context for this section
+    const sectionContext = await formatSubSectionContext({
+        keyKnowledgeIds: section.relatedKnowledgeIds,
+        keySkillIds: section.relatedSkillIds,
+        learningAreaIds: section.learningAreaIds,
+        outcomeIds: section.outcomeIds
+    }, amount);
+
+    const prompt = `
+    Generate learning content for section "${section.title}":
+    ${section.description}
+    
+    ${sectionContext}
+    
+    Create explanatory content blocks (headers, paragraphs).
+    Focus on clear explanations and examples.
+    Reference content by ID when creating examples.
+    `;
+
+    const schema = {
+        type: 'object',
+        properties: {
+            contentBlocks: {
+                type: 'array',
+                items: {
+                    type: 'object',
+                    properties: {
+                        type: { type: 'string', enum: ['h1', 'h2', 'h3', 'paragraph'] },
+                        content: { type: 'string' },
+                        orderIndex: { type: 'number' },
+                        referencedIds: {
                             type: 'object',
                             properties: {
                                 keyKnowledgeIds: { type: 'array', items: { type: 'number' } },
                                 keySkillIds: { type: 'array', items: { type: 'number' } },
-                                learningAreaIds: { type: 'array', items: { type: 'number' } },
-                                curriculumLearningActivityIds: { type: 'array', items: { type: 'number' } },
-                                sampleAssessmentTaskIds: { type: 'array', items: { type: 'number' } }
-                            }
-                        },
-                        taskBlocks: {
-                            type: 'array',
-                            items: {
-                                type: 'object',
-                                properties: {
-                                    type: { 
-                                        type: 'string', 
-                                        enum: ['h1', 'h2', 'h3', 'paragraph', 'multipleChoice', 
-                                               'fillInBlank', 'shortAnswer', 'matching', 'image']
-                                    },
-                                    content: { type: 'string' },
-                                    isInteractive: { type: 'boolean' },
-                                    difficulty: { type: 'string' },
-                                }
+                                activityIds: { type: 'array', items: { type: 'number' } }
                             }
                         }
                     }
@@ -189,171 +250,77 @@ async function generateCompleteModuleContent(
 }
 
 /**
- * Create a subsection with its complete content
+ * Phase 3: Generate interactive components with assessment context
  */
-async function createSubSectionWithContent(
-    moduleId: number,
-    sectionContent: any,
-    globalContext: any
+async function generateInteractiveComponents(
+    section: any,
+    precedingContent: string,
+    amount?: number
 ) {
-    // Create the subsection
-    const [subSection] = await db
-        .insert(table.moduleSubSection)
-        .values({
-            moduleId,
-            title: sectionContent.title,
-            description: sectionContent.description,
-            orderIndex: sectionContent.orderIndex,
-            learningAreaIds: sectionContent.subSkillIds.learningAreaIds,
-            keyKnowledgeIds: sectionContent.subSkillIds.keyKnowledgeIds,
-            keySkillIds: sectionContent.subSkillIds.keySkillIds,
-            curriculumLearningActivityIds: sectionContent.subSkillIds.curriculumLearningActivityIds,
-            sampleAssessmentTaskIds: sectionContent.subSkillIds.sampleAssessmentTaskIds
-        })
-        .returning();
-
-    // Process task blocks
-    const learningContent = [];
-    const interactiveBlocks = [];
-
-    for (let i = 0; i < sectionContent.taskBlocks.length; i++) {
-        const block = sectionContent.taskBlocks[i];
-        // Add a type assertion for block.type
-        type TaskBlockTypeEnumKey = keyof typeof table.taskBlockTypeEnum;
-        const blockType = block.type as TaskBlockTypeEnumKey;
-        
-        if (block.isInteractive) {
-            // Store for later processing with context
-            interactiveBlocks.push({
-                ...block,
-                orderIndex: i,
-                precedingContent: learningContent.slice(-3) // Keep last 3 learning blocks for context
-            });
-        } else {
-            // Create content task block immediately or we could feed all content task block schemas to create the content blocks
-            // function for making the content 
-            // create a task block, create a teach me task block 
-            const taskBlock = await createTaskBlock(
-                subSection.id,
-                table.taskBlockTypeEnum[blockType],
-                block.content,
-                i
-            );
-            learningContent.push({ ...block, id: taskBlock.id });
-        }
-    }
-
-    // Generate answers, criteria, and hints for interactive blocks
-    for (const interactiveBlock of interactiveBlocks) {
-        await createInteractiveTaskBlock(
-            subSection.id,
-            interactiveBlock,
-            learningContent,
-            globalContext // might not be necessary
-        );
-    }
-
-    return subSection;
-}
-
-/**
- * Create an interactive task block with answers, criteria, and hints
- */
-async function createInteractiveTaskBlock(
-    subSectionId: number,
-    blockData: any,
-    precedingContent: any[],
-    globalContext: any
-) {
-
-    // generate block with answers and criteria 
-    const response = await generateInteractiveBlock(blockData, precedingContent, globalContext);
-
-    const createdBlock = await createBlockFromComponent(response.taskBlock, subSectionId);
-    if (createdBlock){
-        if (response.taskBlock.answer) {
-            await createAnswer(createdBlock.id, response.taskBlock.answer, response.taskBlock.marks);
-        }
-        if (response.taskBlock.criteria) {
-            for (const criterion of response.taskBlock.criteria) {
-                await createCriteria(createdBlock.id, criterion.description, criterion.marks);
-            }
-        }
+    // Format assessment and exam context
+    const assessmentContext = await formatSampleAssessmentsByContext({
+        keyKnowledgeIds: section.relatedKnowledgeIds,
+        keySkillIds: section.relatedSkillIds,
+        amount: amount
+    });
     
-        await createModuleTaskBlock(subSectionId, createdBlock.id, response);
-    }
-
-    return createdBlock;
-}
-
-
-export async function createModuleTaskBlock(
-    subSectionId: number,
-    taskBlockId: number,
-    response: any
-) {
-    const [createdBlock] = await db
-        .insert(table.moduleTaskBlock)
-        .values({
-            subSectionId,
-            taskBlockId,
-            orderIndex: response.orderIndex,
-            hints: response.hints
-        })
-        .returning();
-
-    return createdBlock;
-}
-
-/**
- * Generate answers, criteria, and hints for a specific block
- */
-async function generateInteractiveBlock(
-    blockData: any,
-    precedingContent: any[],
-    globalContext: any
-) {
-    const selectedSchema = taskComponentSchemaMap[blockData.type as keyof typeof taskComponentSchemaMap] || paragraphComponent;
+    const examContext = await formatExamQuestionsByContext({
+        keyKnowledgeIds: section.relatedKnowledgeIds,
+        keySkillIds: section.relatedSkillIds,
+        amount: amount
+    });
 
     const prompt = `
-    Generate a complete interactive task block for teaching with the following requirements:
+    Generate interactive learning components for section "${section.title}":
     
-    Block Type: ${blockData.type}
-    Block Content Description: ${JSON.stringify(blockData.content)}
-    Difficulty: ${blockData.difficulty}
+    PRECEDING LEARNING CONTENT (for context):
+    ${precedingContent}
+
+    ${assessmentContext}
     
-    Preceding Learning Content (for context):
-    ${JSON.stringify(precedingContent.slice(-2), null, 2)}
+    ${examContext}
     
-    Curriculum Context:
-    ${JSON.stringify(globalContext, null, 2)}
-    
-    Create a complete task block that includes:
-    1. The task block content following the exact schema for ${blockData.type}
-    2. Answer(s) and marks (if applicable for interactive types)
-    3. Criteria (if applicable for assessment types like short_answer)
-    4. 3 progressive hints (from subtle to more direct)
-    
-    Ensure the content is educational, aligned with VCE standards, and appropriate for the difficulty level.
-    The hints should guide learning without giving away the answer directly.
+    Create interactive components with:
+    1. Clear questions aligned to the learning content
+    2. Appropriate difficulty progression
+    3. Detailed marking criteria based on the sample assessments
+    4. Progressive hints (3 levels)
+    5. Model answers with steps if applicable
+
+    Reference specific IDs when basing questions on existing content.
     `;
 
-    // Create schema that includes both the task block structure AND additional teaching data
-    const fullSchema = {
+    const schema = {
         type: 'object',
         properties: {
-            taskBlock: selectedSchema,
-            hints: {
+            interactiveBlocks: {
                 type: 'array',
-                items: { type: 'string' },
-                minItems: 3,
-                maxItems: 3
-            },
-        },
-        required: ['taskBlock', 'hints']
+                items: {
+                    type: 'object',
+                    properties: {
+                        taskBlock: {
+                            anyOf: interactiveTaskComponents
+                        },
+                        difficulty: { type: 'string', enum: ['beginner', 'intermediate', 'advanced'] },
+                        hints: {
+                            type: 'array',
+                            items: { type: 'string' },
+                            minItems: 3,
+                            maxItems: 3
+                        },
+                        steps: { 
+                            type: 'array', 
+                            items: { type: 'string' },
+                            description: 'Step-by-step solution approach'
+                        }
+                    },
+                    required: ['taskBlock', 'difficulty', 'hints', 'steps']
+                }
+            }
+        }
     };
 
-    const response = await geminiCompletion(prompt, undefined, fullSchema);
+    const response = await geminiCompletion(prompt, undefined, schema);
     return JSON.parse(response);
 }
 
@@ -427,20 +394,32 @@ export async function getTrainMeQuestionPool(
     moduleId: number,
     subSectionId?: number
 ) {
-    const conditions = [
-        eq(table.moduleQuestion.moduleId, moduleId),
-        eq(table.moduleQuestion.isActive, true)
-    ];
-
+    const conditions = [eq(table.moduleSubSection.moduleId, moduleId)];
+    
     if (subSectionId) {
-        conditions.push(eq(table.moduleQuestion.subSectionId, subSectionId));
+        conditions.push(eq(table.moduleSubSection.id, subSectionId));
     }
 
-    return await db
-        .select()
-        .from(table.moduleQuestion  )
-        .where(and(...conditions))
+    const results = await db
+        .select({
+            id: table.moduleQuestion.id,
+            moduleTaskBlockId: table.moduleQuestion.moduleTaskBlockId,
+            difficulty: table.moduleQuestion.difficulty,
+            conceptsTested: table.moduleQuestion.conceptsTested,
+            prerequisiteQuestionIds: table.moduleQuestion.prerequisiteQuestionIds,
+            isActive: table.moduleQuestion.isActive,
+            createdAt: table.moduleQuestion.createdAt
+        })
+        .from(table.moduleQuestion)
+        .innerJoin(table.moduleTaskBlock, eq(table.moduleQuestion.moduleTaskBlockId, table.moduleTaskBlock.id))
+        .innerJoin(table.moduleSubSection, eq(table.moduleTaskBlock.subSectionId, table.moduleSubSection.id))
+        .where(and(
+            ...conditions,
+            eq(table.moduleQuestion.isActive, true)
+        ))
         .orderBy(table.moduleQuestion.difficulty);
+    
+    return results;
 }
 
 /**
@@ -520,23 +499,19 @@ export async function gatherCurriculumContext(
     keyKnowledgeIds: number[],
     keySkillIds: number[]
 ) {
-    const [learningAreas, outcomes, keyKnowledge, keySkills, activities, assessments] = 
+    const [learningAreas, outcomes, keyKnowledge, keySkills] = 
         await Promise.all([
             db.select().from(table.learningArea).where(inArray(table.learningArea.id, learningAreaIds)),
             db.select().from(table.outcome).where(inArray(table.outcome.id, outcomeIds)),
             db.select().from(table.keyKnowledge).where(inArray(table.keyKnowledge.id, keyKnowledgeIds)),
             db.select().from(table.keySkill).where(inArray(table.keySkill.id, keySkillIds)),
-            Promise.all(learningAreaIds.map(id => getLearningActivitiesByLearningArea(id))),
-            Promise.all(learningAreaIds.map(id => getSampleAssessmentsByLearningArea(id)))
         ]);
 
     return {
         learningAreas,
         outcomes,
         keyKnowledge,
-        keySkills,
-        activities: activities.flat(),
-        assessments: assessments.flat()
+        keySkills
     };
 }
 
@@ -947,3 +922,90 @@ async function organizeContentByTopics(topics: any[], content: {
     return organizedTopics;
 }
 
+/**
+ * Formatting Data for prompt injection based on IDs
+ */
+
+export function formatCurriculumContext(data: any) {
+    const sections = [];
+    
+    if (data.learningAreas?.length) {
+        sections.push(`## LEARNING AREAS
+${data.learningAreas.map((la: any) => 
+    `### ${la.title}
+    Description: ${la.description}
+    Focus: ${la.focus || 'General'}`
+).join('\n\n')}`);
+    }
+    
+    if (data.keyKnowledge?.length) {
+        sections.push(`## KEY KNOWLEDGE
+${data.keyKnowledge.map((kk: any, idx: number) => 
+    `${idx + 1}. ${kk.description}
+    Topic: ${kk.outcomeTopicId ? `Topic ${kk.outcomeTopicId}` : 'General'}
+    Importance: ${kk.importance || 'Standard'}`
+).join('\n')}`);
+    }
+    
+    if (data.keySkills?.length) {
+        sections.push(`## KEY SKILLS
+${data.keySkills.map((ks: any, idx: number) => 
+    `${idx + 1}. ${ks.description}
+    Type: ${ks.skillType || 'General'}
+    Level: ${ks.level || 'Standard'}`
+).join('\n')}`);
+    }
+    
+    if (data.sampleAssessments?.length) {
+        sections.push(`## SAMPLE ASSESSMENTS
+${data.sampleAssessments.map((sa: any) => 
+    `### ${sa.title}
+    Type: ${sa.assessmentType}
+    Description: ${sa.description}
+    Marks: ${sa.totalMarks || 'Not specified'}`
+).join('\n\n')}`);
+    }
+    
+    if (data.rubrics?.length) {
+        sections.push(`## ASSESSMENT CRITERIA
+${data.rubrics.map((r: any) => 
+    `### ${r.title}
+    ${r.criteria.map((c: any) => `- ${c.description}: ${c.marks} marks`).join('\n')}`
+).join('\n\n')}`);
+    }
+    
+    return sections.join('\n\n---\n\n');
+}
+
+/**
+ * Format section-specific context for the teach agent
+ */
+export function formatSectionContext(section: any, moduleContext: any) {
+    return {
+        sectionOverview: {
+            title: section.title,
+            description: section.description,
+            learningObjectives: section.learningObjectives || [],
+            prerequisites: section.prerequisites || []
+        },
+        keyConceptsToTeach: moduleContext.keyKnowledge
+            .filter((k: any) => section.keyKnowledgeIds?.includes(k.id))
+            .map((k: any) => ({
+                concept: k.description,
+                importance: k.importance || 'standard',
+                examples: k.examples || []
+            })),
+        skillsToDevelop: moduleContext.keySkills
+            .filter((s: any) => section.keySkillIds?.includes(s.id))
+            .map((s: any) => ({
+                skill: s.description,
+                level: s.level || 'standard',
+                practiceActivities: s.activities || []
+            })),
+        assessmentGuidelines: {
+            criteria: section.criteria || [],
+            totalMarks: section.totalMarks || 0,
+            passingScore: section.passingScore || 0.5
+        }
+    };
+}

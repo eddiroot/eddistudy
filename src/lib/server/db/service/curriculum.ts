@@ -54,7 +54,7 @@ export async function getSubjectsByCurriculum(curriculumId: number) {
 /**
  * Get subject by ID with curriculum info
  */
-export async function getSubjectById(subjectId: number) {
+export async function getCurriculumSubjectById(subjectId: number) {
 	const [result] = await db
 		.select({
 			subject: table.curriculumSubject,
@@ -295,6 +295,46 @@ export async function getKeySkillsByOutcome(outcomeId: number) {
 			)
 		)
 		.orderBy(table.keySkill.number);
+}
+
+/**
+ * Get all key knowledge IDs by outcome IDs
+ */
+export async function getAllKeyKnowledgeByOutcomeIds(outcomeIds: number[]): Promise<number[]> {
+	if (!outcomeIds.length) return [];
+	
+	const results = await db
+		.select({ id: table.keyKnowledge.id })
+		.from(table.keyKnowledge)
+		.where(
+			and(
+				inArray(table.keyKnowledge.outcomeId, outcomeIds),
+				eq(table.keyKnowledge.isArchived, false)
+			)
+		)
+		.orderBy(table.keyKnowledge.number);
+	
+	return results.map(result => result.id);
+}
+
+/**
+ * Get all key skill IDs by outcome IDs
+ */
+export async function getAllKeySkillsByOutcomeIds(outcomeIds: number[]): Promise<number[]> {
+	if (!outcomeIds.length) return [];
+	
+	const results = await db
+		.select({ id: table.keySkill.id })
+		.from(table.keySkill)
+		.where(
+			and(
+				inArray(table.keySkill.outcomeId, outcomeIds),
+				eq(table.keySkill.isArchived, false)
+			)
+		)
+		.orderBy(table.keySkill.number);
+	
+	return results.map(result => result.id);
 }
 
 /**
@@ -938,7 +978,7 @@ export async function getDetailedExampleById(exampleId: number) {
  * Get complete curriculum structure for a subject
  */
 export async function getCompleteSubjectStructure(curriculumSubjectId: number) {
-	const subject = await getSubjectById(curriculumSubjectId);
+	const subject = await getCurriculumSubjectById(curriculumSubjectId);
 	if (!subject) return null;
 
 	const learningAreas = await getLearningAreasBySubject(curriculumSubjectId);
@@ -1131,4 +1171,603 @@ export async function getCurriculumStatistics(curriculumSubjectId: number) {
 		sampleAssessments: sampleAssessmentsCount.length,
 		detailedExamples: detailedExamplesCount.length
 	};
+}
+
+
+// Formatting data for prompt injection based on IDs
+
+/**
+ * Format learning areas by IDs
+ */
+export async function formatLearningAreasByIds(learningAreaIds: number[]) {
+    if (!learningAreaIds.length) return '';
+    
+    const learningAreas = await db
+        .select({
+            id: table.learningArea.id,
+            name: table.learningArea.name,
+            description: table.learningArea.description
+        })
+        .from(table.learningArea)
+        .where(inArray(table.learningArea.id, learningAreaIds));
+    
+    return `## LEARNING AREAS
+${learningAreas.map(la => 
+    `[ID:${la.id}] ${la.name}
+    ${la.description}`
+).join('\n\n')}`;
+}
+
+/**
+ * Format outcomes by IDs
+ */
+export async function formatOutcomesByIds(outcomeIds: number[]) {
+    if (!outcomeIds.length) return '';
+    
+    const outcomes = await db
+        .select({
+            id: table.outcome.id,
+            description: table.outcome.description
+        })
+        .from(table.outcome)
+        .where(inArray(table.outcome.id, outcomeIds));
+    
+    return `## OUTCOMES
+${outcomes.map(o => 
+    `[ID:${o.id}] ${o.description}`
+).join('\n')}`;
+}
+
+/**
+ * Format key skills by IDs
+ */
+export async function formatKeySkillsByIds(keySkillIds: number[]) {
+    if (!keySkillIds.length) return '';
+    
+    const keySkills = await db
+        .select({
+            id: table.keySkill.id,
+            description: table.keySkill.description
+        })
+        .from(table.keySkill)
+        .where(inArray(table.keySkill.id, keySkillIds));
+    
+    return `## KEY SKILLS
+${keySkills.map(ks => 
+    `[ID:${ks.id}] ${ks.description}`
+).join('\n')}`;
+}
+
+/**
+ * Format key knowledge by IDs
+ */
+export async function formatKeyKnowledgeByIds(keyKnowledgeIds: number[]) {
+    if (!keyKnowledgeIds.length) return '';
+    
+    const keyKnowledge = await db
+        .select({
+            id: table.keyKnowledge.id,
+            description: table.keyKnowledge.description
+        })
+        .from(table.keyKnowledge)
+        .where(inArray(table.keyKnowledge.id, keyKnowledgeIds));
+    
+    return `## KEY KNOWLEDGE
+${keyKnowledge.map(kk => 
+    `[ID:${kk.id}] ${kk.description}`
+).join('\n')}`;
+}
+
+/**
+ * Format outcome topics by IDs
+ */
+export async function formatOutcomeTopicsByIds(topicIds: number[]) {
+    if (!topicIds.length) return '';
+    
+    const topics = await db
+        .select({
+            id: table.outcomeTopic.id,
+            name: table.outcomeTopic.name
+        })
+        .from(table.outcomeTopic)
+        .where(inArray(table.outcomeTopic.id, topicIds));
+    
+    return `## TOPICS
+${topics.map(t => 
+    `[ID:${t.id}] ${t.name}`
+).join('\n')}`;
+}
+
+/**
+ * Format detailed examples based on various ID types
+ */
+export async function formatDetailedExamplesByContext(params: {
+    outcomeIds?: number[];
+    learningAreaIds?: number[];
+    subjectId?: number;
+    topicIds?: number[];
+    keyKnowledgeIds?: number[];
+    keySkillIds?: number[];
+    amount?: number;
+}) {
+    const exampleIds = new Set<number>();
+    
+    // Collect example IDs from all relationships in parallel
+    const queries = [];
+    
+    if (params.outcomeIds?.length) {
+        queries.push(
+            db.select({ id: table.detailedExampleOutcome.detailedExampleId })
+                .from(table.detailedExampleOutcome)
+                .where(inArray(table.detailedExampleOutcome.outcomeId, params.outcomeIds))
+        );
+    }
+    
+    if (params.learningAreaIds?.length) {
+        queries.push(
+            db.select({ id: table.detailedExampleLearningArea.detailedExampleId })
+                .from(table.detailedExampleLearningArea)
+                .where(inArray(table.detailedExampleLearningArea.learningAreaId, params.learningAreaIds))
+        );
+    }
+    
+    if (params.keyKnowledgeIds?.length) {
+        queries.push(
+            db.select({ id: table.detailedExampleKeyKnowledge.detailedExampleId })
+                .from(table.detailedExampleKeyKnowledge)
+                .where(inArray(table.detailedExampleKeyKnowledge.keyKnowledgeId, params.keyKnowledgeIds))
+        );
+    }
+    
+    if (params.keySkillIds?.length) {
+        queries.push(
+            db.select({ id: table.detailedExampleKeySkill.detailedExampleId })
+                .from(table.detailedExampleKeySkill)
+                .where(inArray(table.detailedExampleKeySkill.keySkillId, params.keySkillIds))
+        );
+    }
+    
+    if (params.subjectId) {
+        queries.push(
+            db.select({ id: table.detailedExample.id })
+                .from(table.detailedExample)
+                .where(eq(table.detailedExample.curriculumSubjectId, params.subjectId))
+        );
+    }
+    
+    // Execute all queries in parallel
+    const results = await Promise.all(queries);
+    
+    // Collect all unique IDs
+    results.forEach(result => {
+        result.forEach(item => exampleIds.add(item.id));
+    });
+    
+    if (!exampleIds.size) return '';
+    
+    let exampleIdArray = Array.from(exampleIds);
+    
+    // Randomize and limit if amount is specified
+    if (params.amount && params.amount < exampleIdArray.length) {
+        // Shuffle the array using Fisher-Yates algorithm
+        for (let i = exampleIdArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [exampleIdArray[i], exampleIdArray[j]] = [exampleIdArray[j], exampleIdArray[i]];
+        }
+        exampleIdArray = exampleIdArray.slice(0, params.amount);
+    }
+    
+    const detailedExamples = await db
+        .select({
+            id: table.detailedExample.id,
+            title: table.detailedExample.title,
+            activity: table.detailedExample.activity
+        })
+        .from(table.detailedExample)
+        .where(
+            and(
+                inArray(table.detailedExample.id, exampleIdArray),
+                eq(table.detailedExample.isArchived, false)
+            )
+        )
+        .orderBy(table.detailedExample.title);
+    
+    return `## DETAILED EXAMPLES
+${detailedExamples.map(de => 
+    `[ID:${de.id}] ${de.title}
+    Activity: ${de.activity}`
+).join('\n\n')}`;
+}
+
+/**
+ * Format curriculum learning activities based on various ID types
+ */
+export async function formatLearningActivitiesByContext(params: {
+    outcomeIds?: number[];
+    learningAreaIds?: number[];
+    subjectId?: number;
+    topicIds?: number[];
+    keyKnowledgeIds?: number[];
+    keySkillIds?: number[];
+    amount?: number;
+}) {
+    const activityIds = new Set<number>();
+    
+    // Collect activity IDs from all relationships in parallel
+    const queries = [];
+    
+    if (params.outcomeIds?.length) {
+        queries.push(
+            db.select({ id: table.learningActivityOutcome.curriculumLearningActivityId })
+                .from(table.learningActivityOutcome)
+                .where(inArray(table.learningActivityOutcome.outcomeId, params.outcomeIds))
+        );
+    }
+    
+    if (params.learningAreaIds?.length) {
+        queries.push(
+            db.select({ id: table.learningActivityLearningArea.curriculumLearningActivityId })
+                .from(table.learningActivityLearningArea)
+                .where(inArray(table.learningActivityLearningArea.learningAreaId, params.learningAreaIds))
+        );
+    }
+    
+    if (params.keyKnowledgeIds?.length) {
+        queries.push(
+            db.select({ id: table.learningActivityKeyKnowledge.curriculumLearningActivityId })
+                .from(table.learningActivityKeyKnowledge)
+                .where(inArray(table.learningActivityKeyKnowledge.keyKnowledgeId, params.keyKnowledgeIds))
+        );
+    }
+    
+    if (params.keySkillIds?.length) {
+        queries.push(
+            db.select({ id: table.learningActivityKeySkill.curriculumLearningActivityId })
+                .from(table.learningActivityKeySkill)
+                .where(inArray(table.learningActivityKeySkill.keySkillId, params.keySkillIds))
+        );
+    }
+    
+    if (params.subjectId) {
+        queries.push(
+            db.select({ id: table.curriculumLearningActivity.id })
+                .from(table.curriculumLearningActivity)
+                .where(eq(table.curriculumLearningActivity.curriculumSubjectId, params.subjectId))
+        );
+    }
+    
+    // Execute all queries in parallel
+    const results = await Promise.all(queries);
+    
+    // Collect all unique IDs
+    results.forEach(result => {
+        result.forEach(item => activityIds.add(item.id));
+    });
+    
+    if (!activityIds.size) return '';
+    
+    let activityIdArray = Array.from(activityIds);
+    
+    // Randomize and limit if amount is specified
+    if (params.amount && params.amount < activityIdArray.length) {
+        // Shuffle the array using Fisher-Yates algorithm
+        for (let i = activityIdArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [activityIdArray[i], activityIdArray[j]] = [activityIdArray[j], activityIdArray[i]];
+        }
+        activityIdArray = activityIdArray.slice(0, params.amount);
+    }
+    
+    const learningActivities = await db
+        .select({
+            id: table.curriculumLearningActivity.id,
+            activity: table.curriculumLearningActivity.activity
+        })
+        .from(table.curriculumLearningActivity)
+        .where(
+            and(
+                inArray(table.curriculumLearningActivity.id, activityIdArray),
+                eq(table.curriculumLearningActivity.isArchived, false)
+            )
+        )
+        .orderBy(table.curriculumLearningActivity.id);
+    
+    return `## LEARNING ACTIVITIES
+${learningActivities.map(la => 
+    `[ID:${la.id}] 
+    Activity: ${la.activity}`
+).join('\n\n')}`;
+}
+
+/**
+ * Format sample assessments based on various ID types
+ */
+export async function formatSampleAssessmentsByContext(params: {
+    outcomeIds?: number[];
+    learningAreaIds?: number[];
+    subjectId?: number;
+    topicIds?: number[];
+    keyKnowledgeIds?: number[];
+    keySkillIds?: number[];
+    amount?: number;
+}) {
+    const assessmentIds = new Set<number>();
+    
+    // Collect assessment IDs from all relationships in parallel
+    const queries = [];
+    
+    if (params.outcomeIds?.length) {
+        queries.push(
+            db.select({ id: table.sampleAssessmentOutcome.sampleAssessmentId })
+                .from(table.sampleAssessmentOutcome)
+                .where(inArray(table.sampleAssessmentOutcome.outcomeId, params.outcomeIds))
+        );
+    }
+    
+    if (params.learningAreaIds?.length) {
+        queries.push(
+            db.select({ id: table.sampleAssessmentLearningArea.sampleAssessmentId })
+                .from(table.sampleAssessmentLearningArea)
+                .where(inArray(table.sampleAssessmentLearningArea.learningAreaId, params.learningAreaIds))
+        );
+    }
+    
+    if (params.keyKnowledgeIds?.length) {
+        queries.push(
+            db.select({ id: table.sampleAssessmentKeyKnowledge.sampleAssessmentId })
+                .from(table.sampleAssessmentKeyKnowledge)
+                .where(inArray(table.sampleAssessmentKeyKnowledge.keyKnowledgeId, params.keyKnowledgeIds))
+        );
+    }
+    
+    if (params.keySkillIds?.length) {
+        queries.push(
+            db.select({ id: table.sampleAssessmentKeySkill.sampleAssessmentId })
+                .from(table.sampleAssessmentKeySkill)
+                .where(inArray(table.sampleAssessmentKeySkill.keySkillId, params.keySkillIds))
+        );
+    }
+    
+    if (params.subjectId) {
+        queries.push(
+            db.select({ id: table.sampleAssessment.id })
+                .from(table.sampleAssessment)
+                .where(eq(table.sampleAssessment.curriculumSubjectId, params.subjectId))
+        );
+    }
+    
+    // Execute all queries in parallel
+    const results = await Promise.all(queries);
+    
+    // Collect all unique IDs
+    results.forEach(result => {
+        result.forEach(item => assessmentIds.add(item.id));
+    });
+    
+    if (!assessmentIds.size) return '';
+    
+    let assessmentIdArray = Array.from(assessmentIds);
+    
+    // Randomize and limit if amount is specified
+    if (params.amount && params.amount < assessmentIdArray.length) {
+        // Shuffle the array using Fisher-Yates algorithm
+        for (let i = assessmentIdArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [assessmentIdArray[i], assessmentIdArray[j]] = [assessmentIdArray[j], assessmentIdArray[i]];
+        }
+        assessmentIdArray = assessmentIdArray.slice(0, params.amount);
+    }
+    
+    const sampleAssessments = await db
+        .select({
+            id: table.sampleAssessment.id,
+            title: table.sampleAssessment.title,
+            task: table.sampleAssessment.task,
+            description: table.sampleAssessment.description,
+        })
+        .from(table.sampleAssessment)
+        .where(
+            and(
+                inArray(table.sampleAssessment.id, assessmentIdArray),
+                eq(table.sampleAssessment.isArchived, false)
+            )
+        )
+        .orderBy(table.sampleAssessment.title);
+    
+    return `## SAMPLE ASSESSMENTS
+${sampleAssessments.map(sa => 
+    `[ID:${sa.id}] ${sa.title}
+    Task: ${sa.task}
+    Description: ${sa.description}`
+).join('\n\n')}`;
+}
+
+/**
+ * Format exam questions based on various ID types
+ */
+export async function formatExamQuestionsByContext(params: {
+    outcomeIds?: number[];
+    learningAreaIds?: number[];
+    subjectId?: number;
+    topicIds?: number[];
+    keyKnowledgeIds?: number[];
+    keySkillIds?: number[];
+    amount?: number;
+}) {
+    const questionIds = new Set<number>();
+    
+    // Collect question IDs from direct relationships in parallel
+    const queries = [];
+    
+    if (params.learningAreaIds?.length) {
+        queries.push(
+            db.select({ id: table.examContent.id })
+                .from(table.examContent)
+                .where(inArray(table.examContent.learningAreaId, params.learningAreaIds))
+        );
+    }
+    
+    if (params.topicIds?.length) {
+        queries.push(
+            db.select({ id: table.examContent.id })
+                .from(table.examContent)
+                .where(inArray(table.examContent.outcomeTopicId, params.topicIds))
+        );
+    }
+    
+    if (params.subjectId) {
+        queries.push(
+            db.select({ id: table.examContent.id })
+                .from(table.examContent)
+                .where(eq(table.examContent.curriculumSubjectId, params.subjectId))
+        );
+    }
+    
+    // Execute all queries in parallel
+    const results = await Promise.all(queries);
+    
+    // Collect all unique IDs (Set prevents duplicates)
+    results.forEach(result => {
+        result.forEach(item => questionIds.add(item.id));
+    });
+    
+    if (!questionIds.size) return '';
+    
+    let questionIdArray = Array.from(questionIds);
+    
+    // Randomize and limit if amount is specified
+    if (params.amount && params.amount < questionIdArray.length) {
+        // Shuffle the array using Fisher-Yates algorithm
+        for (let i = questionIdArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [questionIdArray[i], questionIdArray[j]] = [questionIdArray[j], questionIdArray[i]];
+        }
+        questionIdArray = questionIdArray.slice(0, params.amount);
+    }
+    
+    const examQuestions = await db
+        .select({
+            id: table.examContent.id,
+            question: table.examContent.question,
+            answer: table.examContent.answer,
+            sampleResponse: table.examContent.sampleResponse
+        })
+        .from(table.examContent)
+        .where(
+            and(
+                inArray(table.examContent.id, questionIdArray),
+                eq(table.examContent.isArchived, false)
+            )
+        )
+        .orderBy(table.examContent.id);
+
+    return `## EXAM QUESTIONS
+${examQuestions.map(eq => 
+    `[ID:${eq.id}]
+    Question: ${eq.question}
+    Answer: ${eq.answer || 'Not provided'}
+    Sample Response: ${eq.sampleResponse || 'Not provided'}`
+).join('\n\n')}`;
+}
+
+/**
+ * Comprehensive curriculum context formatter
+ * Combines all formatting functions based on provided IDs
+ */
+export async function formatCompleteCurriculumContext(params: {
+    learningAreaIds?: number[];
+    outcomeIds?: number[];
+    keySkillIds?: number[];
+    keyKnowledgeIds?: number[];
+    topicIds?: number[];
+    subjectId?: number;
+}) {
+    const sections = [];
+    
+    // Format basic curriculum elements
+    if (params.learningAreaIds?.length) {
+        sections.push(await formatLearningAreasByIds(params.learningAreaIds));
+    }
+    
+    if (params.outcomeIds?.length) {
+        sections.push(await formatOutcomesByIds(params.outcomeIds));
+    }
+    
+    if (params.keySkillIds?.length) {
+        sections.push(await formatKeySkillsByIds(params.keySkillIds));
+    }
+    
+    if (params.keyKnowledgeIds?.length) {
+        sections.push(await formatKeyKnowledgeByIds(params.keyKnowledgeIds));
+    }
+    
+    if (params.topicIds?.length) {
+        sections.push(await formatOutcomeTopicsByIds(params.topicIds));
+    }
+
+	if (!params.keySkillIds?.length || !params.keyKnowledgeIds?.length) {
+		sections.push(await formatKeySkillsByIds(await getAllKeySkillsByOutcomeIds(params.outcomeIds ?? [])));
+		sections.push(await formatKeyKnowledgeByIds(await getAllKeyKnowledgeByOutcomeIds(params.outcomeIds ?? [])));
+	}
+		
+
+    // // Format related content
+    // const contextParams = {
+    //     outcomeIds: params.outcomeIds,
+    //     learningAreaIds: params.learningAreaIds,
+    //     subjectId: params.subjectId,
+    //     topicIds: params.topicIds,
+    //     keyKnowledgeIds: params.keyKnowledgeIds,
+    //     keySkillIds: params.keySkillIds
+    // };
+    
+    // sections.push(await formatDetailedExamplesByContext(contextParams));
+    // sections.push(await formatLearningActivitiesByContext(contextParams));
+    // sections.push(await formatSampleAssessmentsByContext(contextParams));
+    // sections.push(await formatExamQuestionsByContext(contextParams));
+    
+    return sections.filter(s => s).join('\n\n---\n\n');
+}
+
+/**
+ * Format context for a specific module subsection
+ * Uses the IDs stored in the subsection to retrieve and format relevant data
+ */
+export async function formatSubSectionContext(subSection: {
+	learningAreaIds?: number[];
+	outcomeIds?: number[];
+    keyKnowledgeIds?: number[];
+    keySkillIds?: number[];
+}, amount?: number) {
+    const sections = [];
+    
+    // Format key knowledge and skills for this subsection
+    if (subSection.keyKnowledgeIds?.length) {
+        sections.push(await formatKeyKnowledgeByIds(subSection.keyKnowledgeIds));
+    }
+    
+    if (subSection.keySkillIds?.length) {
+        sections.push(await formatKeySkillsByIds(subSection.keySkillIds));
+    }
+    if (subSection.learningAreaIds?.length || subSection.outcomeIds?.length || subSection.keyKnowledgeIds?.length || subSection.keySkillIds?.length) {
+        sections.push(await formatLearningActivitiesByContext({
+            learningAreaIds: subSection.learningAreaIds,
+            outcomeIds: subSection.outcomeIds,
+            keyKnowledgeIds: subSection.keyKnowledgeIds,
+            keySkillIds: subSection.keySkillIds,
+            amount: amount
+        }));
+    }
+
+	if (subSection.learningAreaIds?.length || subSection.outcomeIds?.length || subSection.keyKnowledgeIds?.length || subSection.keySkillIds?.length) {
+        sections.push(await formatDetailedExamplesByContext({
+            learningAreaIds: subSection.learningAreaIds,
+            outcomeIds: subSection.outcomeIds,
+            keyKnowledgeIds: subSection.keyKnowledgeIds,
+            keySkillIds: subSection.keySkillIds,
+            amount: amount
+        }));
+    }
+
+    return sections.filter(s => s).join('\n\n---\n\n');
 }
