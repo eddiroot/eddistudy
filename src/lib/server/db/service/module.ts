@@ -3,7 +3,7 @@ import * as table from '$lib/server/db/schema';
 import { db } from '$lib/server/db';
 import { eq, and, inArray, isNull, isNotNull, lt } from 'drizzle-orm';
 import { geminiCompletion } from '$lib/server/ai';
-import { createTaskBlock, createAnswer, createCriteria, createBlockFromComponent } from './task';
+import { createTaskBlock, createAnswer, createCriteria, createBlockFromComponent, createTaskWithId } from './task';
 import { formatCompleteCurriculumContext, formatExamQuestionsByContext, formatSampleAssessmentsByContext, formatSubSectionContext } from './curriculum';
 import { interactiveTaskComponents } from '$lib/server/taskSchema';
 
@@ -19,6 +19,7 @@ export async function generateTeachMeModule(
     keySkillIds: number[],
     amount?: number,
 ) {
+    console.log('📝 Phase 1: Generating module structure...');
     // Phase 1: Generate module structure using formatted context
     const moduleStructure = await generateModuleStructure(
         title,
@@ -28,6 +29,9 @@ export async function generateTeachMeModule(
         keyKnowledgeIds,
         keySkillIds
     );
+    
+    console.log(`✅ Generated structure with ${moduleStructure.sections.length} sections`);
+    console.log('💾 Creating module record...');
     
     // Create module record - store only IDs, not text
     const [module] = await db
@@ -43,8 +47,15 @@ export async function generateTeachMeModule(
         })
         .returning();
     
+    console.log(`✅ Created module with ID: ${module.id}`);
+    console.log('📚 Phase 2 & 3: Generating content for each section...');
+    
     // Phase 2 & 3: Generate content for each section
+    let sectionCount = 0;
     for (const sectionDef of moduleStructure.sections) {
+        sectionCount++;
+        console.log(`   📖 Processing section ${sectionCount}/${moduleStructure.sections.length}: "${sectionDef.title}"`);
+        
         // Create subsection - store only IDs
         const [subSection] = await db
             .insert(table.moduleSubSection)
@@ -59,31 +70,51 @@ export async function generateTeachMeModule(
             })
             .returning();
 
+        console.log(`   ✅ Created subsection with ID: ${subSection.id}`);
+        
+        // Create a task with the same ID as the subsection for task blocks
+        console.log('   📝 Creating task for subsection...');
+        const task = await createTaskWithId();
+        console.log(`   ✅ Created task with ID: ${task.id}`);
+        
+        console.log('   🔍 Generating learning content...');
+
+        
         // Generate learning content with ID references
         const learningContent = await generateSectionLearningContent(
             sectionDef,
             amount
         );
 
+        console.log(`   📝 Generated ${learningContent.contentBlocks.length} content blocks`);
+
         let precedingContent = ''
         let orderIndex = 0;
         // Create learning content blocks
         for (const block of learningContent.contentBlocks) {
             precedingContent += block.content;
-            await createTaskBlock(
-                subSection.id,
-                table.taskBlockTypeEnum[block.type as keyof typeof table.taskBlockTypeEnum],
+            
+            // Map content block types to task block types
+            let blockType = block.type;
+            if (blockType === 'paragraph') {
+                blockType = 'markdown';
+            }
+            
+            const createdTaskBlock = await createTaskBlock(
+                task.id,
+                blockType as table.taskBlockTypeEnum,
                 block.content,
                 block.orderIndex
             );
             await db.insert(table.moduleTaskBlock).values({
                 subSectionId: subSection.id,
-                taskBlockId: block.id,
+                taskBlockId: createdTaskBlock.id,
                 orderIndex: block.orderIndex
             });
             orderIndex++;
         }
-        // 
+        
+        console.log('   🎯 Generating interactive components...');
         
         // Generate interactive components
         const interactiveComponents = await generateInteractiveComponents(
@@ -92,40 +123,74 @@ export async function generateTeachMeModule(
             amount
         );
         
+        console.log(`   🎮 Generated ${interactiveComponents.interactiveBlocks.length} interactive components`);
+        
         // Create interactive blocks and module questions
+        let questionCount = 0;
         for (const component of interactiveComponents.interactiveBlocks) {
-            const taskBlock = await createBlockFromComponent(component, subSection.id);
+            console.log(`      🎯 Processing interactive component ${questionCount + 1}/${interactiveComponents.interactiveBlocks.length}`);
+            console.log(`      📋 Component structure:`, {
+                hasTaskBlock: !!component.taskBlock,
+                difficulty: component.difficulty,
+                hasHints: Array.isArray(component.hints) && component.hints.length > 0,
+                hasSteps: Array.isArray(component.steps) && component.steps.length > 0,
+                taskBlockHasAnswer: !!component.taskBlock?.answer,
+                taskBlockHasMarks: !!component.taskBlock?.marks,
+                taskBlockHasCriteria: Array.isArray(component.taskBlock?.criteria) && component.taskBlock.criteria.length > 0
+            });
             
-            if (taskBlock) {
-                // Create answer
-                if (component.answer) {
-                    await createAnswer(taskBlock.id, component.answer, component.marks);
-                }
+            try {
+                const taskBlock = await createBlockFromComponent(component.taskBlock, task.id);
                 
-                // Create criteria
-                if (component.criteria) {
-                    for (const criterion of component.criteria) {
-                        await createCriteria(taskBlock.id, criterion.description, criterion.marks);
+                if (taskBlock) {
+                    questionCount++;
+                    console.log(`      ✅ Created task block for interactive component with ID: ${taskBlock.id}`);
+                    
+                    // Create answer - access from taskBlock
+                    if (component.taskBlock.answer) {
+                        console.log(`      📝 Creating answer with ${component.taskBlock.marks || 0} marks`);
+                        await createAnswer(taskBlock.id, component.taskBlock.answer, component.taskBlock.marks);
                     }
-                }
-                const [moduleTaskBlock] = await db.insert(table.moduleTaskBlock).values({
-                    subSectionId: subSection.id,
-                    taskBlockId: taskBlock.id,
-                    orderIndex: orderIndex + component.orderIndex,
-                    hints: component.hints,
-                    steps: component.steps
-                })
-                .returning();
+                    
+                    // Create criteria - access from taskBlock
+                    if (component.taskBlock.criteria) {
+                        console.log(`      📋 Creating ${component.taskBlock.criteria.length} criteria`);
+                        for (const criterion of component.taskBlock.criteria) {
+                            await createCriteria(taskBlock.id, criterion.description, criterion.marks);
+                        }
+                    }
+                    
+                    const [moduleTaskBlock] = await db.insert(table.moduleTaskBlock).values({
+                        subSectionId: subSection.id,
+                        taskBlockId: taskBlock.id,
+                        orderIndex: orderIndex + (component.orderIndex || questionCount - 1),
+                        hints: component.hints,
+                        steps: component.steps
+                    })
+                    .returning();
 
-                // Create module question
-                await db.insert(table.moduleQuestion).values({
-                    moduleTaskBlockId: moduleTaskBlock.id,
-                    difficulty: component.difficulty,
-                });
+                    console.log(`      ✅ Created module task block with ID: ${moduleTaskBlock.id}`);
+
+                    // Create module question
+                    await db.insert(table.moduleQuestion).values({
+                        moduleTaskBlockId: moduleTaskBlock.id,
+                        difficulty: component.difficulty,
+                    });
+                    
+                    console.log(`      ✅ Created module question with difficulty: ${component.difficulty}`);
+                } else {
+                    console.warn(`      ⚠️  Failed to create task block for interactive component`);
+                }
+            } catch (error) {
+                console.error(`      ❌ Error processing interactive component:`, error);
+                // Continue with next component instead of failing completely
             }
         }
+        
+        console.log(`   ✅ Section "${sectionDef.title}" completed (${questionCount} questions created)`);
     }
     
+    console.log('🎉 Module generation completed successfully!');
     return module;
 }
 
@@ -339,7 +404,7 @@ export async function getOrCreateSession(
         .from(table.moduleSession)
         .where(
             and(
-                eq(table.moduleSession.userId, userId),
+                eq(table.moduleSession.userId, String(userId)),
                 eq(table.moduleSession.moduleId, moduleId),
                 eq(table.moduleSession.sessionType, sessionType),
                 isNull(table.moduleSession.completedAt)
@@ -355,7 +420,7 @@ export async function getOrCreateSession(
     const [newSession] = await db
         .insert(table.moduleSession)
         .values({
-            userId,
+            userId: String(userId),
             moduleId,
             sessionType,
             agentMemory: {

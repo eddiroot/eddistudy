@@ -1255,3 +1255,21 @@ export async function createBlockFromComponent(component: any, taskId: number) {
 
 	return createdBlock;
 }
+
+
+export async function createTaskWithId() {
+	const [task] = await db
+		.insert(table.task)
+		.values({
+			title: "",
+			description: "",
+			type: table.taskTypeEnum.lesson,
+			version: 1,
+			subjectOfferingId: 1264,
+			aiTutorEnabled: true,
+			isArchived: false
+		})
+		.returning();
+
+	return task;
+}

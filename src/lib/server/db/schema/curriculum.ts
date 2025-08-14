@@ -455,7 +455,7 @@ export type ExtraContent = typeof extraContent.$inferSelect;
 
 export const examContent = pgTable('exam_content', {
 	id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
-	question: text('description').notNull(),
+	question: text('question').notNull(),
 	answer: text('answer'),
 	sampleResponse: text('sample_response'),
 	curriculumSubjectId: integer('cur_sub_id')
