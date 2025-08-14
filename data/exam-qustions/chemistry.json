@@ -1,5 +1,8 @@
 
-[
+{
+  "subject": "Chemistry",
+  "curriculumSubject": "Chemistry Units 3 and 4",
+  "examQuestions": [
   {
     "question": "Photosynthesis is an: A. exothermic redox reaction. B. endothermic redox reaction. C. exothermic condensation reaction. D. endothermic condensation reaction.",
     "answer": "B. The reaction 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂ is an endothermic process, as it is the reverse of a combustion reaction, which is exothermic. It should not be classed as a condensation reaction as this type of reaction is usually defined as occurring when two molecules are joined together in order to eliminate a single water molecule (small molecule).",
@@ -522,4 +525,5 @@
     "learningArea": "U4AOS1",
     "topic": "Reactions of organic compounds"
   }
-]
+  ]
+}

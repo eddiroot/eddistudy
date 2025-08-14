@@ -15,6 +15,7 @@ import { VCAAF10Scraper } from './scraper/index';
 import { eq } from 'drizzle-orm';
 import { reset } from 'drizzle-seed';
 import { seedVCECurriculumData } from './vce-curriculum-seeder';
+import { seedChemistryExamQuestions } from './chemistry-exam-seeder';
 
 const databaseUrl = process.env.DATABASE_URL;
 
@@ -1085,6 +1086,10 @@ async function seed() {
 		// Seed VCE curriculum data
 		console.log('🌱 Now seeding VCE curriculum data...');
 		await seedVCECurriculumData();
+		
+		// Seed exam questions
+		console.log('🧪 Now seeding chemistry exam questions...');
+		await seedChemistryExamQuestions();
 		
 		console.log(`
 📊 Summary:

@@ -465,7 +465,6 @@ export const examContent = pgTable('exam_content', {
 		.notNull()
 		.references(() => learningArea.id, { onDelete: 'cascade' }),
 	outcomeTopicId: integer('outcome_topic_id')
-		.notNull()
 		.references(() => outcomeTopic.id, { onDelete: 'cascade' }),
 	isArchived: boolean('is_archived').notNull().default(false),
 	...timestamps

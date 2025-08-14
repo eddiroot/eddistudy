@@ -6,6 +6,7 @@
 
 import { seedVCECurriculumData } from './vce-curriculum-seeder';
 import { seedCurriculumDataWithRelationships } from './mathematical-methods-seeder';
+import { seedChemistryExamQuestions } from './chemistry-exam-seeder';
 
 // Subject name to data file mapping
 const SUBJECT_FILE_MAPPING: Record<string, string> = {
@@ -95,6 +96,10 @@ async function seedCompleteVCE() {
 				continue;
 			}
 		}
+
+		// Step 3: Seed exam questions
+		console.log('📝 Step 3: Seeding exam questions...');
+		await seedChemistryExamQuestions();
 
 		console.log('🎉 Complete VCE curriculum seeding finished successfully!');
 

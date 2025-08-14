@@ -1,4 +1,4 @@
-import { pgTable, serial, integer, text, timestamp, boolean, jsonb, varchar, pgEnum, real } from 'drizzle-orm/pg-core';
+import { pgTable, integer, text, timestamp, boolean, jsonb, varchar, pgEnum, real, uuid } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import * as table from './index';
 import { timestamps } from './index';
@@ -21,7 +21,7 @@ export const evaluationResultEnum = pgEnum('evaluation_result', [
 
 // Main teach me modules
 export const module = pgTable('module', {
-    id: serial('id').primaryKey(),
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
     curriculumSubjectId: integer('curriculum_subject_id')
         .notNull()
         .references(() => table.curriculumSubject.id),
@@ -41,7 +41,7 @@ export const module = pgTable('module', {
 
 // Sub-skills/sections within a module
 export const moduleSubSection = pgTable('module_sub_section', {
-    id: serial('id').primaryKey(),
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
     moduleId: integer('module_id')
         .notNull()
         .references(() => module.id),
@@ -56,7 +56,7 @@ export const moduleSubSection = pgTable('module_sub_section', {
 
 // Task blocks with embedded criteria and answers
 export const moduleTaskBlock = pgTable('module_task_block', {
-    id: serial('id').primaryKey(),
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
     subSectionId: integer('sub_section_id')
         .notNull()
         .references(() => moduleSubSection.id),
@@ -66,17 +66,17 @@ export const moduleTaskBlock = pgTable('module_task_block', {
     orderIndex: integer('order_index').notNull(),
     
     // Hints for progressive disclosure
-    hints: text('hints').$type<string[]>().default([]),
-    steps: text('steps').$type<string[]>().default([]),
+    hints: jsonb('hints').$type<string[]>().default([]),
+    steps: jsonb('steps').$type<string[]>().default([]),
     ...timestamps
 });
 
 // Module question pool
 export const moduleQuestion = pgTable('module_question', {
-    id: serial('id').primaryKey(),
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
     moduleTaskBlockId: integer('module_task_block_id')
         .notNull()
-        .references(() => table.moduleTaskBlock.id),
+        .references(() => moduleTaskBlock.id),
 
     difficulty: difficultyLevelEnum('difficulty').notNull().default('intermediate'),
     
@@ -90,8 +90,8 @@ export const moduleQuestion = pgTable('module_question', {
 
 // User session tracking (temporary, cleared after module completion)
 export const moduleSession = pgTable('module_session', {
-    id: serial('id').primaryKey(),
-    userId: integer('user_id')
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
+    userId: uuid('user_id')
         .notNull()
         .references(() => table.user.id),
     moduleId: integer('module_id')
@@ -125,7 +125,7 @@ export const moduleSession = pgTable('module_session', {
 
 // Response tracking (minimal, for progress only)
 export const moduleResponse = pgTable('module_response', {
-    id: serial('id').primaryKey(),
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
     sessionId: integer('session_id')
         .notNull()
         .references(() => moduleSession.id),
