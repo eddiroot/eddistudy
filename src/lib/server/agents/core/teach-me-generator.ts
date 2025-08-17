@@ -1,0 +1,274 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { BaseAgent, type AgentContext, type AgentResponse, AgentType } from '../index';
+import { PromptRegistry } from '../prompts/registry';
+import { EducationalVectorStore } from '../retrieval/vector-store';
+import { SessionManager } from '../memory/session-manager';
+import { geminiCompletion } from '$lib/server/ai';
+import * as taskSchemas from '$lib/server/taskSchemaExtended';
+
+export class TeachModuleGeneratorAgent extends BaseAgent {
+  private vectorStore: EducationalVectorStore;
+  private sessionManager: SessionManager;
+
+  constructor() {
+    super({
+      type: AgentType.TEACH_MODULE_GENERATOR,
+      systemInstruction: `You are an expert VCE curriculum designer who creates engaging, 
+research-based learning modules that leverage the testing effect and spaced repetition 
+for optimal learning outcomes.`,
+      temperature: 0.7,
+      maxTokens: 4000
+    });
+    
+    this.vectorStore = new EducationalVectorStore();
+    this.sessionManager = new SessionManager();
+  }
+
+  async execute(context: AgentContext): Promise<AgentResponse> {
+    const { action, moduleParams } = context.metadata;
+
+    switch (action) {
+      case 'generate_scaffold':
+        return await this.generateScaffold(moduleParams);
+      case 'generate_content':
+        return await this.generateContent(moduleParams);
+      case 'generate_interactive':
+        return await this.generateInteractive(moduleParams);
+      default:
+        throw new Error(`Unknown action: ${action}`);
+    }
+  }
+
+  private async generateScaffold(params: any): Promise<AgentResponse> {
+    // Retrieve relevant curriculum context
+    const curriculumContext = await this.vectorStore.hybridSearch(
+      `${params.title} ${params.description}`,
+      ['curriculum_content'],
+      { subject: params.subject },
+      10
+    );
+
+    // Get the prompt template
+    const promptTemplate = PromptRegistry.getPrompt('module_scaffold_generator')!;
+    
+    // Fill the prompt with context
+    const prompt = PromptRegistry.fillPrompt(
+      'module_scaffold_generator',
+      {
+        title: params.title,
+        description: params.description,
+        learningAreas: params.learningAreaIds,
+        keyKnowledge: params.keyKnowledgeIds,
+        keySkills: params.keySkillIds
+      },
+      curriculumContext
+    );
+
+    // Generate with Gemini
+    const response = await geminiCompletion(
+      prompt,
+      this.getSystemInstruction(),
+      promptTemplate.responseSchema
+    );
+
+    const scaffold = JSON.parse(response);
+
+    return {
+      content: JSON.stringify(scaffold),
+      metadata: {
+        stage: 'scaffold',
+        sectionsGenerated: scaffold.sections.length
+      },
+      sources: curriculumContext
+    };
+  }
+
+  private async generateContent(params: any): Promise<AgentResponse> {
+    const { section } = params;
+
+    // Get relevant examples and content
+    const examples = await this.vectorStore.hybridSearch(
+      section.concepts.join(' '),
+      ['detailed_examples', 'curriculum_content'],
+      { subject: params.subject },
+      5
+    );
+
+    const prompt = `
+Generate comprehensive learning content for: ${section.title}
+
+Learning Objective: ${section.objective}
+Concepts to Cover: ${section.concepts.join(', ')}
+Prerequisites: ${section.prerequisites.join(', ')}
+
+EXAMPLES TO REFERENCE:
+${examples.map(e => e.content).join('\n\n')}
+
+Create engaging explanatory content that:
+1. Builds on prerequisites
+2. Uses clear examples
+3. Includes visual descriptions where helpful
+4. Prepares for immediate self-testing
+`;
+
+    const contentSchema = {
+      type: 'object',
+      properties: {
+        blocks: {
+          type: 'array',
+          items: {
+            anyOf: [
+              taskSchemas.headerComponent,
+              taskSchemas.paragraphComponent,
+              taskSchemas.imageComponent,
+              taskSchemas.videoComponent
+            ]
+          }
+        }
+      }
+    };
+
+    const response = await geminiCompletion(
+      prompt,
+      this.getSystemInstruction(),
+      contentSchema
+    );
+
+    return {
+      content: response,
+      metadata: {
+        stage: 'content',
+        blocksGenerated: JSON.parse(response).blocks.length
+      },
+      sources: examples
+    };
+  }
+
+  private async generateInteractive(params: any): Promise<AgentResponse> {
+    const { section, sectionContent, subjectType } = params;
+
+    // Find similar successful questions
+    const similarQuestions = await this.vectorStore.findSimilarQuestions(
+      subjectType,
+      section.difficulty,
+      section.concepts,
+      5
+    );
+
+    // Get common misconceptions to target
+    const misconceptions = await this.vectorStore.findCommonMisconceptions(
+      section.concepts[0],
+      3
+    );
+
+    // Select appropriate block types based on subject
+    const blockTypes = this.getBlockTypesForSubject(subjectType);
+
+    const prompt = PromptRegistry.fillPrompt(
+      'interactive_block_generator',
+      {
+        sectionContent: sectionContent,
+        curriculumContext: section,
+        commonMisconceptions: misconceptions.map(m => m.content),
+        numberOfBlocks: 3,
+        availableBlockTypes: blockTypes
+      },
+      { similarQuestions }
+    );
+
+    // Get appropriate schemas for the subject
+    const responseSchema = this.getInteractiveSchema(subjectType);
+
+    const response = await geminiCompletion(
+      prompt,
+      this.getSystemInstruction(),
+      responseSchema
+    );
+
+    const blocks = JSON.parse(response);
+
+    // Store generated blocks for future retrieval
+    await this.storeGeneratedBlocks(blocks, params);
+
+    return {
+      content: response,
+      metadata: {
+        stage: 'interactive',
+        blocksGenerated: blocks.interactiveBlocks.length,
+        blockTypes: blocks.interactiveBlocks.map((b: any) => b.taskBlock.content.type)
+      },
+      sources: [...similarQuestions, ...misconceptions]
+    };
+  }
+
+  private getBlockTypesForSubject(subjectType: string): string[] {
+    const typeMap: Record<string, string[]> = {
+      mathematics: ['graph_plot', 'formula_input', 'table_input', 'multiple_choice'],
+      science: ['interactive_diagram', 'image_annotation', 'formula_input', 'fill_in_blank'],
+      english: ['text_highlight', 'quote_matching', 'fill_sentence', 'short_answer'],
+      default: ['multiple_choice', 'short_answer', 'matching', 'fill_in_blank']
+    };
+
+    return typeMap[subjectType.toLowerCase()] || typeMap.default;
+  }
+
+  private getInteractiveSchema(subjectType: string): any {
+    const blockSchemas = this.getBlockTypesForSubject(subjectType)
+      .map(type => taskSchemas.extendedInteractiveComponents[type])
+      .filter(Boolean);
+
+    return {
+      type: 'object',
+      properties: {
+        interactiveBlocks: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              taskBlock: {
+                anyOf: blockSchemas
+              },
+              difficulty: { 
+                type: 'string', 
+                enum: ['beginner', 'intermediate', 'advanced'] 
+              },
+              hints: {
+                type: 'array',
+                items: { type: 'string' },
+                minItems: 3,
+                maxItems: 3
+              },
+              steps: {
+                type: 'array',
+                items: { type: 'string' }
+              }
+            },
+            required: ['taskBlock', 'difficulty', 'hints', 'steps']
+          }
+        }
+      }
+    };
+  }
+
+  private async storeGeneratedBlocks(blocks: any, params: any): Promise<void> {
+    // Store in vector store for future retrieval
+    const collection = this.vectorStore.collections.get('module_content');
+    if (!collection) return;
+
+    for (const block of blocks.interactiveBlocks) {
+      await collection.add({
+        ids: [`block_${Date.now()}_${Math.random()}`],
+        documents: [JSON.stringify(block.taskBlock)],
+        metadatas: [{
+          type: 'interactive_block',
+          blockType: block.taskBlock.content.type,
+          difficulty: block.difficulty,
+          subject: params.subject,
+          concepts: params.section.concepts,
+          hasHints: true,
+          hasSteps: true
+        }]
+      });
+    }
+  }
+}
