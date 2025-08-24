@@ -4,7 +4,7 @@ import { PromptRegistry } from '../prompts/registry';
 import { EducationalVectorStore } from '../retrieval/vector-store';
 import { SessionManager } from '../memory/session-manager';
 import { geminiCompletion } from '$lib/server/ai';
-import * as taskSchemas from '$lib/server/taskSchemaExtended';
+import * as blockSchemas from '../schemas/blockSchema';
 
 export class TeachModuleGeneratorAgent extends BaseAgent {
   private vectorStore: EducationalVectorStore;
@@ -40,12 +40,19 @@ for optimal learning outcomes.`,
   }
 
   private async generateScaffold(params: any): Promise<AgentResponse> {
+    // Initialize vector store for the subject
+    if (params.subjectId) {
+      await this.vectorStore.initialize(params.subjectId);
+    }
+
     // Retrieve relevant curriculum context
     const curriculumContext = await this.vectorStore.hybridSearch(
       `${params.title} ${params.description}`,
-      ['curriculum_content'],
-      { subject: params.subject },
-      10
+      {
+        collections: ['curriculum_contents'],
+        subjectId: params.subjectId,
+        k: 10
+      }
     );
 
     // Get the prompt template
@@ -67,8 +74,9 @@ for optimal learning outcomes.`,
     // Generate with Gemini
     const response = await geminiCompletion(
       prompt,
-      this.getSystemInstruction(),
-      promptTemplate.responseSchema
+      undefined, // no media file
+      promptTemplate.responseSchema,
+      this.getSystemInstruction()
     );
 
     const scaffold = JSON.parse(response);
@@ -84,14 +92,21 @@ for optimal learning outcomes.`,
   }
 
   private async generateContent(params: any): Promise<AgentResponse> {
-    const { section } = params;
+    const { section, subjectId } = params;
+
+    // Initialize vector store for the subject
+    if (subjectId) {
+      await this.vectorStore.initialize(subjectId);
+    }
 
     // Get relevant examples and content
     const examples = await this.vectorStore.hybridSearch(
       section.concepts.join(' '),
-      ['detailed_examples', 'curriculum_content'],
-      { subject: params.subject },
-      5
+      {
+        collections: ['detailed_examples', 'curriculum_contents'],
+        subjectId: subjectId,
+        k: 5
+      }
     );
 
     const prompt = `
@@ -102,7 +117,7 @@ Concepts to Cover: ${section.concepts.join(', ')}
 Prerequisites: ${section.prerequisites.join(', ')}
 
 EXAMPLES TO REFERENCE:
-${examples.map(e => e.content).join('\n\n')}
+${examples.map((e: any) => e.content).join('\n\n')}
 
 Create engaging explanatory content that:
 1. Builds on prerequisites
@@ -118,10 +133,8 @@ Create engaging explanatory content that:
           type: 'array',
           items: {
             anyOf: [
-              taskSchemas.headerComponent,
-              taskSchemas.paragraphComponent,
-              taskSchemas.imageComponent,
-              taskSchemas.videoComponent
+              blockSchemas.blockHeading,
+              blockSchemas.blockRichText,
             ]
           }
         }
@@ -130,8 +143,9 @@ Create engaging explanatory content that:
 
     const response = await geminiCompletion(
       prompt,
-      this.getSystemInstruction(),
-      contentSchema
+      undefined, // no media file
+      contentSchema,
+      this.getSystemInstruction()
     );
 
     return {
@@ -145,35 +159,43 @@ Create engaging explanatory content that:
   }
 
   private async generateInteractive(params: any): Promise<AgentResponse> {
-    const { section, sectionContent, subjectType } = params;
+    const { section, sectionContent, subjectType, subjectId } = params;
 
-    // Find similar successful questions
-    const similarQuestions = await this.vectorStore.findSimilarQuestions(
-      subjectType,
-      section.difficulty,
-      section.concepts,
-      5
+    // Initialize vector store for the subject
+    if (subjectId) {
+      await this.vectorStore.initialize(subjectId);
+    }
+
+    // Find similar exam questions
+    const similarQuestions = await this.vectorStore.hybridSearch(
+      section.concepts.join(' '),
+      {
+        collections: ['exam_questions'],
+        subjectId: subjectId,
+        k: 5
+      }
     );
 
     // Get common misconceptions to target
     const misconceptions = await this.vectorStore.findCommonMisconceptions(
       section.concepts[0],
+      undefined,
       3
     );
 
     // Select appropriate block types based on subject
-    const blockTypes = this.getBlockTypesForSubject(subjectType);
+    const blockTypes = blockSchemas.getBlockTypesForSubject(subjectType);
 
     const prompt = PromptRegistry.fillPrompt(
       'interactive_block_generator',
       {
         sectionContent: sectionContent,
         curriculumContext: section,
-        commonMisconceptions: misconceptions.map(m => m.content),
+        commonMisconceptions: misconceptions.map((m: any) => m.content),
         numberOfBlocks: 3,
         availableBlockTypes: blockTypes
       },
-      { similarQuestions }
+      similarQuestions
     );
 
     // Get appropriate schemas for the subject
@@ -181,8 +203,9 @@ Create engaging explanatory content that:
 
     const response = await geminiCompletion(
       prompt,
-      this.getSystemInstruction(),
-      responseSchema
+      undefined, // no media file
+      responseSchema,
+      this.getSystemInstruction()
     );
 
     const blocks = JSON.parse(response);
@@ -195,80 +218,72 @@ Create engaging explanatory content that:
       metadata: {
         stage: 'interactive',
         blocksGenerated: blocks.interactiveBlocks.length,
-        blockTypes: blocks.interactiveBlocks.map((b: any) => b.taskBlock.content.type)
+        blockTypes: blocks.interactiveBlocks.map((b: any) => b.taskBlock.type)
       },
       sources: [...similarQuestions, ...misconceptions]
     };
   }
 
-  private getBlockTypesForSubject(subjectType: string): string[] {
-    const typeMap: Record<string, string[]> = {
-      mathematics: ['graph_plot', 'formula_input', 'table_input', 'multiple_choice'],
-      science: ['interactive_diagram', 'image_annotation', 'formula_input', 'fill_in_blank'],
-      english: ['text_highlight', 'quote_matching', 'fill_sentence', 'short_answer'],
-      default: ['multiple_choice', 'short_answer', 'matching', 'fill_in_blank']
-    };
-
-    return typeMap[subjectType.toLowerCase()] || typeMap.default;
-  }
 
   private getInteractiveSchema(subjectType: string): any {
-    const blockSchemas = this.getBlockTypesForSubject(subjectType)
-      .map(type => taskSchemas.extendedInteractiveComponents[type])
-      .filter(Boolean);
+    const blockTypes = blockSchemas.getBlockTypesForSubject(subjectType);
+
+    // Use the interactiveBlockWithOptionals helper for consistent schema generation
+    const interactiveBlockSchema = blockSchemas.interactiveBlockWithOptionals({
+      type: 'object',
+      properties: {
+        taskBlock: {
+          anyOf: blockTypes
+        }
+      },
+      required: ['taskBlock']
+    }, {
+      includeHints: true,
+      includeDifficulty: true,
+      includeSteps: true,
+      makeRequired: true
+    });
 
     return {
       type: 'object',
       properties: {
         interactiveBlocks: {
           type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              taskBlock: {
-                anyOf: blockSchemas
-              },
-              difficulty: { 
-                type: 'string', 
-                enum: ['beginner', 'intermediate', 'advanced'] 
-              },
-              hints: {
-                type: 'array',
-                items: { type: 'string' },
-                minItems: 3,
-                maxItems: 3
-              },
-              steps: {
-                type: 'array',
-                items: { type: 'string' }
-              }
-            },
-            required: ['taskBlock', 'difficulty', 'hints', 'steps']
-          }
+          items: interactiveBlockSchema,
+          minItems: 1,
+          maxItems: 5
         }
-      }
+      },
+      required: ['interactiveBlocks']
     };
   }
 
   private async storeGeneratedBlocks(blocks: any, params: any): Promise<void> {
-    // Store in vector store for future retrieval
-    const collection = this.vectorStore.collections.get('module_content');
-    if (!collection) return;
-
+    // Store generated questions for future retrieval
     for (const block of blocks.interactiveBlocks) {
-      await collection.add({
-        ids: [`block_${Date.now()}_${Math.random()}`],
-        documents: [JSON.stringify(block.taskBlock)],
-        metadatas: [{
-          type: 'interactive_block',
-          blockType: block.taskBlock.content.type,
-          difficulty: block.difficulty,
-          subject: params.subject,
-          concepts: params.section.concepts,
-          hasHints: true,
-          hasSteps: true
-        }]
-      });
+      const question = this.extractQuestionFromBlock(block.taskBlock);
+      if (question) {
+        await this.vectorStore.storeQuestion(
+          question,
+          params.moduleId || 0,
+          block.taskBlock.id || 0,
+          params.section.concepts.join(', ')
+        );
+      }
     }
+  }
+
+  private extractQuestionFromBlock(taskBlock: any): string | null {
+    // Extract question text based on block type
+    if (taskBlock.config?.question) {
+      return taskBlock.config.question;
+    }
+    if (taskBlock.config?.instructions) {
+      return taskBlock.config.instructions;
+    }
+    if (taskBlock.config?.sentence) {
+      return taskBlock.config.sentence;
+    }
+    return null;
   }
 }

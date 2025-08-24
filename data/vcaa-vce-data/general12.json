@@ -587,44 +587,44 @@
         {
           "id": 28003,
           "outcomeId": 28002,
-          "name": "the facts, concepts and techniques associated with the topics studied"
+          "description": "the facts, concepts and techniques associated with the topics studied"
         },
         {
           "id": 28004,
           "outcomeId": 28002,
-          "name": "the standard mathematical models used in the topics studied"
+          "description": "the standard mathematical models used in the topics studied"
         },
         {
           "id": 28005,
           "outcomeId": 28002,
-          "name": "the facts, concepts, techniques and/or models suitable to solve extended application problems or to conduct a structured investigation in context"
+          "description": "the facts, concepts, techniques and/or models suitable to solve extended application problems or to conduct a structured investigation in context"
         },
         {
           "id": 28006,
           "outcomeId": 28002,
-          "name": "assumptions and conditions underlying the facts, concepts, techniques and models used when solving a problem or conducting a mathematical investigation"
+          "description": "assumptions and conditions underlying the facts, concepts, techniques and models used when solving a problem or conducting a mathematical investigation"
         }
       ],
       "keySkills": [
         {
           "id": 28006,
           "outcomeId": 28002,
-          "name": "identify, recall and select the mathematical facts, concepts and techniques needed to solve a problem or conduct an investigation in a variety of contexts"
+          "description": "identify, recall and select the mathematical facts, concepts and techniques needed to solve a problem or conduct an investigation in a variety of contexts"
         },
         {
           "id": 28007,
           "outcomeId": 28002,
-          "name": "recall, select and use standard mathematical models to represent practical situations"
+          "description": "recall, select and use standard mathematical models to represent practical situations"
         },
         {
           "id": 28008,
           "outcomeId": 28002,
-          "name": "use specific models to comment on particular situations being analysed and to make predictions"
+          "description": "use specific models to comment on particular situations being analysed and to make predictions"
         },
         {
           "id": 28009,
           "outcomeId": 28002,
-          "name": "interpret and report the results of applying these models in terms of the context of the problem being solved, including discussing the assumptions underlying the application of such models"
+          "description": "interpret and report the results of applying these models in terms of the context of the problem being solved, including discussing the assumptions underlying the application of such models"
         }
       ]
     },
@@ -638,89 +638,89 @@
         {
           "id": 28003,
           "outcomeId": 28002,
-          "name": "the role of computational thinking (abstraction, decomposition, pattern and algorithm) in problem-solving, and its application to mathematical investigation"
+          "description": "the role of computational thinking (abstraction, decomposition, pattern and algorithm) in problem-solving, and its application to mathematical investigation"
         },
         {
           "id": 28004,
           "outcomeId": 28002,
-          "name": "the difference between exact numerical and approximate numerical answers when using technology to perform computation, and rounding to a given number of decimal places or significant figures"
+          "description": "the difference between exact numerical and approximate numerical answers when using technology to perform computation, and rounding to a given number of decimal places or significant figures"
         },
         {
           "id": 28005,
           "outcomeId": 28002,
-          "name": "domain and range requirements for specification of graphs, and the role of parameters in specifying general forms of models, relations and equations"
+          "description": "domain and range requirements for specification of graphs, and the role of parameters in specifying general forms of models, relations and equations"
         },
         {
           "id": 28006,
           "outcomeId": 28002,
-          "name": "the relation between numerical, graphical and symbolic forms of information about functions, relations and equations, and the corresponding features of those functions, relations and equations"
+          "description": "the relation between numerical, graphical and symbolic forms of information about functions, relations and equations, and the corresponding features of those functions, relations and equations"
         },
         {
           "id": 28007,
           "outcomeId": 28002,
-          "name": "the similarities and differences between formal mathematical expressions and their representation by technology"
+          "description": "the similarities and differences between formal mathematical expressions and their representation by technology"
         }
       ],
       "keySkills": [
         {
           "id": 28007,
           "outcomeId": 28002,
-          "name": "use computational thinking, algorithms, models and simulations to solve problems related to a given context"
+          "description": "use computational thinking, algorithms, models and simulations to solve problems related to a given context"
         },
         {
           "id": 28008,
           "outcomeId": 28002,
-          "name": "distinguish between exact and approximate presentations of mathematical results produced by technology, and interpret these results to a specified degree of accuracy"
+          "description": "distinguish between exact and approximate presentations of mathematical results produced by technology, and interpret these results to a specified degree of accuracy"
         },
         {
           "id": 28009,
           "outcomeId": 28002,
-          "name": "use technology to carry out numerical, graphical and symbolic computation as applicable"
+          "description": "use technology to carry out numerical, graphical and symbolic computation as applicable"
         },
         {
           "id": 28010,
           "outcomeId": 28002,
-          "name": "produce results, using a technology, which identify examples or counter-examples for propositions"
+          "description": "produce results, using a technology, which identify examples or counter-examples for propositions"
         },
         {
           "id": 28011,
           "outcomeId": 28002,
-          "name": "produce tables of values, families of graphs and collections of other results using technology, which support general analysis in investigative, modelling and problem-solving contexts"
+          "description": "produce tables of values, families of graphs and collections of other results using technology, which support general analysis in investigative, modelling and problem-solving contexts"
         },
         {
           "id": 28012,
           "outcomeId": 28002,
-          "name": "use appropriate domain and range specifications to illustrate key features of graphs of models and relations"
+          "description": "use appropriate domain and range specifications to illustrate key features of graphs of models and relations"
         },
         {
           "id": 28013,
           "outcomeId": 28002,
-          "name": "identify the connection between numerical, graphical and symbolic forms of information about functions, relations and equations, and the corresponding features of those functions, relations and equations"
+          "description": "identify the connection between numerical, graphical and symbolic forms of information about functions, relations and equations, and the corresponding features of those functions, relations and equations"
         },
         {
           "id": 28014,
           "outcomeId": 28002,
-          "name": "specify the similarities and differences between formal mathematical expressions and their representation by technology"
+          "description": "specify the similarities and differences between formal mathematical expressions and their representation by technology"
         },
         {
           "id": 28015,
           "outcomeId": 28002,
-          "name": "select an appropriate functionality of technology in a variety of mathematical contexts and provide a rationale for these selections"
+          "description": "select an appropriate functionality of technology in a variety of mathematical contexts and provide a rationale for these selections"
         },
         {
           "id": 28016,
           "outcomeId": 28002,
-          "name": "apply suitable constraints and conditions, as applicable, to carry out required computations"
+          "description": "apply suitable constraints and conditions, as applicable, to carry out required computations"
         },
         {
           "id": 28017,
           "outcomeId": 28002,
-          "name": "relate the results from a particular technology application to the nature of a particular mathematical task (investigative, modelling or problem-solving) and verify these results"
+          "description": "relate the results from a particular technology application to the nature of a particular mathematical task (investigative, modelling or problem-solving) and verify these results"
         },
         {
           "id": 28018,
           "outcomeId": 28002,
-          "name": "specify the process used to develop a solution to a problem using technology and communicate the key stages of mathematical reasoning (formulation, solution, interpretation) used in this process"
+          "description": "specify the process used to develop a solution to a problem using technology and communicate the key stages of mathematical reasoning (formulation, solution, interpretation) used in this process"
         }
       ]
     },
@@ -988,44 +988,44 @@
         {
           "id": 28037,
           "outcomeId": 28004,
-          "name": "the facts, concepts and techniques associated with data analysis, recursion and financial modelling, matrices and networks and decision mathematics"
+          "description": "the facts, concepts and techniques associated with data analysis, recursion and financial modelling, matrices and networks and decision mathematics"
         },
         {
           "id": 28038,
           "outcomeId": 28004,
-          "name": "standard models studied in data analysis, recursion and financial modelling, matrices, and networks and decision mathematics, and their areas of application"
+          "description": "standard models studied in data analysis, recursion and financial modelling, matrices, and networks and decision mathematics, and their areas of application"
         },
         {
           "id": 28039,
           "outcomeId": 28004,
-          "name": "general formulation of the concepts, techniques and models studied in data analysis, recursion and financial modelling, matrices, and networks and decision mathematics"
+          "description": "general formulation of the concepts, techniques and models studied in data analysis, recursion and financial modelling, matrices, and networks and decision mathematics"
         },
         {
           "id": 28040,
           "outcomeId": 28004,
-          "name": "assumptions and conditions underlying the use of the concepts, techniques and models associated with data analysis, recursion and financial modelling, matrices, and networks and decision mathematics"
+          "description": "assumptions and conditions underlying the use of the concepts, techniques and models associated with data analysis, recursion and financial modelling, matrices, and networks and decision mathematics"
         }
       ],
       "keySkills": [
         {
           "id": 28041,
           "outcomeId": 28004,
-          "name": "identify, recall and select facts, concepts, models and techniques needed to investigate and analyse statistical features of a data set with several variables that can include time series data"
+          "description": "identify, recall and select facts, concepts, models and techniques needed to investigate and analyse statistical features of a data set with several variables that can include time series data"
         },
         {
           "id": 28042,
           "outcomeId": 28004,
-          "name": "select and implement standard financial models to investigate and analyse a financial or mathematically equivalent non-financial situation that requires the use of increasingly sophisticated models to complete the analysis"
+          "description": "select and implement standard financial models to investigate and analyse a financial or mathematically equivalent non-financial situation that requires the use of increasingly sophisticated models to complete the analysis"
         },
         {
           "id": 28043,
           "outcomeId": 28004,
-          "name": "identify, recall and select the mathematical concepts, models and techniques needed to solve an extended problem or conduct an investigation in a variety of contexts related to matrices and networks and decision mathematics"
+          "description": "identify, recall and select the mathematical concepts, models and techniques needed to solve an extended problem or conduct an investigation in a variety of contexts related to matrices and networks and decision mathematics"
         },
         {
           "id": 28044,
           "outcomeId": 28004,
-          "name": "interpret and report the results of a statistical investigation or of completing a modelling or problem-solving task in terms of the context under consideration, including discussing the assumptions in application of these models"
+          "description": "interpret and report the results of a statistical investigation or of completing a modelling or problem-solving task in terms of the context under consideration, including discussing the assumptions in application of these models"
         }
       ]
     },
@@ -1039,99 +1039,99 @@
         {
           "id": 28045,
           "outcomeId": 28005,
-          "name": "the role of computational thinking (abstraction, decomposition, pattern and algorithm) in problem-solving, and its application to mathematical investigation"
+          "description": "the role of computational thinking (abstraction, decomposition, pattern and algorithm) in problem-solving, and its application to mathematical investigation"
         },
         {
           "id": 28046,
           "outcomeId": 28005,
-          "name": "the difference between exact numerical and approximate numerical answers when using technology to perform computation, and rounding to a given number of decimal places or significant figures"
+          "description": "the difference between exact numerical and approximate numerical answers when using technology to perform computation, and rounding to a given number of decimal places or significant figures"
         },
         {
           "id": 28047,
           "outcomeId": 28005,
-          "name": "domain and range requirements for specification of graphs of models and relations, when using technology"
+          "description": "domain and range requirements for specification of graphs of models and relations, when using technology"
         },
         {
           "id": 28048,
           "outcomeId": 28005,
-          "name": "the role of parameters in specifying general forms of models and equations"
+          "description": "the role of parameters in specifying general forms of models and equations"
         },
         {
           "id": 28049,
           "outcomeId": 28005,
-          "name": "the relation between numerical, graphical and symbolic forms of information about models and equations, and the corresponding features of those models and equations"
+          "description": "the relation between numerical, graphical and symbolic forms of information about models and equations, and the corresponding features of those models and equations"
         },
         {
           "id": 28050,
           "outcomeId": 28005,
-          "name": "the similarities and differences between formal mathematical expressions and their representation by technology"
+          "description": "the similarities and differences between formal mathematical expressions and their representation by technology"
         },
         {
           "id": 28051,
           "outcomeId": 28005,
-          "name": "the appropriate functionality of technology for a variety of mathematical contexts"
+          "description": "the appropriate functionality of technology for a variety of mathematical contexts"
         }
       ],
       "keySkills": [
         {
           "id": 28052,
           "outcomeId": 28005,
-          "name": "use computational thinking, algorithms, models and simulations to solve problems related to a given context"
+          "description": "use computational thinking, algorithms, models and simulations to solve problems related to a given context"
         },
         {
           "id": 28053,
           "outcomeId": 28005,
-          "name": "distinguish between exact and approximate presentations of mathematical results produced by technology, and interpret these results to a specified degree of accuracy in terms of a given number of decimal places or significant figures"
+          "description": "distinguish between exact and approximate presentations of mathematical results produced by technology, and interpret these results to a specified degree of accuracy in terms of a given number of decimal places or significant figures"
         },
         {
           "id": 28054,
           "outcomeId": 28005,
-          "name": "use technology to carry out numerical, graphical and symbolic computation as applicable"
+          "description": "use technology to carry out numerical, graphical and symbolic computation as applicable"
         },
         {
           "id": 28055,
           "outcomeId": 28005,
-          "name": "produce results, using a technology, which identify examples or counter-examples for propositions"
+          "description": "produce results, using a technology, which identify examples or counter-examples for propositions"
         },
         {
           "id": 28056,
           "outcomeId": 28005,
-          "name": "produce tables of values, families of graphs and collections of other results using technology, which support general analysis in investigative, modelling and problem-solving contexts"
+          "description": "produce tables of values, families of graphs and collections of other results using technology, which support general analysis in investigative, modelling and problem-solving contexts"
         },
         {
           "id": 28057,
           "outcomeId": 28005,
-          "name": "use appropriate domain and range specifications to illustrate key features of graphs"
+          "description": "use appropriate domain and range specifications to illustrate key features of graphs"
         },
         {
           "id": 28058,
           "outcomeId": 28005,
-          "name": "identify the relation between numerical, graphical and symbolic forms of information about models and equations, and the corresponding features of those models and equations"
+          "description": "identify the relation between numerical, graphical and symbolic forms of information about models and equations, and the corresponding features of those models and equations"
         },
         {
           "id": 28059,
           "outcomeId": 28005,
-          "name": "specify the similarities and differences between formal mathematical expressions and their representation by technology "
+          "description": "specify the similarities and differences between formal mathematical expressions and their representation by technology "
         },
         {
           "id": 28060,
           "outcomeId": 28005,
-          "name": "select an appropriate functionality of technology in a variety of mathematical contexts, related to data analysis, recurrence relations and financial modelling, and provide a rationale for these selections"
+          "description": "select an appropriate functionality of technology in a variety of mathematical contexts, related to data analysis, recurrence relations and financial modelling, and provide a rationale for these selections"
         },
         {
           "id": 28061,
           "outcomeId": 28005,
-          "name": "apply suitable constraints and conditions, as applicable, to carry out required computations"
+          "description": "apply suitable constraints and conditions, as applicable, to carry out required computations"
         },
         {
           "id": 28062,
           "outcomeId": 28005,
-          "name": "relate the results from a particular technology application to the nature of a particular mathematical task (investigative, modelling or problem-solving) and verify these results"
+          "description": "relate the results from a particular technology application to the nature of a particular mathematical task (investigative, modelling or problem-solving) and verify these results"
         },
         {
           "id": 28063,
           "outcomeId": 28005,
-          "name": "specify the process used to develop a solution to a problem using technology and communicate the key stages of mathematical reasoning (formulation, solution, interpretation) used in this process"
+          "description": "specify the process used to develop a solution to a problem using technology and communicate the key stages of mathematical reasoning (formulation, solution, interpretation) used in this process"
         }
       ]
     }

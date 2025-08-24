@@ -1,5 +1,4 @@
-import { pgTable, integer, text, timestamp, boolean, jsonb, varchar, pgEnum, real, uuid } from 'drizzle-orm/pg-core';
-import { relations } from 'drizzle-orm';
+import { pgTable, integer, text, boolean, jsonb, pgEnum, uuid } from 'drizzle-orm/pg-core';
 import * as table from './index';
 import { timestamps } from './index';
 
@@ -19,6 +18,11 @@ export const evaluationResultEnum = pgEnum('evaluation_result', [
     'critical_error'
 ]);
 
+export const sessionTypeEnum = pgEnum('session_type', [
+    'teach',
+    'train'
+]); 
+
 // Main teach me modules
 export const module = pgTable('module', {
     id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
@@ -27,65 +31,23 @@ export const module = pgTable('module', {
         .references(() => table.curriculumSubject.id),
     title: text('title').notNull(),
     description: text('description'),
-    
-    // Curriculum connections
-    learningAreaIds: jsonb('learning_area_ids').$type<number[]>().default([]),
-    outcomeIds: jsonb('outcome_ids').$type<number[]>().default([]),
-    keyKnowledgeIds: jsonb('key_knowledge_ids').$type<number[]>().default([]),
-    keySkillIds: jsonb('key_skill_ids').$type<number[]>().default([]),
     // Module metadata
     orderIndex: integer('order_index').notNull().default(0),
     isPublished: boolean('is_published').default(false),
     ...timestamps
 });
 
-// Sub-skills/sections within a module
-export const moduleSubSection = pgTable('module_sub_section', {
+export const moduleSubTask = pgTable('module_sub_task', {
     id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
     moduleId: integer('module_id')
         .notNull()
         .references(() => module.id),
-    title: text('title').notNull(), // topic name
-    description: text('description'),
-    focus: text('focus'),
+    taskId: integer("task_id")
+        .notNull()
+        .references(() => table.task.id),
+    concepts: text('concepts').array().notNull().default([]),
     orderIndex: integer('order_index').notNull(),
-    keyKnowledgeIds: jsonb('key_knowledge_ids').$type<number[]>().default([]),
-    keySkillIds: jsonb('key_skill_ids').$type<number[]>().default([]),
-    ...timestamps
-});
 
-// Task blocks with embedded criteria and answers
-export const moduleTaskBlock = pgTable('module_task_block', {
-    id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
-    subSectionId: integer('sub_section_id')
-        .notNull()
-        .references(() => moduleSubSection.id),
-    taskBlockId: integer('task_block_id')
-        .notNull()
-        .references(() => table.taskBlock.id),
-    orderIndex: integer('order_index').notNull(),
-    
-    // Hints for progressive disclosure
-    hints: jsonb('hints').$type<string[]>().default([]),
-    steps: jsonb('steps').$type<string[]>().default([]),
-    ...timestamps
-});
-
-// Module question pool
-export const moduleQuestion = pgTable('module_question', {
-    id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
-    moduleTaskBlockId: integer('module_task_block_id')
-        .notNull()
-        .references(() => moduleTaskBlock.id),
-
-    difficulty: difficultyLevelEnum('difficulty').notNull().default('intermediate'),
-    
-    // Metadata for agent selection
-    conceptsTested: jsonb('concepts_tested').$type<string[]>().default([]),
-    prerequisiteQuestionIds: jsonb('prerequisite_question_ids').$type<number[]>().default([]),
-    
-    isActive: boolean('is_active').default(true),
-    createdAt: timestamp('created_at').defaultNow()
 });
 
 // User session tracking (temporary, cleared after module completion)
@@ -97,74 +59,35 @@ export const moduleSession = pgTable('module_session', {
     moduleId: integer('module_id')
         .notNull()
         .references(() => module.id),
-    sessionType: varchar('session_type', { length: 10 }).notNull(), // 'teach' or 'train'
+    sessionType: sessionTypeEnum('session_type').notNull().default('teach'),
     // Current position
-    currentSubSectionId: integer('current_sub_section_id')
-        .references(() => moduleSubSection.id),
+    currentSubTaskId: integer('current_sub_task_id')
+        .references(() => moduleSubTask.id),
     currentTaskIndex: integer('current_task_index').default(0),
     // Session state (temporary storage)
     agentMemory: jsonb('agent_memory').$type<{
         recentResponses: number[]; // IDs of moduleResponse records
-        strugglingConcepts: string[];
-        masteredConcepts: string[];
-        currentStrategy: string;
+
+        strugglingConcepts: Array<{
+            concept: string;
+            mistakeCount: number;
+        }>;
+        masteredConcepts: Array<{
+            concept: string;
+            confidenceLevel: 'low' | 'medium' | 'high';
+        }>;
+        questionHistory: Array<{
+            taskBlockId: number;
+            evaluation?: string;
+            feedBack?: string;
+            hintHistory?: Array<{
+                hintText: string;
+                concept: string;
+                wasEffective: boolean;
+            }>;
+        }>;
     }>(),
-    
-    // Train Me specific
-    questionHistory: jsonb('question_history').$type<Array<{
-        questionId: number;
-        shown: boolean;
-        attempted: boolean;
-        evaluation?: string;
-    }>>().default([]),
-    
-    startedAt: timestamp('started_at').defaultNow(),
-    lastActivityAt: timestamp('last_activity_at').defaultNow(),
-    completedAt: timestamp('completed_at')
-});
-
-// Response tracking (minimal, for progress only)
-export const moduleResponse = pgTable('module_response', {
-    id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
-    sessionId: integer('session_id')
-        .notNull()
-        .references(() => moduleSession.id),
-    moduleTaskBlockId: integer('task_block_id')
-        .notNull()
-        .references(() => moduleTaskBlock.id),
-
-    response: jsonb('response').notNull(),
-    evaluation: evaluationResultEnum('evaluation'),
-    score: real('score'), // 0-1 normalized score
     ...timestamps
 });
 
-// Relations
-export const moduleRelations = relations(module, ({ one, many }) => ({
-    curriculumSubject: one(table.curriculumSubject, {
-        fields: [module.curriculumSubjectId],
-        references: [table.curriculumSubject.id]
-    }),
-    subSections: many(moduleSubSection),
-    questions: many(moduleQuestion),
-    sessions: many(moduleSession)
-}));
 
-export const moduleSubSectionRelations = relations(moduleSubSection, ({ one, many }) => ({
-    module: one(module, {
-        fields: [moduleSubSection.moduleId],
-        references: [module.id]
-    }),
-    taskBlocks: many(moduleTaskBlock)
-}));
-
-export const moduleTaskBlockRelations = relations(moduleTaskBlock, ({ one }) => ({
-    subSection: one(moduleSubSection, {
-        fields: [moduleTaskBlock.subSectionId],
-        references: [moduleSubSection.id]
-    }),
-    taskBlock: one(table.taskBlock, {
-        fields: [moduleTaskBlock.taskBlockId],
-        references: [table.taskBlock.id]
-    })
-}));

@@ -1,14 +1,15 @@
-import { TeachModuleGeneratorAgent } from './core/teach-agent';
-import { LearningTutorAgent } from './core/learning-tutor';
-import type { AgentType, AgentContext, AgentResponse } from './types';
+import { TeachModuleGeneratorAgent } from './core/teach-me-generator';
+// import { LearningTutorAgent } from './core/learning-tutor';
+import { AgentType } from './index';
+import type { AgentContext, AgentResponse, BaseAgent } from './index';
 
 export class AgentOrchestrator {
   private agents: Map<AgentType, BaseAgent> = new Map();
-  
+
   constructor() {
     // Initialize all agents
     this.agents.set(AgentType.TEACH_MODULE_GENERATOR, new TeachModuleGeneratorAgent());
-    this.agents.set(AgentType.LEARNING_TUTOR, new LearningTutorAgent());
+    // this.agents.set(AgentType.LEARNING_TUTOR, new LearningTutorAgent());
   }
 
   async executeAgent(

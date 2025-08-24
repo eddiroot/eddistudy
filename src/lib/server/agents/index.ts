@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export enum AgentType {
   TEACH_MODULE_GENERATOR = 'teach_module_generator',
   LEARNING_TUTOR = 'learning_tutor',
@@ -42,7 +43,6 @@ export interface AgentMemory {
 
 export interface StudentResponse {
   questionId: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   response: any; // create a zod4 for responses based on task blcoks 
   isCorrect: boolean;
   timestamp: Date;
@@ -55,4 +55,60 @@ export interface AttemptRecord {
   attempts: number;
   finalScore: number;
   timeToComplete: number;
+}
+
+export interface AgentContext {
+  userId: number;
+  sessionId: string;
+  moduleId?: number;
+  metadata: {
+    action: string;
+    moduleParams?: any;
+    previousResponse?: AgentResponse;
+    [key: string]: any;
+  };
+  memory: AgentMemory;
+}
+
+export interface AgentResponse {
+  content: string;
+  metadata: {
+    stage: string;
+    [key: string]: any;
+  };
+  sources?: any[];
+  error?: string;
+}
+
+export interface AgentConfig {
+  type: AgentType;
+  systemInstruction: string;
+  temperature?: number;
+  maxTokens?: number;
+}
+
+export abstract class BaseAgent {
+  protected config: AgentConfig;
+
+  constructor(config: AgentConfig) {
+    this.config = config;
+  }
+
+  abstract execute(context: AgentContext): Promise<AgentResponse>;
+
+  protected getSystemInstruction(): string {
+    return this.config.systemInstruction;
+  }
+
+  protected getType(): AgentType {
+    return this.config.type;
+  }
+
+  protected getTemperature(): number {
+    return this.config.temperature || 0.7;
+  }
+
+  protected getMaxTokens(): number {
+    return this.config.maxTokens || 2000;
+  }
 }

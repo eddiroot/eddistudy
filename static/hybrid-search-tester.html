@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hybrid Search Tester</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group { 
+            margin-bottom: 15px; 
+        }
+        label { 
+            display: block; 
+            margin-bottom: 5px; 
+            font-weight: bold;
+        }
+        input, select, textarea { 
+            width: 100%; 
+            padding: 8px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            box-sizing: border-box;
+        }
+        button { 
+            background: #007cba; 
+            color: white; 
+            padding: 10px 20px; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover { 
+            background: #005a87; 
+        }
+        .results { 
+            margin-top: 20px; 
+        }
+        .result-item { 
+            background: #f9f9f9; 
+            margin: 10px 0; 
+            padding: 15px; 
+            border-left: 4px solid #007cba; 
+            border-radius: 0 4px 4px 0;
+        }
+        .result-meta { 
+            color: #666; 
+            font-size: 0.9em; 
+            margin-bottom: 8px;
+        }
+        .result-content { 
+            line-height: 1.5;
+        }
+        .loading { 
+            color: #007cba; 
+            font-style: italic;
+        }
+        .error { 
+            color: #d32f2f; 
+            background: #ffebee; 
+            padding: 10px; 
+            border-radius: 4px;
+        }
+        .summary { 
+            background: #e3f2fd; 
+            padding: 15px; 
+            border-radius: 4px; 
+            margin: 15px 0;
+        }
+        .collection-group {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+        .collection-title {
+            font-weight: bold;
+            color: #007cba;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Hybrid Search Tester</h1>
+        <p>Test the hybrid search functionality to see what data is returned from the vector store.</p>
+        
+        <div class="form-group">
+            <label for="subjectId">Subject ID:</label>
+            <select id="subjectId">
+                <option value="1000">1000 - Accounting</option>
+                <option value="1001" selected>1001 - Biology</option>
+                <option value="1002">1002 - Business Management</option>
+                <option value="1003">1003 - Chemistry</option>
+                <option value="1004">1004 - Economics</option>
+                <option value="1005">1005 - English</option>
+                <option value="1006">1006 - Foundation Mathematics</option>
+                <option value="1007">1007 - General Mathematics</option>
+                <option value="1008">1008 - Health and Human Development</option>
+                <option value="1009">1009 - Legal Studies</option>
+                <option value="1010">1010 - Literature</option>
+                <option value="1011">1011 - Mathematical Methods</option>
+                <option value="1012">1012 - Physical Education</option>
+                <option value="1013">1013 - Physics</option>
+                <option value="1014">1014 - Psychology</option>
+                <option value="1015">1015 - Specialist Mathematics</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="query">Search Query:</label>
+            <input type="text" id="query" value="cellular respiration" placeholder="Enter your search query...">
+        </div>
+        
+        <div class="form-group">
+            <label for="collections">Collections to Search:</label>
+            <select id="collections" multiple style="height: 120px;">
+                <option value="curriculum_contents" selected>Curriculum Contents (Key Knowledge & Skills)</option>
+                <option value="learning_activities" selected>Learning Activities</option>
+                <option value="assessment_tasks" selected>Assessment Tasks</option>
+                <option value="exam_questions" selected>Exam Questions</option>
+                <option value="detailed_examples">Detailed Examples</option>
+                <option value="extra_contents">Extra Contents</option>
+            </select>
+            <small>Hold Ctrl/Cmd to select multiple collections</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="k">Number of Results (k):</label>
+            <input type="number" id="k" value="10" min="1" max="50">
+        </div>
+        
+        <button onclick="testHybridSearch()">🔍 Test Hybrid Search</button>
+        <button onclick="listCollections()">📚 List Collections</button>
+        <button onclick="clearResults()">🗑️ Clear Results</button>
+        
+        <div id="loading" class="loading" style="display: none;">
+            Searching vector store...
+        </div>
+        
+        <div id="results" class="results"></div>
+    </div>
+
+    <script>
+        async function listCollections() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').innerHTML = '';
+            
+            try {
+                const response = await fetch('/api/indexer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'list_collections'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayCollectionsList(data);
+                } else {
+                    displayError(data.error || 'Failed to list collections');
+                }
+            } catch (error) {
+                displayError(error.message);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+        
+        function displayCollectionsList(data) {
+            const resultsDiv = document.getElementById('results');
+            
+            let html = `
+                <div class="summary">
+                    <h3>📚 Available Collections</h3>
+                    <p><strong>Total Collections Found:</strong> ${data.collections.length}</p>
+                    <p><strong>Timestamp:</strong> ${new Date(data.timestamp).toLocaleString()}</p>
+                </div>
+            `;
+            
+            // Group collections by subject
+            const collectionsBySubject = {};
+            data.collections.forEach(collection => {
+                const parts = collection.name.split('_');
+                const subjectId = parts[0];
+                const type = parts.slice(1).join('_');
+                
+                if (!collectionsBySubject[subjectId]) {
+                    collectionsBySubject[subjectId] = [];
+                }
+                collectionsBySubject[subjectId].push({
+                    type,
+                    hasData: collection.hasData,
+                    fullName: collection.name
+                });
+            });
+            
+            for (const [subjectId, collections] of Object.entries(collectionsBySubject)) {
+                const collectionsWithData = collections.filter(c => c.hasData).length;
+                html += `
+                    <div class="collection-group">
+                        <div class="collection-title">
+                            📖 Subject ${subjectId} (${collectionsWithData}/${collections.length} collections with data)
+                        </div>
+                `;
+                
+                collections.forEach(collection => {
+                    const status = collection.hasData ? '✅ Has Data' : '⚪ Empty';
+                    html += `
+                        <div class="result-item">
+                            <div class="result-meta">
+                                <strong>Collection:</strong> ${collection.fullName} | <strong>Status:</strong> ${status}
+                            </div>
+                            <div class="result-content">
+                                <strong>Type:</strong> ${collection.type.replace('_', ' ').toUpperCase()}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            }
+            
+            if (data.collections.length === 0) {
+                html += '<div class="error">No collections found.</div>';
+            }
+            
+            resultsDiv.innerHTML = html;
+        }
+        
+        async function testHybridSearch() {
+            const subjectId = parseInt(document.getElementById('subjectId').value);
+            const query = document.getElementById('query').value.trim();
+            const collectionsSelect = document.getElementById('collections');
+            const collections = Array.from(collectionsSelect.selectedOptions).map(option => option.value);
+            const k = parseInt(document.getElementById('k').value);
+            
+            if (!query) {
+                alert('Please enter a search query');
+                return;
+            }
+            
+            if (collections.length === 0) {
+                alert('Please select at least one collection to search');
+                return;
+            }
+            
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').innerHTML = '';
+            
+            try {
+                const response = await fetch('/api/indexer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'test_hybrid_search',
+                        subjectId,
+                        query,
+                        collections,
+                        k
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayResults(data);
+                } else {
+                    displayError(data.error || 'Search failed');
+                }
+            } catch (error) {
+                displayError(error.message);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+        
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            
+            let html = `
+                <div class="summary">
+                    <h3>📊 Search Summary</h3>
+                    <p><strong>Query:</strong> "${data.query}"</p>
+                    <p><strong>Subject ID:</strong> ${data.searchParams.subjectId}</p>
+                    <p><strong>Collections:</strong> ${data.searchParams.collections.join(', ')}</p>
+                    <p><strong>Total Results:</strong> ${data.totalResults}</p>
+                    <p><strong>Timestamp:</strong> ${new Date(data.timestamp).toLocaleString()}</p>
+                </div>
+            `;
+            
+            // Display results grouped by source
+            for (const [source, results] of Object.entries(data.resultsBySource)) {
+                html += `
+                    <div class="collection-group">
+                        <div class="collection-title">📚 ${source.replace('_', ' ').toUpperCase()} (${results.length} results)</div>
+                `;
+                
+                results.forEach(result => {
+                    html += `
+                        <div class="result-item">
+                            <div class="result-meta">
+                                <strong>Rank:</strong> ${result.rank} | 
+                                <strong>Score:</strong> ${result.score?.toFixed(4) || 'N/A'} | 
+                                <strong>Type:</strong> ${result.contentType || 'Unknown'} | 
+                                <strong>Learning Area:</strong> ${result.learningArea || 'N/A'} |
+                                <strong>Topic:</strong> ${result.topicName || 'N/A'}
+                            </div>
+                            <div class="result-content">
+                                <strong>Content:</strong><br>
+                                ${result.preview}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            }
+            
+            if (data.totalResults === 0) {
+                html += '<div class="error">No results found for this query.</div>';
+            }
+            
+            resultsDiv.innerHTML = html;
+        }
+        
+        function displayError(error) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `<div class="error">❌ Error: ${error}</div>`;
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+        
+        // Allow Enter key to trigger search
+        document.getElementById('query').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                testHybridSearch();
+            }
+        });
+    </script>
+</body>
+</html>
