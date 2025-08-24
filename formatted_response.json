@@ -1,0 +1,2267 @@
+{
+    "success": true,
+    "action": "generate_complete_module",
+    "timestamp": "2025-08-24T07:08:56.989Z",
+    "result": {
+        "module": {
+            "scaffold": {
+                "overallObjective": "To understand the fundamental process of photosynthesis, including its stages, cellular location, key reactants and products, and the factors influencing its rate.",
+                "sections": [
+                    {
+                        "concepts": [
+                            "Definition of photosynthesis",
+                            "General word and chemical equations of photosynthesis",
+                            "Plant cell structure focusing on chloroplasts",
+                            "Chloroplast components (stroma, thylakoids) and their general roles"
+                        ],
+                        "difficulty": "beginner",
+                        "estimatedTime": 10,
+                        "objective": "Define photosynthesis and identify the cellular and organelle locations where it occurs.",
+                        "prerequisites": [
+                            "Basic knowledge of plant cells and organelles"
+                        ],
+                        "retrievalPoints": [
+                            "Quick check: What are the two primary reactants for photosynthesis, and what is its main energy-rich product?",
+                            "Draw and label a chloroplast, indicating the stroma and thylakoid membranes.",
+                            "Explain why chloroplasts are essential for photosynthesis, linking their structure to the process."
+                        ],
+                        "skills": [
+                            "Define scientific terms",
+                            "Relate cell structures to functions"
+                        ],
+                        "title": "Photosynthesis Overview and Location"
+                    },
+                    {
+                        "concepts": [
+                            "Light-dependent reactions overview",
+                            "Absorption of light energy by chlorophyll",
+                            "Photolysis of water: role and products (oxygen, electrons, protons)",
+                            "Production of ATP and NADPH as energy carriers",
+                            "Specific location: thylakoid membranes"
+                        ],
+                        "difficulty": "intermediate",
+                        "estimatedTime": 12,
+                        "objective": "Describe the inputs, outputs, and specific location of the light-dependent reactions within the chloroplast.",
+                        "prerequisites": [
+                            "Understanding of chloroplast structure",
+                            "Basic energy concepts (ATP, NADPH as energy carriers)"
+                        ],
+                        "retrievalPoints": [
+                            "List the inputs and outputs of the light-dependent reactions.",
+                            "Where specifically do the light-dependent reactions occur within the chloroplast, and what is the significance of this location?",
+                            "If water is scarce, how would this immediately impact the light-dependent reactions?"
+                        ],
+                        "skills": [
+                            "Identify inputs and outputs of a biochemical pathway",
+                            "Trace the flow of energy and matter"
+                        ],
+                        "title": "The Light-Dependent Stage"
+                    },
+                    {
+                        "concepts": [
+                            "Light-independent reactions (Calvin Cycle) overview",
+                            "Carbon fixation: role of atmospheric CO2",
+                            "Utilisation of ATP and NADPH from light-dependent reactions",
+                            "Synthesis of glucose/sugars",
+                            "General role of enzymes in metabolic pathways",
+                            "Specific role of Rubisco in carbon fixation in C3 plants",
+                            "Specific location: chloroplast stroma"
+                        ],
+                        "difficulty": "intermediate",
+                        "estimatedTime": 15,
+                        "objective": "Describe the inputs, outputs, specific location, and the general role of enzymes like Rubisco in the light-independent reactions.",
+                        "prerequisites": [
+                            "Understanding of the light-dependent stage",
+                            "Basic enzyme function"
+                        ],
+                        "retrievalPoints": [
+                            "What are the three essential inputs for the light-independent reactions?",
+                            "Explain the role of Rubisco in converting atmospheric carbon dioxide into organic molecules.",
+                            "Compare and contrast the energy requirements and products of the light-dependent and light-independent stages."
+                        ],
+                        "skills": [
+                            "Describe stages of a biochemical process",
+                            "Explain the function of a key enzyme"
+                        ],
+                        "title": "The Light-Independent Stage (Calvin Cycle)"
+                    },
+                    {
+                        "concepts": [
+                            "Concept of limiting factors in biological processes",
+                            "Effect of light intensity on photosynthesis rate (light saturation point)",
+                            "Effect of carbon dioxide concentration on photosynthesis rate (CO2 saturation point)",
+                            "Effect of temperature on photosynthesis rate (optimal range, denaturation of enzymes)",
+                            "Effect of water availability on photosynthesis rate (stomata closure, turgor pressure)",
+                            "Graphical representation of these factors"
+                        ],
+                        "difficulty": "intermediate",
+                        "estimatedTime": 13,
+                        "objective": "Analyse how environmental factors such as light intensity, carbon dioxide concentration, temperature, and water availability affect the rate of photosynthesis.",
+                        "prerequisites": [
+                            "Understanding of all stages of photosynthesis"
+                        ],
+                        "retrievalPoints": [
+                            "If a plant is exposed to very low light, which stage of photosynthesis would be most directly affected and why?",
+                            "Describe how increasing temperature beyond an optimal point can decrease the rate of photosynthesis.",
+                            "Design an experiment to investigate the effect of carbon dioxide concentration on the rate of photosynthesis, identifying key variables."
+                        ],
+                        "skills": [
+                            "Interpret scientific data (e.g., graphs)",
+                            "Predict outcomes based on environmental changes",
+                            "Explain cause-and-effect relationships in biological systems"
+                        ],
+                        "title": "Factors Affecting Photosynthesis Rate"
+                    }
+                ]
+            },
+            "sections": [
+                {
+                    "sectionInfo": {
+                        "concepts": [
+                            "Definition of photosynthesis",
+                            "General word and chemical equations of photosynthesis",
+                            "Plant cell structure focusing on chloroplasts",
+                            "Chloroplast components (stroma, thylakoids) and their general roles"
+                        ],
+                        "difficulty": "beginner",
+                        "estimatedTime": 10,
+                        "objective": "Define photosynthesis and identify the cellular and organelle locations where it occurs.",
+                        "prerequisites": [
+                            "Basic knowledge of plant cells and organelles"
+                        ],
+                        "retrievalPoints": [
+                            "Quick check: What are the two primary reactants for photosynthesis, and what is its main energy-rich product?",
+                            "Draw and label a chloroplast, indicating the stroma and thylakoid membranes.",
+                            "Explain why chloroplasts are essential for photosynthesis, linking their structure to the process."
+                        ],
+                        "skills": [
+                            "Define scientific terms",
+                            "Relate cell structures to functions"
+                        ],
+                        "title": "Photosynthesis Overview and Location"
+                    },
+                    "content": {
+                        "blocks": [
+                            {
+                                "config": {
+                                    "size": 2,
+                                    "text": "Photosynthesis: Fueling Life on Earth"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "<p>Remember how we discussed that plant cells have organelles? Well, one of the most vital organelles, unique to plant cells (and some other autotrophs), is the <b>chloroplast</b>. This amazing organelle is the site of <b>photosynthesis</b>, the process that literally fuels most life on Earth!</p><p>Think of plants as nature's solar panels. They capture energy from sunlight and convert it into a usable form of chemical energy. This chemical energy is stored in a sugar called <b>glucose</b>, which they use for growth and other metabolic processes. We, and other heterotrophs, then consume plants (or animals that eat plants) to obtain this stored energy.</p>"
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "What is Photosynthesis?"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "<p>Simply put, photosynthesis is the process by which light energy is converted into chemical energy, primarily in the form of glucose. It uses carbon dioxide and water as raw materials, with oxygen produced as a byproduct.</p><p>The general word equation for photosynthesis is:</p><ul><li><b>Carbon Dioxide + Water + Light Energy \u2192 Glucose + Oxygen</b></li></ul><p>The balanced chemical equation is:</p><ul><li><b>6CO\u2082 + 6H\u2082O + Light Energy \u2192 C\u2086H\u2081\u2082O\u2086 + 6O\u2082</b></li></ul><p>From this equation, we can see the essential inputs (carbon dioxide, water, light energy) and the crucial outputs (glucose, oxygen).</p>"
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "Where Does Photosynthesis Occur?"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "<p>Photosynthesis occurs in specific locations, starting from the macroscopic level down to the intricate structures within an organelle:</p><h3>1. Plant Level: The Leaves</h3><p>While all green parts of a plant can photosynthesise, the primary site is typically the <b>leaves</b>. Leaves are structurally adapted to maximise light absorption and gas exchange. For example, their broad, flat shape increases surface area, and they have tiny pores called stomata for CO\u2082 intake.</p><h3>2. Cellular Level: Plant Cells</h3><p>Within the leaves, photosynthesis takes place in specialised plant cells, particularly those found in the <b>mesophyll</b> layer (e.g., palisade mesophyll cells), which are rich in chloroplasts.</p><h3>3. Organelle Level: The Chloroplast</h3><p>The ultimate site of photosynthesis is the <b>chloroplast</b>. You might recall from your basic plant cell knowledge that chloroplasts are oval-shaped organelles, typically larger than mitochondria, and are responsible for the green colour of plants. A typical plant cell can contain dozens of chloroplasts!</p><p>Imagine a chloroplast as a miniature, highly organised factory within the cell. It's enclosed by a <b>double membrane</b> (an outer and an inner membrane), which helps regulate what enters and leaves the organelle.</p>"
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "Components of the Chloroplast and Their Roles"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "<p>Inside the chloroplast, there are two main functional regions:</p><ul><li><b>Stroma:</b> This is the dense, fluid-filled space within the inner membrane of the chloroplast. Think of it as the cytoplasm of the chloroplast. The stroma contains enzymes, ribosomes, and its own DNA. It's the site where the 'sugar-making' reactions of photosynthesis occur.</li><li><b>Thylakoids:</b> Suspended within the stroma is a system of interconnected flattened sacs called <b>thylakoids</b>. Imagine them as tiny, membrane-bound pancakes. The thylakoid membranes contain the pigments (like chlorophyll) that absorb light energy.</li></ul><p>These thylakoids are often stacked up like piles of coins. Each stack is called a <b>granum</b> (plural: grana). The extensive surface area provided by these thylakoid membranes is crucial for efficiently capturing light energy, which is the first step in photosynthesis.</p><p>In summary, the chloroplast's structure\u2014with its stroma and thylakoids organized into grana\u2014is perfectly designed to carry out the two main stages of photosynthesis: capturing light and converting it into chemical energy to make sugar.</p>"
+                                },
+                                "type": "rich_text"
+                            }
+                        ],
+                        "metadata": {
+                            "blocks": [
+                                {
+                                    "config": {
+                                        "size": 2,
+                                        "text": "Photosynthesis: Fueling Life on Earth"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "<p>Remember how we discussed that plant cells have organelles? Well, one of the most vital organelles, unique to plant cells (and some other autotrophs), is the <b>chloroplast</b>. This amazing organelle is the site of <b>photosynthesis</b>, the process that literally fuels most life on Earth!</p><p>Think of plants as nature's solar panels. They capture energy from sunlight and convert it into a usable form of chemical energy. This chemical energy is stored in a sugar called <b>glucose</b>, which they use for growth and other metabolic processes. We, and other heterotrophs, then consume plants (or animals that eat plants) to obtain this stored energy.</p>"
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "What is Photosynthesis?"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "<p>Simply put, photosynthesis is the process by which light energy is converted into chemical energy, primarily in the form of glucose. It uses carbon dioxide and water as raw materials, with oxygen produced as a byproduct.</p><p>The general word equation for photosynthesis is:</p><ul><li><b>Carbon Dioxide + Water + Light Energy \u2192 Glucose + Oxygen</b></li></ul><p>The balanced chemical equation is:</p><ul><li><b>6CO\u2082 + 6H\u2082O + Light Energy \u2192 C\u2086H\u2081\u2082O\u2086 + 6O\u2082</b></li></ul><p>From this equation, we can see the essential inputs (carbon dioxide, water, light energy) and the crucial outputs (glucose, oxygen).</p>"
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "Where Does Photosynthesis Occur?"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "<p>Photosynthesis occurs in specific locations, starting from the macroscopic level down to the intricate structures within an organelle:</p><h3>1. Plant Level: The Leaves</h3><p>While all green parts of a plant can photosynthesise, the primary site is typically the <b>leaves</b>. Leaves are structurally adapted to maximise light absorption and gas exchange. For example, their broad, flat shape increases surface area, and they have tiny pores called stomata for CO\u2082 intake.</p><h3>2. Cellular Level: Plant Cells</h3><p>Within the leaves, photosynthesis takes place in specialised plant cells, particularly those found in the <b>mesophyll</b> layer (e.g., palisade mesophyll cells), which are rich in chloroplasts.</p><h3>3. Organelle Level: The Chloroplast</h3><p>The ultimate site of photosynthesis is the <b>chloroplast</b>. You might recall from your basic plant cell knowledge that chloroplasts are oval-shaped organelles, typically larger than mitochondria, and are responsible for the green colour of plants. A typical plant cell can contain dozens of chloroplasts!</p><p>Imagine a chloroplast as a miniature, highly organised factory within the cell. It's enclosed by a <b>double membrane</b> (an outer and an inner membrane), which helps regulate what enters and leaves the organelle.</p>"
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "Components of the Chloroplast and Their Roles"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "<p>Inside the chloroplast, there are two main functional regions:</p><ul><li><b>Stroma:</b> This is the dense, fluid-filled space within the inner membrane of the chloroplast. Think of it as the cytoplasm of the chloroplast. The stroma contains enzymes, ribosomes, and its own DNA. It's the site where the 'sugar-making' reactions of photosynthesis occur.</li><li><b>Thylakoids:</b> Suspended within the stroma is a system of interconnected flattened sacs called <b>thylakoids</b>. Imagine them as tiny, membrane-bound pancakes. The thylakoid membranes contain the pigments (like chlorophyll) that absorb light energy.</li></ul><p>These thylakoids are often stacked up like piles of coins. Each stack is called a <b>granum</b> (plural: grana). The extensive surface area provided by these thylakoid membranes is crucial for efficiently capturing light energy, which is the first step in photosynthesis.</p><p>In summary, the chloroplast's structure\u2014with its stroma and thylakoids organized into grana\u2014is perfectly designed to carry out the two main stages of photosynthesis: capturing light and converting it into chemical energy to make sugar.</p>"
+                                    },
+                                    "type": "rich_text"
+                                }
+                            ]
+                        }
+                    },
+                    "interactive": {
+                        "blocks": [
+                            {
+                                "difficulty": "beginner",
+                                "hints": [
+                                    "Think about the ultimate energy source for most life on Earth.",
+                                    "Plants need a specific type of energy from the sun to start this process.",
+                                    "What form of energy does the sun provide that plants capture?"
+                                ],
+                                "steps": [
+                                    "Photosynthesis is fundamentally about converting one form of energy into another.",
+                                    "Plants use energy from the sun.",
+                                    "This energy from the sun is captured as \"solar\" or \"light\" energy to be converted into chemical energy."
+                                ],
+                                "taskBlock": {
+                                    "config": {
+                                        "answer": "solar",
+                                        "sentence": "Photosynthesis is the process by which green plants, algae, and some bacteria convert ______ energy into chemical energy, in the form of glucose."
+                                    },
+                                    "type": "fill_blank",
+                                    "marks": 1
+                                }
+                            },
+                            {
+                                "difficulty": "intermediate",
+                                "hints": [
+                                    "Consider which organelle is typically green in plant cells due to a specific pigment.",
+                                    "Think about the organelles involved in energy transformations within a plant cell. One makes food, the other breaks it down.",
+                                    "The organelle is known for containing chlorophyll."
+                                ],
+                                "steps": [
+                                    "Identify the function of each organelle in the options.",
+                                    "Recall which organelle is specifically adapted for capturing light energy and synthesizing glucose.",
+                                    "The chloroplast is the site where chlorophyll is found and where the process of photosynthesis takes place.",
+                                    "Feedback for incorrect options: Mitochondrion is responsible for cellular respiration, breaking down glucose to release energy. The Nucleus controls cell activities and contains genetic material. The Vacuole stores water, nutrients, and waste."
+                                ],
+                                "taskBlock": {
+                                    "config": {
+                                        "options": [
+                                            {
+                                                "isAnswer": false,
+                                                "text": "Mitochondrion"
+                                            },
+                                            {
+                                                "isAnswer": true,
+                                                "text": "Chloroplast"
+                                            },
+                                            {
+                                                "isAnswer": false,
+                                                "text": "Nucleus"
+                                            },
+                                            {
+                                                "isAnswer": false,
+                                                "text": "Vacuole"
+                                            }
+                                        ],
+                                        "question": "In which plant cell organelle does photosynthesis primarily occur?"
+                                    },
+                                    "type": "choice",
+                                    "marks": 1
+                                }
+                            },
+                            {
+                                "difficulty": "advanced",
+                                "hints": [
+                                    "Remember that photosynthesis has two main stages: light-dependent and light-independent. Which part of the chloroplast is associated with the first stage?",
+                                    "Think about the key pigment that absorbs light and where it must be located within the chloroplast for this absorption to occur.",
+                                    "Specifically, the thylakoid membranes are where the chlorophyll molecules reside, initiating the light-dependent reactions."
+                                ],
+                                "steps": [
+                                    "Recall the internal structure of a chloroplast, specifically the flattened sacs.",
+                                    "Identify what crucial pigment is found within these sacs.",
+                                    "Connect the pigment's location to the initial stage of photosynthesis \u2013 the light-dependent reactions.",
+                                    "Formulate an answer that clearly states the thylakoids are the site of light-dependent reactions where chlorophyll absorbs light energy."
+                                ],
+                                "taskBlock": {
+                                    "config": {
+                                        "question": "Describe the role of the thylakoids within the chloroplast in the process of photosynthesis."
+                                    },
+                                    "criteria": [
+                                        {
+                                            "description": "Identifies thylakoids as the site of light-dependent reactions.",
+                                            "marks": 1
+                                        },
+                                        {
+                                            "description": "Mentions that chlorophyll is located here, capturing light energy.",
+                                            "marks": 1
+                                        }
+                                    ],
+                                    "type": "short_answer",
+                                    "marks": 2
+                                }
+                            }
+                        ],
+                        "metadata": {
+                            "interactiveBlocks": [
+                                {
+                                    "difficulty": "beginner",
+                                    "hints": [
+                                        "Think about the ultimate energy source for most life on Earth.",
+                                        "Plants need a specific type of energy from the sun to start this process.",
+                                        "What form of energy does the sun provide that plants capture?"
+                                    ],
+                                    "steps": [
+                                        "Photosynthesis is fundamentally about converting one form of energy into another.",
+                                        "Plants use energy from the sun.",
+                                        "This energy from the sun is captured as \"solar\" or \"light\" energy to be converted into chemical energy."
+                                    ],
+                                    "taskBlock": {
+                                        "config": {
+                                            "answer": "solar",
+                                            "sentence": "Photosynthesis is the process by which green plants, algae, and some bacteria convert ______ energy into chemical energy, in the form of glucose."
+                                        },
+                                        "type": "fill_blank",
+                                        "marks": 1
+                                    }
+                                },
+                                {
+                                    "difficulty": "intermediate",
+                                    "hints": [
+                                        "Consider which organelle is typically green in plant cells due to a specific pigment.",
+                                        "Think about the organelles involved in energy transformations within a plant cell. One makes food, the other breaks it down.",
+                                        "The organelle is known for containing chlorophyll."
+                                    ],
+                                    "steps": [
+                                        "Identify the function of each organelle in the options.",
+                                        "Recall which organelle is specifically adapted for capturing light energy and synthesizing glucose.",
+                                        "The chloroplast is the site where chlorophyll is found and where the process of photosynthesis takes place.",
+                                        "Feedback for incorrect options: Mitochondrion is responsible for cellular respiration, breaking down glucose to release energy. The Nucleus controls cell activities and contains genetic material. The Vacuole stores water, nutrients, and waste."
+                                    ],
+                                    "taskBlock": {
+                                        "config": {
+                                            "options": [
+                                                {
+                                                    "isAnswer": false,
+                                                    "text": "Mitochondrion"
+                                                },
+                                                {
+                                                    "isAnswer": true,
+                                                    "text": "Chloroplast"
+                                                },
+                                                {
+                                                    "isAnswer": false,
+                                                    "text": "Nucleus"
+                                                },
+                                                {
+                                                    "isAnswer": false,
+                                                    "text": "Vacuole"
+                                                }
+                                            ],
+                                            "question": "In which plant cell organelle does photosynthesis primarily occur?"
+                                        },
+                                        "type": "choice",
+                                        "marks": 1
+                                    }
+                                },
+                                {
+                                    "difficulty": "advanced",
+                                    "hints": [
+                                        "Remember that photosynthesis has two main stages: light-dependent and light-independent. Which part of the chloroplast is associated with the first stage?",
+                                        "Think about the key pigment that absorbs light and where it must be located within the chloroplast for this absorption to occur.",
+                                        "Specifically, the thylakoid membranes are where the chlorophyll molecules reside, initiating the light-dependent reactions."
+                                    ],
+                                    "steps": [
+                                        "Recall the internal structure of a chloroplast, specifically the flattened sacs.",
+                                        "Identify what crucial pigment is found within these sacs.",
+                                        "Connect the pigment's location to the initial stage of photosynthesis \u2013 the light-dependent reactions.",
+                                        "Formulate an answer that clearly states the thylakoids are the site of light-dependent reactions where chlorophyll absorbs light energy."
+                                    ],
+                                    "taskBlock": {
+                                        "config": {
+                                            "question": "Describe the role of the thylakoids within the chloroplast in the process of photosynthesis."
+                                        },
+                                        "criteria": [
+                                            {
+                                                "description": "Identifies thylakoids as the site of light-dependent reactions.",
+                                                "marks": 1
+                                            },
+                                            {
+                                                "description": "Mentions that chlorophyll is located here, capturing light energy.",
+                                                "marks": 1
+                                            }
+                                        ],
+                                        "type": "short_answer",
+                                        "marks": 2
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "sources": {
+                        "content": [
+                            {
+                                "content": "Key Knowledge:\nthe general structure of the biochemical pathways in photosynthesis and cellular respiration from initial reactant to final product\nTopic: Topic 5020",
+                                "score": 0.4689232,
+                                "metadata": {
+                                    "topic": "Topic 5020",
+                                    "type": "key_knowledge",
+                                    "id": 1222,
+                                    "outcomeId": 1016,
+                                    "subjectId": 1001
+                                },
+                                "source": "curriculum_contents"
+                            },
+                            {
+                                "content": "Key Knowledge:\nthe structure and specialisation of plant and animal cell organelles for distinct functions, including chloroplasts and mitochondria\nTopic: Topic 4001",
+                                "score": 0.47963104,
+                                "metadata": {
+                                    "outcomeId": 1009,
+                                    "subjectId": 1001,
+                                    "topic": "Topic 4001",
+                                    "id": 1154,
+                                    "type": "key_knowledge"
+                                },
+                                "source": "curriculum_contents"
+                            },
+                            {
+                                "content": "Key Knowledge:\nthe general role of enzymes and coenzymes in facilitating steps in photosynthesis and cellular respiration\nTopic: Topic 5020",
+                                "score": 0.48334745,
+                                "metadata": {
+                                    "subjectId": 1001,
+                                    "outcomeId": 1016,
+                                    "topic": "Topic 5020",
+                                    "type": "key_knowledge",
+                                    "id": 1223
+                                },
+                                "source": "curriculum_contents"
+                            },
+                            {
+                                "content": "Key Knowledge:\ninputs, outputs and locations of the light dependent and light independent stages of photosynthesis in C3 plants (details of biochemical pathway mechanisms are not required)\nTopic: Topic 5020",
+                                "score": 0.52903533,
+                                "metadata": {
+                                    "type": "key_knowledge",
+                                    "topic": "Topic 5020",
+                                    "id": 1225,
+                                    "subjectId": 1001,
+                                    "outcomeId": 1016
+                                },
+                                "source": "curriculum_contents"
+                            },
+                            {
+                                "content": "Key Knowledge:\nthe role of Rubisco in photosynthesis, including adaptations of C3, C4 and CAM plants to maximise the efficiency of photosynthesis\nTopic: Topic 5020",
+                                "score": 0.5450138,
+                                "metadata": {
+                                    "outcomeId": 1016,
+                                    "topic": "Topic 5020",
+                                    "type": "key_knowledge",
+                                    "subjectId": 1001,
+                                    "id": 1226
+                                },
+                                "source": "curriculum_contents"
+                            }
+                        ],
+                        "interactive": []
+                    }
+                },
+                {
+                    "sectionInfo": {
+                        "concepts": [
+                            "Light-dependent reactions overview",
+                            "Absorption of light energy by chlorophyll",
+                            "Photolysis of water: role and products (oxygen, electrons, protons)",
+                            "Production of ATP and NADPH as energy carriers",
+                            "Specific location: thylakoid membranes"
+                        ],
+                        "difficulty": "intermediate",
+                        "estimatedTime": 12,
+                        "objective": "Describe the inputs, outputs, and specific location of the light-dependent reactions within the chloroplast.",
+                        "prerequisites": [
+                            "Understanding of chloroplast structure",
+                            "Basic energy concepts (ATP, NADPH as energy carriers)"
+                        ],
+                        "retrievalPoints": [
+                            "List the inputs and outputs of the light-dependent reactions.",
+                            "Where specifically do the light-dependent reactions occur within the chloroplast, and what is the significance of this location?",
+                            "If water is scarce, how would this immediately impact the light-dependent reactions?"
+                        ],
+                        "skills": [
+                            "Identify inputs and outputs of a biochemical pathway",
+                            "Trace the flow of energy and matter"
+                        ],
+                        "title": "The Light-Dependent Stage"
+                    },
+                    "content": {
+                        "blocks": [
+                            {
+                                "config": {
+                                    "size": 2,
+                                    "text": "The Light-Dependent Stage: Capturing the Sun's Energy"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "Photosynthesis, the incredible process by which plants convert light energy into chemical energy, occurs in two main stages. We've previously explored the overall structure of the chloroplast, the cellular powerhouse where this magic happens. Now, let's dive into the first crucial step: the <strong>light-dependent reactions</strong>. These reactions are aptly named because they absolutely require light to proceed."
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "Location: The Thylakoid Membranes"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "For the light-dependent reactions to occur, specific structures within the chloroplast are essential. These reactions take place exclusively within the <strong>thylakoid membranes</strong>. Recall that thylakoids are flattened, sac-like membranes often stacked into structures called grana. Imagine these membranes as the 'workbenches' where light energy is first harvested and converted. This precise location is critical for setting up the necessary gradients and pathways."
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "Inputs: Light Energy and Water"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "The light-dependent stage relies on two primary inputs:"
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 4,
+                                    "text": "1. Light Energy and Chlorophyll"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "As the name suggests, the most obvious input is <strong>light energy</strong> from the sun. Plants have evolved specialized pigments, primarily <strong>chlorophyll</strong>, to efficiently capture this energy. Chlorophyll molecules are embedded directly within the thylakoid membranes, acting like tiny, highly efficient solar panels. When light strikes these chlorophyll molecules, it excites their electrons to a higher energy level. These energized electrons are now ready to be passed along an electron transport chain, much like a 'hot potato' game, releasing energy at each step."
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 4,
+                                    "text": "2. Water (H\u2082O) and Photolysis"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "The second crucial input is <strong>water (H\u2082O)</strong>. During the light-dependent reactions, water molecules are split in a process called <strong>photolysis</strong> (from 'photo' meaning light, and 'lysis' meaning splitting). Think of photolysis as a light-powered 'water-splitting factory' operating within the thylakoid lumen (the space inside the thylakoid sac). This process is absolutely vital for providing the continuous supply of electrons needed to replace those lost by chlorophyll and keep the energy flow going."
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "Products of Photolysis"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "When a water molecule is split during photolysis, it yields three critical components:"
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 4,
+                                    "text": "Oxygen (O\u2082)"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "This is released as a byproduct into the atmosphere. For us and many other organisms, this oxygen is essential for aerobic respiration. This is precisely why plants are often referred to as the 'lungs of the Earth'!"
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 4,
+                                    "text": "Electrons (e\u207b)"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "These high-energy electrons are used to replace the electrons lost by chlorophyll, ensuring the electron transport chain can continue to function. They are passed along a series of protein complexes embedded in the thylakoid membrane."
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 4,
+                                    "text": "Protons (H\u207a) or Hydrogen Ions"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "These accumulate within the thylakoid lumen, creating a high concentration gradient. This gradient represents a form of potential energy, similar to water held behind a dam, and is crucial for ATP production."
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "Outputs: Production of ATP and NADPH"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "The energy captured from sunlight, coupled with the flow of electrons and protons, is ultimately converted into two vital energy-carrying molecules:"
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 4,
+                                    "text": "ATP (Adenosine Triphosphate)"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "Often called the 'energy currency' of the cell, ATP provides the immediate energy needed for various cellular processes. In the light-dependent reactions, ATP is synthesized through a process called <strong>photophosphorylation</strong>. The energy from the electron transport chain powers proton pumps, which move H\u207a ions into the thylakoid lumen, creating a high concentration. These protons then flow back out of the lumen into the stroma through an enzyme called ATP synthase, which acts like a tiny turbine, generating ATP from ADP (Adenosine Diphosphate) and inorganic phosphate (Pi)."
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 4,
+                                    "text": "NADPH (Nicotinamide Adenine Dinucleotide Phosphate)"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "NADPH is a crucial <strong>high-energy electron carrier</strong>. At the very end of the electron transport chain, the energized electrons (along with protons from the stroma) are accepted by NADP\u207a, reducing it to NADPH. NADPH carries both energy and 'reducing power' (the ability to donate electrons for synthesis reactions) to the next stage of photosynthesis."
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "Summary of Outputs"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "To summarize, the light-dependent reactions take place on the thylakoid membranes and convert light energy into chemical energy, producing:"
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "html": "<ul><li><strong>ATP:</strong> Chemical energy for the cell.</li><li><strong>NADPH:</strong> High-energy electron carrier.</li><li><strong>Oxygen (O\u2082):</strong> A gaseous byproduct released into the atmosphere.</li></ul>"
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "html": "These newly formed ATP and NADPH molecules are now ready to power the <strong>light-independent stage</strong> (Calvin Cycle) in the chloroplast's stroma, where they will be used to 'fix' carbon dioxide into glucose \u2013 the ultimate food for the plant. Understanding these inputs, outputs, and the specific location is fundamental to grasping how photosynthesis works!"
+                                },
+                                "type": "rich_text"
+                            }
+                        ],
+                        "metadata": {
+                            "blocks": [
+                                {
+                                    "config": {
+                                        "size": 2,
+                                        "text": "The Light-Dependent Stage: Capturing the Sun's Energy"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "Photosynthesis, the incredible process by which plants convert light energy into chemical energy, occurs in two main stages. We've previously explored the overall structure of the chloroplast, the cellular powerhouse where this magic happens. Now, let's dive into the first crucial step: the <strong>light-dependent reactions</strong>. These reactions are aptly named because they absolutely require light to proceed."
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "Location: The Thylakoid Membranes"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "For the light-dependent reactions to occur, specific structures within the chloroplast are essential. These reactions take place exclusively within the <strong>thylakoid membranes</strong>. Recall that thylakoids are flattened, sac-like membranes often stacked into structures called grana. Imagine these membranes as the 'workbenches' where light energy is first harvested and converted. This precise location is critical for setting up the necessary gradients and pathways."
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "Inputs: Light Energy and Water"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "The light-dependent stage relies on two primary inputs:"
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 4,
+                                        "text": "1. Light Energy and Chlorophyll"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "As the name suggests, the most obvious input is <strong>light energy</strong> from the sun. Plants have evolved specialized pigments, primarily <strong>chlorophyll</strong>, to efficiently capture this energy. Chlorophyll molecules are embedded directly within the thylakoid membranes, acting like tiny, highly efficient solar panels. When light strikes these chlorophyll molecules, it excites their electrons to a higher energy level. These energized electrons are now ready to be passed along an electron transport chain, much like a 'hot potato' game, releasing energy at each step."
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 4,
+                                        "text": "2. Water (H\u2082O) and Photolysis"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "The second crucial input is <strong>water (H\u2082O)</strong>. During the light-dependent reactions, water molecules are split in a process called <strong>photolysis</strong> (from 'photo' meaning light, and 'lysis' meaning splitting). Think of photolysis as a light-powered 'water-splitting factory' operating within the thylakoid lumen (the space inside the thylakoid sac). This process is absolutely vital for providing the continuous supply of electrons needed to replace those lost by chlorophyll and keep the energy flow going."
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "Products of Photolysis"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "When a water molecule is split during photolysis, it yields three critical components:"
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 4,
+                                        "text": "Oxygen (O\u2082)"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "This is released as a byproduct into the atmosphere. For us and many other organisms, this oxygen is essential for aerobic respiration. This is precisely why plants are often referred to as the 'lungs of the Earth'!"
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 4,
+                                        "text": "Electrons (e\u207b)"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "These high-energy electrons are used to replace the electrons lost by chlorophyll, ensuring the electron transport chain can continue to function. They are passed along a series of protein complexes embedded in the thylakoid membrane."
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 4,
+                                        "text": "Protons (H\u207a) or Hydrogen Ions"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "These accumulate within the thylakoid lumen, creating a high concentration gradient. This gradient represents a form of potential energy, similar to water held behind a dam, and is crucial for ATP production."
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "Outputs: Production of ATP and NADPH"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "The energy captured from sunlight, coupled with the flow of electrons and protons, is ultimately converted into two vital energy-carrying molecules:"
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 4,
+                                        "text": "ATP (Adenosine Triphosphate)"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "Often called the 'energy currency' of the cell, ATP provides the immediate energy needed for various cellular processes. In the light-dependent reactions, ATP is synthesized through a process called <strong>photophosphorylation</strong>. The energy from the electron transport chain powers proton pumps, which move H\u207a ions into the thylakoid lumen, creating a high concentration. These protons then flow back out of the lumen into the stroma through an enzyme called ATP synthase, which acts like a tiny turbine, generating ATP from ADP (Adenosine Diphosphate) and inorganic phosphate (Pi)."
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 4,
+                                        "text": "NADPH (Nicotinamide Adenine Dinucleotide Phosphate)"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "NADPH is a crucial <strong>high-energy electron carrier</strong>. At the very end of the electron transport chain, the energized electrons (along with protons from the stroma) are accepted by NADP\u207a, reducing it to NADPH. NADPH carries both energy and 'reducing power' (the ability to donate electrons for synthesis reactions) to the next stage of photosynthesis."
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "Summary of Outputs"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "To summarize, the light-dependent reactions take place on the thylakoid membranes and convert light energy into chemical energy, producing:"
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "html": "<ul><li><strong>ATP:</strong> Chemical energy for the cell.</li><li><strong>NADPH:</strong> High-energy electron carrier.</li><li><strong>Oxygen (O\u2082):</strong> A gaseous byproduct released into the atmosphere.</li></ul>"
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "html": "These newly formed ATP and NADPH molecules are now ready to power the <strong>light-independent stage</strong> (Calvin Cycle) in the chloroplast's stroma, where they will be used to 'fix' carbon dioxide into glucose \u2013 the ultimate food for the plant. Understanding these inputs, outputs, and the specific location is fundamental to grasping how photosynthesis works!"
+                                    },
+                                    "type": "rich_text"
+                                }
+                            ]
+                        }
+                    },
+                    "interactive": {
+                        "blocks": [
+                            {
+                                "difficulty": "beginner",
+                                "hints": [
+                                    "Think about the specific internal structures within a chloroplast.",
+                                    "Recall which part of the chloroplast is responsible for trapping light energy.",
+                                    "The term refers to the flattened sacs found within the grana."
+                                ],
+                                "steps": [
+                                    "Identify the process: Light-dependent reactions.",
+                                    "Recall the organelle where photosynthesis occurs: Chloroplast.",
+                                    "Within the chloroplast, pinpoint the specific membrane system where chlorophyll is embedded and light is captured.",
+                                    "The answer is \"thylakoid membranes\"."
+                                ],
+                                "taskBlock": {
+                                    "config": {
+                                        "answer": "thylakoid membranes",
+                                        "sentence": "The light-dependent reactions of photosynthesis occur in the _____."
+                                    },
+                                    "type": "fill_blank",
+                                    "marks": 1
+                                }
+                            },
+                            {
+                                "difficulty": "intermediate",
+                                "hints": [
+                                    "Consider what water is specifically broken down into during photolysis.",
+                                    "Remember that photolysis provides components crucial for the rest of the light-dependent reactions.",
+                                    "Glucose is a product of photosynthesis, but which stage does it appear in? Think about the \"dependent\" nature of the light-dependent reactions."
+                                ],
+                                "steps": [
+                                    "Identify the core process: photolysis of water.",
+                                    "Recall the chemical equation and products of water splitting (H\u2082O \u2192 O\u2082 + e\u207b + H\u207a).",
+                                    "Compare these products with the given options.",
+                                    "Glucose is formed later in the light-independent (Calvin) cycle, not directly from photolysis in the light-dependent reactions.",
+                                    "Therefore, Glucose (C\u2086H\u2081\u2082O\u2086) is the correct answer."
+                                ],
+                                "taskBlock": {
+                                    "config": {
+                                        "options": [
+                                            {
+                                                "isAnswer": false,
+                                                "text": "Oxygen (O\u2082)"
+                                            },
+                                            {
+                                                "isAnswer": false,
+                                                "text": "Electrons (e\u207b)"
+                                            },
+                                            {
+                                                "isAnswer": false,
+                                                "text": "Protons (H\u207a)"
+                                            },
+                                            {
+                                                "isAnswer": true,
+                                                "text": "Glucose (C\u2086H\u2081\u2082O\u2086)"
+                                            }
+                                        ],
+                                        "question": "Which of the following is NOT a direct product of the photolysis of water during the light-dependent reactions?"
+                                    },
+                                    "type": "choice",
+                                    "marks": 2
+                                }
+                            },
+                            {
+                                "difficulty": "advanced",
+                                "hints": [
+                                    "Think about the role of water as an input in the light-dependent reactions. What crucial process does it facilitate?",
+                                    "Consider what happens *after* water is split. What vital components are released, and what are they used for?",
+                                    "If these components are not available, what are the ultimate energy-carrying molecules that cannot be produced?"
+                                ],
+                                "steps": [
+                                    "Recall the primary role of water in the light-dependent reactions: it undergoes photolysis.",
+                                    "Identify the products of photolysis: oxygen (O\u2082), electrons (e\u207b), and protons (H\u207a).",
+                                    "Explain the importance of these products: electrons are needed for the electron transport chain, and protons contribute to the proton gradient for ATP synthesis and eventually combine with NADP+ to form NADPH.",
+                                    "Conclude the impact: Without water, photolysis cannot occur, meaning no electrons or protons are generated. This directly prevents the production of ATP and NADPH, which are essential energy carriers for the light-independent reactions."
+                                ],
+                                "taskBlock": {
+                                    "config": {
+                                        "question": "Explain how a severe drought, leading to water scarcity, would immediately impact the light-dependent reactions of photosynthesis."
+                                    },
+                                    "criteria": [
+                                        {
+                                            "description": "Mentions that water is a direct input for photolysis.",
+                                            "marks": 1
+                                        },
+                                        {
+                                            "description": "Explains that a lack of water would prevent the splitting of water.",
+                                            "marks": 1
+                                        },
+                                        {
+                                            "description": "States that this would lead to a shortage of electrons (e\u207b) for the electron transport chain.",
+                                            "marks": 1
+                                        },
+                                        {
+                                            "description": "States that this would lead to a shortage of protons (H\u207a) for ATP synthesis and NADPH formation.",
+                                            "marks": 1
+                                        },
+                                        {
+                                            "description": "Concludes that the production of ATP and NADPH would decrease or cease.",
+                                            "marks": 1
+                                        }
+                                    ],
+                                    "type": "short_answer",
+                                    "marks": 5
+                                }
+                            }
+                        ],
+                        "metadata": {
+                            "interactiveBlocks": [
+                                {
+                                    "difficulty": "beginner",
+                                    "hints": [
+                                        "Think about the specific internal structures within a chloroplast.",
+                                        "Recall which part of the chloroplast is responsible for trapping light energy.",
+                                        "The term refers to the flattened sacs found within the grana."
+                                    ],
+                                    "steps": [
+                                        "Identify the process: Light-dependent reactions.",
+                                        "Recall the organelle where photosynthesis occurs: Chloroplast.",
+                                        "Within the chloroplast, pinpoint the specific membrane system where chlorophyll is embedded and light is captured.",
+                                        "The answer is \"thylakoid membranes\"."
+                                    ],
+                                    "taskBlock": {
+                                        "config": {
+                                            "answer": "thylakoid membranes",
+                                            "sentence": "The light-dependent reactions of photosynthesis occur in the _____."
+                                        },
+                                        "type": "fill_blank",
+                                        "marks": 1
+                                    }
+                                },
+                                {
+                                    "difficulty": "intermediate",
+                                    "hints": [
+                                        "Consider what water is specifically broken down into during photolysis.",
+                                        "Remember that photolysis provides components crucial for the rest of the light-dependent reactions.",
+                                        "Glucose is a product of photosynthesis, but which stage does it appear in? Think about the \"dependent\" nature of the light-dependent reactions."
+                                    ],
+                                    "steps": [
+                                        "Identify the core process: photolysis of water.",
+                                        "Recall the chemical equation and products of water splitting (H\u2082O \u2192 O\u2082 + e\u207b + H\u207a).",
+                                        "Compare these products with the given options.",
+                                        "Glucose is formed later in the light-independent (Calvin) cycle, not directly from photolysis in the light-dependent reactions.",
+                                        "Therefore, Glucose (C\u2086H\u2081\u2082O\u2086) is the correct answer."
+                                    ],
+                                    "taskBlock": {
+                                        "config": {
+                                            "options": [
+                                                {
+                                                    "isAnswer": false,
+                                                    "text": "Oxygen (O\u2082)"
+                                                },
+                                                {
+                                                    "isAnswer": false,
+                                                    "text": "Electrons (e\u207b)"
+                                                },
+                                                {
+                                                    "isAnswer": false,
+                                                    "text": "Protons (H\u207a)"
+                                                },
+                                                {
+                                                    "isAnswer": true,
+                                                    "text": "Glucose (C\u2086H\u2081\u2082O\u2086)"
+                                                }
+                                            ],
+                                            "question": "Which of the following is NOT a direct product of the photolysis of water during the light-dependent reactions?"
+                                        },
+                                        "type": "choice",
+                                        "marks": 2
+                                    }
+                                },
+                                {
+                                    "difficulty": "advanced",
+                                    "hints": [
+                                        "Think about the role of water as an input in the light-dependent reactions. What crucial process does it facilitate?",
+                                        "Consider what happens *after* water is split. What vital components are released, and what are they used for?",
+                                        "If these components are not available, what are the ultimate energy-carrying molecules that cannot be produced?"
+                                    ],
+                                    "steps": [
+                                        "Recall the primary role of water in the light-dependent reactions: it undergoes photolysis.",
+                                        "Identify the products of photolysis: oxygen (O\u2082), electrons (e\u207b), and protons (H\u207a).",
+                                        "Explain the importance of these products: electrons are needed for the electron transport chain, and protons contribute to the proton gradient for ATP synthesis and eventually combine with NADP+ to form NADPH.",
+                                        "Conclude the impact: Without water, photolysis cannot occur, meaning no electrons or protons are generated. This directly prevents the production of ATP and NADPH, which are essential energy carriers for the light-independent reactions."
+                                    ],
+                                    "taskBlock": {
+                                        "config": {
+                                            "question": "Explain how a severe drought, leading to water scarcity, would immediately impact the light-dependent reactions of photosynthesis."
+                                        },
+                                        "criteria": [
+                                            {
+                                                "description": "Mentions that water is a direct input for photolysis.",
+                                                "marks": 1
+                                            },
+                                            {
+                                                "description": "Explains that a lack of water would prevent the splitting of water.",
+                                                "marks": 1
+                                            },
+                                            {
+                                                "description": "States that this would lead to a shortage of electrons (e\u207b) for the electron transport chain.",
+                                                "marks": 1
+                                            },
+                                            {
+                                                "description": "States that this would lead to a shortage of protons (H\u207a) for ATP synthesis and NADPH formation.",
+                                                "marks": 1
+                                            },
+                                            {
+                                                "description": "Concludes that the production of ATP and NADPH would decrease or cease.",
+                                                "marks": 1
+                                            }
+                                        ],
+                                        "type": "short_answer",
+                                        "marks": 5
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "sources": {
+                        "content": [
+                            {
+                                "content": "Key Knowledge:\ninputs, outputs and locations of the light dependent and light independent stages of photosynthesis in C3 plants (details of biochemical pathway mechanisms are not required)\nTopic: Topic 5020",
+                                "score": 0.48341477,
+                                "metadata": {
+                                    "outcomeId": 1016,
+                                    "type": "key_knowledge",
+                                    "topic": "Topic 5020",
+                                    "id": 1225,
+                                    "subjectId": 1001
+                                },
+                                "source": "curriculum_contents"
+                            },
+                            {
+                                "content": "Key Knowledge:\nthe general role of enzymes and coenzymes in facilitating steps in photosynthesis and cellular respiration\nTopic: Topic 5020",
+                                "score": 0.50897676,
+                                "metadata": {
+                                    "outcomeId": 1016,
+                                    "subjectId": 1001,
+                                    "topic": "Topic 5020",
+                                    "id": 1223,
+                                    "type": "key_knowledge"
+                                },
+                                "source": "curriculum_contents"
+                            },
+                            {
+                                "content": "Key Knowledge:\nthe role of Rubisco in photosynthesis, including adaptations of C3, C4 and CAM plants to maximise the efficiency of photosynthesis\nTopic: Topic 5020",
+                                "score": 0.5593486,
+                                "metadata": {
+                                    "subjectId": 1001,
+                                    "type": "key_knowledge",
+                                    "outcomeId": 1016,
+                                    "topic": "Topic 5020",
+                                    "id": 1226
+                                },
+                                "source": "curriculum_contents"
+                            },
+                            {
+                                "content": "Key Knowledge:\nthe general factors that impact on enzyme function in relation to photosynthesis and cellular respiration: changes in temperature, pH, concentration, competitive and non-competitive enzyme inhibitors\nTopic: Topic 5020",
+                                "score": 0.5671768,
+                                "metadata": {
+                                    "outcomeId": 1016,
+                                    "type": "key_knowledge",
+                                    "subjectId": 1001,
+                                    "id": 1224,
+                                    "topic": "Topic 5020"
+                                },
+                                "source": "curriculum_contents"
+                            },
+                            {
+                                "content": "Key Knowledge:\nthe main inputs, outputs and locations of glycolysis, Krebs Cycle and electron transport chain including ATP yield (details of biochemical pathway mechanisms are not required)\nTopic: Topic 5020",
+                                "score": 0.57473636,
+                                "metadata": {
+                                    "topic": "Topic 5020",
+                                    "subjectId": 1001,
+                                    "id": 1228,
+                                    "type": "key_knowledge",
+                                    "outcomeId": 1016
+                                },
+                                "source": "curriculum_contents"
+                            }
+                        ],
+                        "interactive": []
+                    }
+                },
+                {
+                    "sectionInfo": {
+                        "concepts": [
+                            "Light-independent reactions (Calvin Cycle) overview",
+                            "Carbon fixation: role of atmospheric CO2",
+                            "Utilisation of ATP and NADPH from light-dependent reactions",
+                            "Synthesis of glucose/sugars",
+                            "General role of enzymes in metabolic pathways",
+                            "Specific role of Rubisco in carbon fixation in C3 plants",
+                            "Specific location: chloroplast stroma"
+                        ],
+                        "difficulty": "intermediate",
+                        "estimatedTime": 15,
+                        "objective": "Describe the inputs, outputs, specific location, and the general role of enzymes like Rubisco in the light-independent reactions.",
+                        "prerequisites": [
+                            "Understanding of the light-dependent stage",
+                            "Basic enzyme function"
+                        ],
+                        "retrievalPoints": [
+                            "What are the three essential inputs for the light-independent reactions?",
+                            "Explain the role of Rubisco in converting atmospheric carbon dioxide into organic molecules.",
+                            "Compare and contrast the energy requirements and products of the light-dependent and light-independent stages."
+                        ],
+                        "skills": [
+                            "Describe stages of a biochemical process",
+                            "Explain the function of a key enzyme"
+                        ],
+                        "title": "The Light-Independent Stage (Calvin Cycle)"
+                    },
+                    "content": {
+                        "blocks": [
+                            {
+                                "config": {
+                                    "size": 2,
+                                    "text": "The Light-Independent Stage: Making Sugar from Scratch"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "<p>Welcome back to the chloroplast factory! In our previous session, we explored the <b>light-dependent reactions</b>, where sunlight energy was captured to produce two crucial energy-carrying molecules: <b>ATP</b> (adenosine triphosphate) and <b>NADPH</b> (nicotinamide adenine dinucleotide phosphate). These molecules are now ready to be put to work in the next stage of photosynthesis \u2013 the <b>light-independent reactions</b>, also known as the <b>Calvin Cycle</b>.</p><p>Think of the light-dependent stage as charging up batteries. Now, the light-independent stage uses that stored energy to actually <i>build</i> something. And what are we building? The ultimate goal of photosynthesis: <b>glucose</b>, a vital sugar for the plant's survival and growth.</p>"
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "Location, Inputs, and Outputs: The Calvin Cycle's Blueprint"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "<p>Unlike the light-dependent reactions which occur on the thylakoid membranes, the light-independent reactions take place in the <b>stroma</b> of the chloroplast. The stroma is the fluid-filled space surrounding the thylakoids \u2013 imagine it as the 'cytoplasm' of the chloroplast, where all the enzymatic reactions for sugar synthesis occur.</p><p>Let's map out what goes in and what comes out:</p><ul><li><b>Specific Location:</b> Chloroplast <b>stroma</b></li><li><b>Inputs:</b><ul><li><b>Carbon Dioxide (CO<sub>2</sub>):</b> This is the source of carbon atoms for building sugars, absorbed from the atmosphere.</li><li><b>ATP:</b> Provides the energy needed to drive the reactions.</li><li><b>NADPH:</b> Provides high-energy electrons (reducing power) to convert carbon compounds into sugars.</li></ul></li><li><b>Outputs:</b><ul><li><b>Glucose/Sugars:</b> The primary organic product of photosynthesis.</li><li><b>ADP (adenosine diphosphate):</b> Formed when ATP releases its energy, returning to the light-dependent stage to be re-charged.</li><li><b>NADP<sup>+</sup> (nicotinamide adenine dinucleotide phosphate ion):</b> Formed when NADPH donates its electrons, also returning to the light-dependent stage to be re-reduced.</li></ul></li></ul>"
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "The General Role of Enzymes: Orchestrating the Cycle"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "<p>Just like any complex biochemical pathway, the Calvin Cycle involves a series of sequential reactions, each facilitated by specific <b>enzymes</b>. You already know that enzymes are biological catalysts \u2013 they speed up reactions by lowering the activation energy without being consumed themselves. They are highly specific, meaning each enzyme typically 'fits' only one or a few specific molecules (substrates) to catalyse a particular reaction.</p><p>In the Calvin Cycle, many different enzymes work in a coordinated fashion to ensure that carbon dioxide is efficiently converted into sugar. Without these enzymes, the reactions would occur too slowly to sustain life.</p>"
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "Carbon Fixation and the Star Enzyme: Rubisco"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "<p>The first, and arguably most critical, step in the Calvin Cycle is <b>carbon fixation</b>. This is the process where inorganic carbon dioxide (CO<sub>2</sub>) from the atmosphere is 'fixed' or incorporated into an organic molecule. Imagine you have a single carbon atom from CO<sub>2</sub> and you need to build a complex sugar molecule. Carbon fixation is like attaching that first building block to a pre-existing scaffolding.</p><p>This crucial step is catalysed by the most abundant enzyme on Earth: <b>Ribulose-1,5-bisphosphate carboxylase/oxygenase</b>, or simply <b>Rubisco</b>.</p><p>In <b>C3 plants</b> (the most common type of plant, like rice, wheat, and soybeans), Rubisco plays a direct and central role: it combines a CO<sub>2</sub> molecule with a five-carbon sugar called <b>ribulose-1,5-bisphosphate (RuBP)</b>. This reaction immediately forms an unstable six-carbon intermediate, which quickly splits into two molecules of a three-carbon compound (3-PGA). This is why they are called C3 plants \u2013 the first stable product formed after carbon fixation is a three-carbon molecule.</p><p>Rubisco is like the 'gatekeeper' or 'initial assembler' in our sugar factory. It's the enzyme that grabs the CO<sub>2</sub> from the air and introduces it into the organic world of the plant, setting the entire sugar-making process in motion.</p>"
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "Building Sugars: The Energy and Reducing Power of ATP and NADPH"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "<p>Once CO<sub>2</sub> has been fixed by Rubisco, the newly formed organic molecules (3-PGA) need to be converted into actual sugars. This is where the ATP and NADPH generated in the light-dependent reactions become indispensable.</p><ul><li><b>ATP's Role:</b> ATP provides the necessary <b>energy</b> to power various steps in the cycle. Think of it as the 'currency' for endergonic reactions, adding phosphate groups and making molecules more reactive.</li><li><b>NADPH's Role:</b> NADPH provides the <b>reducing power</b> (high-energy electrons). These electrons are crucial for reducing (adding electrons to) the carbon compounds, converting them from their initial, more oxidised state into higher-energy sugar molecules. It's like using power tools to shape and finish the raw materials into a final product.</li></ul><p>Through a series of enzyme-catalysed reactions, the fixed carbon, energised by ATP and reduced by NADPH, is transformed into a three-carbon sugar called <b>glyceraldehyde-3-phosphate (G3P)</b>. Some of this G3P is then used to regenerate the starting molecule, RuBP, allowing the cycle to continue. The remaining G3P molecules are the building blocks for glucose and other organic compounds needed by the plant.</p>"
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "From G3P to Glucose and Beyond"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "<p>While the Calvin Cycle itself produces G3P, two molecules of G3P can then combine to form a six-carbon glucose molecule (C<sub>6</sub>H<sub>12</sub>O<sub>6</sub>). This glucose can then be used by the plant for immediate energy (through cellular respiration), or it can be stored as starch, or used to build other complex organic molecules like cellulose for cell walls, proteins, and lipids.</p><p>In summary, the Calvin Cycle efficiently takes atmospheric carbon dioxide, uses the energy (ATP) and reducing power (NADPH) from the light-dependent reactions, and with the help of enzymes like Rubisco, transforms it into the organic building blocks essential for plant life.</p>"
+                                },
+                                "type": "rich_text"
+                            }
+                        ],
+                        "metadata": {
+                            "blocks": [
+                                {
+                                    "config": {
+                                        "size": 2,
+                                        "text": "The Light-Independent Stage: Making Sugar from Scratch"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "<p>Welcome back to the chloroplast factory! In our previous session, we explored the <b>light-dependent reactions</b>, where sunlight energy was captured to produce two crucial energy-carrying molecules: <b>ATP</b> (adenosine triphosphate) and <b>NADPH</b> (nicotinamide adenine dinucleotide phosphate). These molecules are now ready to be put to work in the next stage of photosynthesis \u2013 the <b>light-independent reactions</b>, also known as the <b>Calvin Cycle</b>.</p><p>Think of the light-dependent stage as charging up batteries. Now, the light-independent stage uses that stored energy to actually <i>build</i> something. And what are we building? The ultimate goal of photosynthesis: <b>glucose</b>, a vital sugar for the plant's survival and growth.</p>"
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "Location, Inputs, and Outputs: The Calvin Cycle's Blueprint"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "<p>Unlike the light-dependent reactions which occur on the thylakoid membranes, the light-independent reactions take place in the <b>stroma</b> of the chloroplast. The stroma is the fluid-filled space surrounding the thylakoids \u2013 imagine it as the 'cytoplasm' of the chloroplast, where all the enzymatic reactions for sugar synthesis occur.</p><p>Let's map out what goes in and what comes out:</p><ul><li><b>Specific Location:</b> Chloroplast <b>stroma</b></li><li><b>Inputs:</b><ul><li><b>Carbon Dioxide (CO<sub>2</sub>):</b> This is the source of carbon atoms for building sugars, absorbed from the atmosphere.</li><li><b>ATP:</b> Provides the energy needed to drive the reactions.</li><li><b>NADPH:</b> Provides high-energy electrons (reducing power) to convert carbon compounds into sugars.</li></ul></li><li><b>Outputs:</b><ul><li><b>Glucose/Sugars:</b> The primary organic product of photosynthesis.</li><li><b>ADP (adenosine diphosphate):</b> Formed when ATP releases its energy, returning to the light-dependent stage to be re-charged.</li><li><b>NADP<sup>+</sup> (nicotinamide adenine dinucleotide phosphate ion):</b> Formed when NADPH donates its electrons, also returning to the light-dependent stage to be re-reduced.</li></ul></li></ul>"
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "The General Role of Enzymes: Orchestrating the Cycle"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "<p>Just like any complex biochemical pathway, the Calvin Cycle involves a series of sequential reactions, each facilitated by specific <b>enzymes</b>. You already know that enzymes are biological catalysts \u2013 they speed up reactions by lowering the activation energy without being consumed themselves. They are highly specific, meaning each enzyme typically 'fits' only one or a few specific molecules (substrates) to catalyse a particular reaction.</p><p>In the Calvin Cycle, many different enzymes work in a coordinated fashion to ensure that carbon dioxide is efficiently converted into sugar. Without these enzymes, the reactions would occur too slowly to sustain life.</p>"
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "Carbon Fixation and the Star Enzyme: Rubisco"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "<p>The first, and arguably most critical, step in the Calvin Cycle is <b>carbon fixation</b>. This is the process where inorganic carbon dioxide (CO<sub>2</sub>) from the atmosphere is 'fixed' or incorporated into an organic molecule. Imagine you have a single carbon atom from CO<sub>2</sub> and you need to build a complex sugar molecule. Carbon fixation is like attaching that first building block to a pre-existing scaffolding.</p><p>This crucial step is catalysed by the most abundant enzyme on Earth: <b>Ribulose-1,5-bisphosphate carboxylase/oxygenase</b>, or simply <b>Rubisco</b>.</p><p>In <b>C3 plants</b> (the most common type of plant, like rice, wheat, and soybeans), Rubisco plays a direct and central role: it combines a CO<sub>2</sub> molecule with a five-carbon sugar called <b>ribulose-1,5-bisphosphate (RuBP)</b>. This reaction immediately forms an unstable six-carbon intermediate, which quickly splits into two molecules of a three-carbon compound (3-PGA). This is why they are called C3 plants \u2013 the first stable product formed after carbon fixation is a three-carbon molecule.</p><p>Rubisco is like the 'gatekeeper' or 'initial assembler' in our sugar factory. It's the enzyme that grabs the CO<sub>2</sub> from the air and introduces it into the organic world of the plant, setting the entire sugar-making process in motion.</p>"
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "Building Sugars: The Energy and Reducing Power of ATP and NADPH"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "<p>Once CO<sub>2</sub> has been fixed by Rubisco, the newly formed organic molecules (3-PGA) need to be converted into actual sugars. This is where the ATP and NADPH generated in the light-dependent reactions become indispensable.</p><ul><li><b>ATP's Role:</b> ATP provides the necessary <b>energy</b> to power various steps in the cycle. Think of it as the 'currency' for endergonic reactions, adding phosphate groups and making molecules more reactive.</li><li><b>NADPH's Role:</b> NADPH provides the <b>reducing power</b> (high-energy electrons). These electrons are crucial for reducing (adding electrons to) the carbon compounds, converting them from their initial, more oxidised state into higher-energy sugar molecules. It's like using power tools to shape and finish the raw materials into a final product.</li></ul><p>Through a series of enzyme-catalysed reactions, the fixed carbon, energised by ATP and reduced by NADPH, is transformed into a three-carbon sugar called <b>glyceraldehyde-3-phosphate (G3P)</b>. Some of this G3P is then used to regenerate the starting molecule, RuBP, allowing the cycle to continue. The remaining G3P molecules are the building blocks for glucose and other organic compounds needed by the plant.</p>"
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "From G3P to Glucose and Beyond"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "<p>While the Calvin Cycle itself produces G3P, two molecules of G3P can then combine to form a six-carbon glucose molecule (C<sub>6</sub>H<sub>12</sub>O<sub>6</sub>). This glucose can then be used by the plant for immediate energy (through cellular respiration), or it can be stored as starch, or used to build other complex organic molecules like cellulose for cell walls, proteins, and lipids.</p><p>In summary, the Calvin Cycle efficiently takes atmospheric carbon dioxide, uses the energy (ATP) and reducing power (NADPH) from the light-dependent reactions, and with the help of enzymes like Rubisco, transforms it into the organic building blocks essential for plant life.</p>"
+                                    },
+                                    "type": "rich_text"
+                                }
+                            ]
+                        }
+                    },
+                    "interactive": {
+                        "blocks": [
+                            {
+                                "difficulty": "beginner",
+                                "hints": [
+                                    "Recall the two main compartments within a chloroplast: the thylakoid membranes and the fluid-filled space surrounding them.",
+                                    "The light-dependent reactions happen on the thylakoid membranes. Where would the subsequent light-independent reactions occur if not there?",
+                                    "The fluid-filled region of the chloroplast where the Calvin Cycle takes place is called the ______."
+                                ],
+                                "steps": [
+                                    "The question asks for the location of the light-independent reactions within the chloroplast.",
+                                    "Recall that the light-dependent reactions occur on the thylakoid membranes.",
+                                    "The Calvin Cycle (light-independent reactions) takes place in the fluid-filled space surrounding the thylakoids.",
+                                    "This fluid-filled space is known as the stroma.",
+                                    "Therefore, the correct answer is 'stroma'."
+                                ],
+                                "taskBlock": {
+                                    "config": {
+                                        "answer": "stroma",
+                                        "sentence": "The light-independent reactions of photosynthesis, also known as the Calvin Cycle, occur in the __________ of the chloroplast."
+                                    },
+                                    "type": "fill_blank",
+                                    "marks": 1
+                                }
+                            },
+                            {
+                                "difficulty": "intermediate",
+                                "hints": [
+                                    "The Calvin Cycle's primary goal is to produce sugar. What raw material from the atmosphere does it need to 'fix' to build this sugar?",
+                                    "Consider what was produced by the light-dependent reactions. These products are then used as energy and reducing power to drive the synthesis in the light-independent stage.",
+                                    "The inputs are atmospheric CO2, and the energy carriers (ATP) and electron carriers (NADPH) from the light-dependent stage. Which option includes the energy and reducing power needed for sugar synthesis?"
+                                ],
+                                "steps": [
+                                    "The question asks for an essential input for the light-independent reactions (Calvin Cycle) to synthesize glucose.",
+                                    "The Calvin Cycle takes carbon dioxide from the atmosphere and converts it into organic molecules.",
+                                    "This process requires energy and reducing power. The light-dependent reactions produce ATP (adenosine triphosphate) for energy and NADPH (nicotinamide adenine dinucleotide phosphate) for reducing power.",
+                                    "These ATP and NADPH molecules are then transported to the stroma to power the Calvin Cycle.",
+                                    "Option A (Water) is an input for the light-dependent reactions, not directly for the light-independent reactions.",
+                                    "Option B (Oxygen) is a product of the light-dependent reactions, not an input for the Calvin Cycle.",
+                                    "Option D (Sunlight) is the initial energy source for the light-dependent reactions, not a direct input for the light-independent reactions themselves (though its energy is captured and transferred via ATP/NADPH).",
+                                    "Therefore, 'ATP and NADPH' are the essential inputs from the light-dependent stage that drive glucose synthesis in the light-independent reactions."
+                                ],
+                                "taskBlock": {
+                                    "config": {
+                                        "options": [
+                                            {
+                                                "isAnswer": false,
+                                                "text": "Water"
+                                            },
+                                            {
+                                                "isAnswer": false,
+                                                "text": "Oxygen"
+                                            },
+                                            {
+                                                "isAnswer": true,
+                                                "text": "ATP and NADPH"
+                                            },
+                                            {
+                                                "isAnswer": false,
+                                                "text": "Sunlight"
+                                            }
+                                        ],
+                                        "question": "Which of the following is an essential input for the light-independent reactions to synthesize glucose?"
+                                    },
+                                    "type": "choice",
+                                    "marks": 1
+                                }
+                            },
+                            {
+                                "difficulty": "intermediate",
+                                "hints": [
+                                    "Think about the first major step of the Calvin Cycle. What atmospheric gas is incorporated into an organic molecule?",
+                                    "Rubisco is involved in 'carbon fixation'. What does this term mean in the context of taking an inorganic carbon source and making it organic?",
+                                    "Specifically, Rubisco catalyzes the reaction where atmospheric carbon dioxide (CO2) combines with a five-carbon sugar, ribulose-1,5-bisphosphate (RuBP)."
+                                ],
+                                "steps": [
+                                    "The question asks to explain the specific role of Rubisco in the Calvin Cycle.",
+                                    "Step 1: Identify the main process Rubisco is involved in. Rubisco facilitates 'carbon fixation', which is the incorporation of inorganic carbon (CO2) into an organic molecule.",
+                                    "Step 2: Describe the specific reaction it catalyzes. Rubisco (Ribulose-1,5-bisphosphate carboxylase/oxygenase) catalyzes the reaction where one molecule of atmospheric carbon dioxide (CO2) combines with one molecule of ribulose-1,5-bisphosphate (RuBP), a five-carbon sugar.",
+                                    "Step 3: State the product of this initial reaction. This combination forms an unstable six-carbon intermediate, which immediately splits into two molecules of 3-phosphoglycerate (PGA), a three-carbon compound. This is the first stable organic molecule in the cycle.",
+                                    "Therefore, Rubisco's specific role is to catalyze the initial carbon fixation step by combining CO2 with RuBP, making it available for subsequent sugar synthesis."
+                                ],
+                                "taskBlock": {
+                                    "config": {
+                                        "question": "Explain the specific role of the enzyme Rubisco in the light-independent reactions (Calvin Cycle)."
+                                    },
+                                    "criteria": [
+                                        {
+                                            "description": "Student mentions that Rubisco is responsible for carbon fixation.",
+                                            "marks": 1
+                                        },
+                                        {
+                                            "description": "Student correctly states that Rubisco catalyzes the combination of CO2 with RuBP.",
+                                            "marks": 1
+                                        },
+                                        {
+                                            "description": "Student indicates that this process converts inorganic carbon into organic compounds.",
+                                            "marks": 1
+                                        }
+                                    ],
+                                    "type": "short_answer",
+                                    "marks": 3
+                                }
+                            }
+                        ],
+                        "metadata": {
+                            "interactiveBlocks": [
+                                {
+                                    "difficulty": "beginner",
+                                    "hints": [
+                                        "Recall the two main compartments within a chloroplast: the thylakoid membranes and the fluid-filled space surrounding them.",
+                                        "The light-dependent reactions happen on the thylakoid membranes. Where would the subsequent light-independent reactions occur if not there?",
+                                        "The fluid-filled region of the chloroplast where the Calvin Cycle takes place is called the ______."
+                                    ],
+                                    "steps": [
+                                        "The question asks for the location of the light-independent reactions within the chloroplast.",
+                                        "Recall that the light-dependent reactions occur on the thylakoid membranes.",
+                                        "The Calvin Cycle (light-independent reactions) takes place in the fluid-filled space surrounding the thylakoids.",
+                                        "This fluid-filled space is known as the stroma.",
+                                        "Therefore, the correct answer is 'stroma'."
+                                    ],
+                                    "taskBlock": {
+                                        "config": {
+                                            "answer": "stroma",
+                                            "sentence": "The light-independent reactions of photosynthesis, also known as the Calvin Cycle, occur in the __________ of the chloroplast."
+                                        },
+                                        "type": "fill_blank",
+                                        "marks": 1
+                                    }
+                                },
+                                {
+                                    "difficulty": "intermediate",
+                                    "hints": [
+                                        "The Calvin Cycle's primary goal is to produce sugar. What raw material from the atmosphere does it need to 'fix' to build this sugar?",
+                                        "Consider what was produced by the light-dependent reactions. These products are then used as energy and reducing power to drive the synthesis in the light-independent stage.",
+                                        "The inputs are atmospheric CO2, and the energy carriers (ATP) and electron carriers (NADPH) from the light-dependent stage. Which option includes the energy and reducing power needed for sugar synthesis?"
+                                    ],
+                                    "steps": [
+                                        "The question asks for an essential input for the light-independent reactions (Calvin Cycle) to synthesize glucose.",
+                                        "The Calvin Cycle takes carbon dioxide from the atmosphere and converts it into organic molecules.",
+                                        "This process requires energy and reducing power. The light-dependent reactions produce ATP (adenosine triphosphate) for energy and NADPH (nicotinamide adenine dinucleotide phosphate) for reducing power.",
+                                        "These ATP and NADPH molecules are then transported to the stroma to power the Calvin Cycle.",
+                                        "Option A (Water) is an input for the light-dependent reactions, not directly for the light-independent reactions.",
+                                        "Option B (Oxygen) is a product of the light-dependent reactions, not an input for the Calvin Cycle.",
+                                        "Option D (Sunlight) is the initial energy source for the light-dependent reactions, not a direct input for the light-independent reactions themselves (though its energy is captured and transferred via ATP/NADPH).",
+                                        "Therefore, 'ATP and NADPH' are the essential inputs from the light-dependent stage that drive glucose synthesis in the light-independent reactions."
+                                    ],
+                                    "taskBlock": {
+                                        "config": {
+                                            "options": [
+                                                {
+                                                    "isAnswer": false,
+                                                    "text": "Water"
+                                                },
+                                                {
+                                                    "isAnswer": false,
+                                                    "text": "Oxygen"
+                                                },
+                                                {
+                                                    "isAnswer": true,
+                                                    "text": "ATP and NADPH"
+                                                },
+                                                {
+                                                    "isAnswer": false,
+                                                    "text": "Sunlight"
+                                                }
+                                            ],
+                                            "question": "Which of the following is an essential input for the light-independent reactions to synthesize glucose?"
+                                        },
+                                        "type": "choice",
+                                        "marks": 1
+                                    }
+                                },
+                                {
+                                    "difficulty": "intermediate",
+                                    "hints": [
+                                        "Think about the first major step of the Calvin Cycle. What atmospheric gas is incorporated into an organic molecule?",
+                                        "Rubisco is involved in 'carbon fixation'. What does this term mean in the context of taking an inorganic carbon source and making it organic?",
+                                        "Specifically, Rubisco catalyzes the reaction where atmospheric carbon dioxide (CO2) combines with a five-carbon sugar, ribulose-1,5-bisphosphate (RuBP)."
+                                    ],
+                                    "steps": [
+                                        "The question asks to explain the specific role of Rubisco in the Calvin Cycle.",
+                                        "Step 1: Identify the main process Rubisco is involved in. Rubisco facilitates 'carbon fixation', which is the incorporation of inorganic carbon (CO2) into an organic molecule.",
+                                        "Step 2: Describe the specific reaction it catalyzes. Rubisco (Ribulose-1,5-bisphosphate carboxylase/oxygenase) catalyzes the reaction where one molecule of atmospheric carbon dioxide (CO2) combines with one molecule of ribulose-1,5-bisphosphate (RuBP), a five-carbon sugar.",
+                                        "Step 3: State the product of this initial reaction. This combination forms an unstable six-carbon intermediate, which immediately splits into two molecules of 3-phosphoglycerate (PGA), a three-carbon compound. This is the first stable organic molecule in the cycle.",
+                                        "Therefore, Rubisco's specific role is to catalyze the initial carbon fixation step by combining CO2 with RuBP, making it available for subsequent sugar synthesis."
+                                    ],
+                                    "taskBlock": {
+                                        "config": {
+                                            "question": "Explain the specific role of the enzyme Rubisco in the light-independent reactions (Calvin Cycle)."
+                                        },
+                                        "criteria": [
+                                            {
+                                                "description": "Student mentions that Rubisco is responsible for carbon fixation.",
+                                                "marks": 1
+                                            },
+                                            {
+                                                "description": "Student correctly states that Rubisco catalyzes the combination of CO2 with RuBP.",
+                                                "marks": 1
+                                            },
+                                            {
+                                                "description": "Student indicates that this process converts inorganic carbon into organic compounds.",
+                                                "marks": 1
+                                            }
+                                        ],
+                                        "type": "short_answer",
+                                        "marks": 3
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "sources": {
+                        "content": [
+                            {
+                                "content": "Key Knowledge:\nthe role of Rubisco in photosynthesis, including adaptations of C3, C4 and CAM plants to maximise the efficiency of photosynthesis\nTopic: Topic 5020",
+                                "score": 0.3800925,
+                                "metadata": {
+                                    "topic": "Topic 5020",
+                                    "outcomeId": 1016,
+                                    "type": "key_knowledge",
+                                    "id": 1226,
+                                    "subjectId": 1001
+                                },
+                                "source": "curriculum_contents"
+                            },
+                            {
+                                "content": "Key Knowledge:\ninputs, outputs and locations of the light dependent and light independent stages of photosynthesis in C3 plants (details of biochemical pathway mechanisms are not required)\nTopic: Topic 5020",
+                                "score": 0.44388625,
+                                "metadata": {
+                                    "topic": "Topic 5020",
+                                    "subjectId": 1001,
+                                    "type": "key_knowledge",
+                                    "outcomeId": 1016,
+                                    "id": 1225
+                                },
+                                "source": "curriculum_contents"
+                            },
+                            {
+                                "content": "Key Knowledge:\nthe general role of enzymes and coenzymes in facilitating steps in photosynthesis and cellular respiration\nTopic: Topic 5020",
+                                "score": 0.50784385,
+                                "metadata": {
+                                    "outcomeId": 1016,
+                                    "topic": "Topic 5020",
+                                    "type": "key_knowledge",
+                                    "id": 1223,
+                                    "subjectId": 1001
+                                },
+                                "source": "curriculum_contents"
+                            },
+                            {
+                                "content": "Key Knowledge:\nthe main inputs, outputs and locations of glycolysis, Krebs Cycle and electron transport chain including ATP yield (details of biochemical pathway mechanisms are not required)\nTopic: Topic 5020",
+                                "score": 0.5405066,
+                                "metadata": {
+                                    "topic": "Topic 5020",
+                                    "subjectId": 1001,
+                                    "outcomeId": 1016,
+                                    "type": "key_knowledge",
+                                    "id": 1228
+                                },
+                                "source": "curriculum_contents"
+                            },
+                            {
+                                "content": "Learning Area: How are biochemical pathways regulated?\nIn this area of study students focus on the structure and regulation of biochemical pathways. They examine how biochemical pathways, specifically photosynthesis and cellular respiration, involve many steps that are controlled by enzymes and assisted by coenzymes. Students investigate factors that affect the rate of cellular reactions and explore applications of biotechnology that focus on the regulation of biochemical pathways. On completion of this unit the student should be able to analyse the structure and regulation of biochemical pathways in photosynthesis and cellular respiration, and evaluate how biotechnology can be used to solve problems related to the regulation of biochemical pathways.",
+                                "score": 0.5415974,
+                                "metadata": {
+                                    "type": "learning_area",
+                                    "id": 1016,
+                                    "subjectId": 1001
+                                },
+                                "source": "curriculum_contents"
+                            }
+                        ],
+                        "interactive": []
+                    }
+                },
+                {
+                    "sectionInfo": {
+                        "concepts": [
+                            "Concept of limiting factors in biological processes",
+                            "Effect of light intensity on photosynthesis rate (light saturation point)",
+                            "Effect of carbon dioxide concentration on photosynthesis rate (CO2 saturation point)",
+                            "Effect of temperature on photosynthesis rate (optimal range, denaturation of enzymes)",
+                            "Effect of water availability on photosynthesis rate (stomata closure, turgor pressure)",
+                            "Graphical representation of these factors"
+                        ],
+                        "difficulty": "intermediate",
+                        "estimatedTime": 13,
+                        "objective": "Analyse how environmental factors such as light intensity, carbon dioxide concentration, temperature, and water availability affect the rate of photosynthesis.",
+                        "prerequisites": [
+                            "Understanding of all stages of photosynthesis"
+                        ],
+                        "retrievalPoints": [
+                            "If a plant is exposed to very low light, which stage of photosynthesis would be most directly affected and why?",
+                            "Describe how increasing temperature beyond an optimal point can decrease the rate of photosynthesis.",
+                            "Design an experiment to investigate the effect of carbon dioxide concentration on the rate of photosynthesis, identifying key variables."
+                        ],
+                        "skills": [
+                            "Interpret scientific data (e.g., graphs)",
+                            "Predict outcomes based on environmental changes",
+                            "Explain cause-and-effect relationships in biological systems"
+                        ],
+                        "title": "Factors Affecting Photosynthesis Rate"
+                    },
+                    "content": {
+                        "blocks": [
+                            {
+                                "config": {
+                                    "size": 2,
+                                    "text": "Factors Affecting Photosynthesis Rate"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "Welcome to this module on the critical environmental factors that influence the rate of photosynthesis. Recall that photosynthesis is the process by which green plants, algae, and some bacteria convert light energy into chemical energy, in the form of glucose. This vital process occurs in two main stages: the **light-dependent reactions** (which capture light energy and produce ATP and NADPH) and the **light-independent reactions** (also known as the Calvin cycle, which use ATP and NADPH to fix carbon dioxide into glucose). Understanding how external conditions impact these stages is crucial for comprehending plant productivity and ecosystem function. We will explore how light intensity, carbon dioxide concentration, temperature, and water availability each play a role, often interacting with one another."
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "The Concept of Limiting Factors"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "In any biological process, the rate at which it occurs is often determined by the factor that is in shortest supply or that operates at the least optimal level. This is known as a **limiting factor**. Think of it like an assembly line: if you have plenty of workers and tools but only a few raw materials, the production rate will be limited by the availability of raw materials, not the workers or tools. For photosynthesis, several environmental factors can act as limiting factors. When one factor is in short supply, increasing other factors will not increase the rate of photosynthesis until that limiting factor is addressed."
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "1. Light Intensity"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "Light is the energy source for the light-dependent reactions of photosynthesis. Without sufficient light, chlorophyll cannot capture enough energy to produce ATP and NADPH. Initially, as light intensity increases, the rate of photosynthesis also increases proportionally. This is because more photons are available to energize the electrons in chlorophyll, leading to a faster rate of ATP and NADPH production. <br><br>However, this increase doesn't continue indefinitely. Eventually, a point is reached where further increases in light intensity do not increase the rate of photosynthesis. This is known as the **light saturation point**. At this point, other factors, such as carbon dioxide concentration or the availability of enzymes, become limiting. The photosynthetic machinery is working at its maximum capacity, even with more light.<br><br>Visually, if you plot photosynthesis rate against light intensity, the graph would show a sharp increase at low light levels, then gradually flatten out into a plateau once the light saturation point is reached. The steepness of the initial rise indicates how efficient the plant is at using low light."
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "2. Carbon Dioxide Concentration"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "Carbon dioxide (CO\u2082) is a key raw material for the light-independent reactions (Calvin cycle). Specifically, the enzyme RuBisCO fixes CO\u2082 from the atmosphere into an organic molecule, initiating the sugar production process. If there isn't enough CO\u2082 available, the Calvin cycle slows down because the primary substrate for RuBisCO is scarce, even if plenty of ATP and NADPH are produced from the light-dependent reactions.<br><br>Similar to light intensity, increasing the carbon dioxide concentration generally increases the rate of photosynthesis, assuming other factors are not limiting. As CO\u2082 levels rise, more substrate is available for RuBisCO, speeding up the Calvin cycle. <br><br>However, like light, there's a **CO\u2082 saturation point**. Beyond a certain concentration, increasing CO\u2082 further will not increase the rate of photosynthesis because another factor, such as light intensity or enzyme availability, becomes limiting. The enzyme RuBisCO or the regeneration of its substrate might be working at maximum capacity.<br><br>Graphically, plotting photosynthesis rate against CO\u2082 concentration shows a similar trend to light intensity: an initial steep rise, followed by a plateau as the CO\u2082 saturation point is reached."
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "3. Temperature"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "Temperature affects photosynthesis in a more complex way because it influences the rate of enzyme-catalyzed reactions. Both the light-dependent and light-independent reactions involve numerous enzymes (recall Key Knowledge on enzyme function). As temperature increases, the kinetic energy of molecules increases, leading to more frequent and energetic collisions between enzymes and substrates. This generally increases the rate of photosynthesis up to an optimal temperature.<br><br>However, beyond this **optimal temperature range**, the rate of photosynthesis sharply declines. High temperatures cause enzymes, like RuBisCO, to undergo **denaturation**. This means their specific three-dimensional structure, which is essential for their catalytic activity, is permanently altered. Once enzymes are denatured, they lose their function, and the entire photosynthetic process slows down dramatically or stops.<br><br>Graphically, the effect of temperature on photosynthesis rate typically shows a bell-shaped curve. The rate is low at cold temperatures, increases to a peak at the optimal temperature, and then rapidly decreases at higher temperatures due to enzyme denaturation. Different plants, adapted to different climates, will have different optimal temperature ranges."
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "4. Water Availability"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "Water is a reactant in the light-dependent reactions, providing the electrons needed to replace those lost by chlorophyll. However, its most significant impact on photosynthesis rate is often indirect, related to plant structure and gas exchange. Plants lose water vapor through small pores on their leaves called **stomata** (singular: stoma), a process known as transpiration. To prevent excessive water loss, especially during periods of drought or low water availability, plants close their stomata.<br><br>While closing stomata conserves water, it also restricts the uptake of carbon dioxide from the atmosphere. If stomata are closed, CO\u2082 cannot enter the leaf, and its concentration within the leaf drops, becoming a limiting factor for the Calvin cycle. This trade-off between water conservation and CO\u2082 uptake is a critical survival mechanism for plants in dry conditions, as explored in the detailed example on drought-resistant crops.<br><br>Furthermore, severe water deficit can lead to a loss of turgor pressure in plant cells, causing wilting. This can affect the structure of chloroplasts and the efficiency of photosynthetic enzymes. Thus, insufficient water availability directly and indirectly inhibits photosynthesis.<br><br>Visually, if you plot photosynthesis rate against water availability, the rate will generally increase with adequate water, reaching a plateau at optimal levels. As water availability decreases significantly, the rate will sharply decline, reflecting stomata closure and cellular stress."
+                                },
+                                "type": "rich_text"
+                            },
+                            {
+                                "config": {
+                                    "size": 3,
+                                    "text": "Bringing It All Together: Interacting Limiting Factors"
+                                },
+                                "type": "heading"
+                            },
+                            {
+                                "config": {
+                                    "html": "It's important to remember that these factors do not act in isolation. The rate of photosynthesis is a complex interplay of all these environmental conditions. For instance, a plant might be receiving optimal light and temperature, but if CO\u2082 concentration is low, then CO\u2082 will be the limiting factor. If CO\u2082 levels are then increased, the rate of photosynthesis will rise until another factor, perhaps light intensity, becomes limiting. This interaction is why understanding the concept of limiting factors is so critical in agriculture and environmental science.<br><br>To prepare for self-testing, consider the following scenarios: <br><br>1. Imagine a plant growing in a rainforest under low light conditions. What would be the primary limiting factor for photosynthesis? If you could increase only one factor, which would have the greatest initial impact?<br><br>2. A farmer grows crops in a greenhouse. If they increase the temperature and add CO\u2082 enrichment, but the plants still show a limited growth rate, what other factor might they need to consider?<br><br>3. During a hot, dry summer, why might plants close their stomata, and how does this action, while conserving water, negatively impact photosynthesis?"
+                                },
+                                "type": "rich_text"
+                            }
+                        ],
+                        "metadata": {
+                            "blocks": [
+                                {
+                                    "config": {
+                                        "size": 2,
+                                        "text": "Factors Affecting Photosynthesis Rate"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "Welcome to this module on the critical environmental factors that influence the rate of photosynthesis. Recall that photosynthesis is the process by which green plants, algae, and some bacteria convert light energy into chemical energy, in the form of glucose. This vital process occurs in two main stages: the **light-dependent reactions** (which capture light energy and produce ATP and NADPH) and the **light-independent reactions** (also known as the Calvin cycle, which use ATP and NADPH to fix carbon dioxide into glucose). Understanding how external conditions impact these stages is crucial for comprehending plant productivity and ecosystem function. We will explore how light intensity, carbon dioxide concentration, temperature, and water availability each play a role, often interacting with one another."
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "The Concept of Limiting Factors"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "In any biological process, the rate at which it occurs is often determined by the factor that is in shortest supply or that operates at the least optimal level. This is known as a **limiting factor**. Think of it like an assembly line: if you have plenty of workers and tools but only a few raw materials, the production rate will be limited by the availability of raw materials, not the workers or tools. For photosynthesis, several environmental factors can act as limiting factors. When one factor is in short supply, increasing other factors will not increase the rate of photosynthesis until that limiting factor is addressed."
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "1. Light Intensity"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "Light is the energy source for the light-dependent reactions of photosynthesis. Without sufficient light, chlorophyll cannot capture enough energy to produce ATP and NADPH. Initially, as light intensity increases, the rate of photosynthesis also increases proportionally. This is because more photons are available to energize the electrons in chlorophyll, leading to a faster rate of ATP and NADPH production. <br><br>However, this increase doesn't continue indefinitely. Eventually, a point is reached where further increases in light intensity do not increase the rate of photosynthesis. This is known as the **light saturation point**. At this point, other factors, such as carbon dioxide concentration or the availability of enzymes, become limiting. The photosynthetic machinery is working at its maximum capacity, even with more light.<br><br>Visually, if you plot photosynthesis rate against light intensity, the graph would show a sharp increase at low light levels, then gradually flatten out into a plateau once the light saturation point is reached. The steepness of the initial rise indicates how efficient the plant is at using low light."
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "2. Carbon Dioxide Concentration"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "Carbon dioxide (CO\u2082) is a key raw material for the light-independent reactions (Calvin cycle). Specifically, the enzyme RuBisCO fixes CO\u2082 from the atmosphere into an organic molecule, initiating the sugar production process. If there isn't enough CO\u2082 available, the Calvin cycle slows down because the primary substrate for RuBisCO is scarce, even if plenty of ATP and NADPH are produced from the light-dependent reactions.<br><br>Similar to light intensity, increasing the carbon dioxide concentration generally increases the rate of photosynthesis, assuming other factors are not limiting. As CO\u2082 levels rise, more substrate is available for RuBisCO, speeding up the Calvin cycle. <br><br>However, like light, there's a **CO\u2082 saturation point**. Beyond a certain concentration, increasing CO\u2082 further will not increase the rate of photosynthesis because another factor, such as light intensity or enzyme availability, becomes limiting. The enzyme RuBisCO or the regeneration of its substrate might be working at maximum capacity.<br><br>Graphically, plotting photosynthesis rate against CO\u2082 concentration shows a similar trend to light intensity: an initial steep rise, followed by a plateau as the CO\u2082 saturation point is reached."
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "3. Temperature"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "Temperature affects photosynthesis in a more complex way because it influences the rate of enzyme-catalyzed reactions. Both the light-dependent and light-independent reactions involve numerous enzymes (recall Key Knowledge on enzyme function). As temperature increases, the kinetic energy of molecules increases, leading to more frequent and energetic collisions between enzymes and substrates. This generally increases the rate of photosynthesis up to an optimal temperature.<br><br>However, beyond this **optimal temperature range**, the rate of photosynthesis sharply declines. High temperatures cause enzymes, like RuBisCO, to undergo **denaturation**. This means their specific three-dimensional structure, which is essential for their catalytic activity, is permanently altered. Once enzymes are denatured, they lose their function, and the entire photosynthetic process slows down dramatically or stops.<br><br>Graphically, the effect of temperature on photosynthesis rate typically shows a bell-shaped curve. The rate is low at cold temperatures, increases to a peak at the optimal temperature, and then rapidly decreases at higher temperatures due to enzyme denaturation. Different plants, adapted to different climates, will have different optimal temperature ranges."
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "4. Water Availability"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "Water is a reactant in the light-dependent reactions, providing the electrons needed to replace those lost by chlorophyll. However, its most significant impact on photosynthesis rate is often indirect, related to plant structure and gas exchange. Plants lose water vapor through small pores on their leaves called **stomata** (singular: stoma), a process known as transpiration. To prevent excessive water loss, especially during periods of drought or low water availability, plants close their stomata.<br><br>While closing stomata conserves water, it also restricts the uptake of carbon dioxide from the atmosphere. If stomata are closed, CO\u2082 cannot enter the leaf, and its concentration within the leaf drops, becoming a limiting factor for the Calvin cycle. This trade-off between water conservation and CO\u2082 uptake is a critical survival mechanism for plants in dry conditions, as explored in the detailed example on drought-resistant crops.<br><br>Furthermore, severe water deficit can lead to a loss of turgor pressure in plant cells, causing wilting. This can affect the structure of chloroplasts and the efficiency of photosynthetic enzymes. Thus, insufficient water availability directly and indirectly inhibits photosynthesis.<br><br>Visually, if you plot photosynthesis rate against water availability, the rate will generally increase with adequate water, reaching a plateau at optimal levels. As water availability decreases significantly, the rate will sharply decline, reflecting stomata closure and cellular stress."
+                                    },
+                                    "type": "rich_text"
+                                },
+                                {
+                                    "config": {
+                                        "size": 3,
+                                        "text": "Bringing It All Together: Interacting Limiting Factors"
+                                    },
+                                    "type": "heading"
+                                },
+                                {
+                                    "config": {
+                                        "html": "It's important to remember that these factors do not act in isolation. The rate of photosynthesis is a complex interplay of all these environmental conditions. For instance, a plant might be receiving optimal light and temperature, but if CO\u2082 concentration is low, then CO\u2082 will be the limiting factor. If CO\u2082 levels are then increased, the rate of photosynthesis will rise until another factor, perhaps light intensity, becomes limiting. This interaction is why understanding the concept of limiting factors is so critical in agriculture and environmental science.<br><br>To prepare for self-testing, consider the following scenarios: <br><br>1. Imagine a plant growing in a rainforest under low light conditions. What would be the primary limiting factor for photosynthesis? If you could increase only one factor, which would have the greatest initial impact?<br><br>2. A farmer grows crops in a greenhouse. If they increase the temperature and add CO\u2082 enrichment, but the plants still show a limited growth rate, what other factor might they need to consider?<br><br>3. During a hot, dry summer, why might plants close their stomata, and how does this action, while conserving water, negatively impact photosynthesis?"
+                                    },
+                                    "type": "rich_text"
+                                }
+                            ]
+                        }
+                    },
+                    "interactive": {
+                        "blocks": [
+                            {
+                                "difficulty": "beginner",
+                                "hints": [
+                                    "Think about what 'limits' a process.",
+                                    "This term describes any environmental condition that, by being in short supply, restricts the growth or rate of a biological process.",
+                                    "It starts with the letter 'L' and indicates that the factor is preventing the process from reaching its maximum potential."
+                                ],
+                                "steps": [
+                                    "A limiting factor is any factor that restricts the rate of a process when it is in short supply. For photosynthesis, examples include light intensity, carbon dioxide concentration, and temperature.",
+                                    "When one of these factors is at a low level, it will limit the overall rate of photosynthesis, even if other factors are optimal. Increasing other factors will not increase the rate until the limiting factor is no longer in short supply.",
+                                    "Therefore, the correct term is 'limiting'."
+                                ],
+                                "taskBlock": {
+                                    "config": {
+                                        "answer": "limiting",
+                                        "sentence": "The factor that is in shortest supply and thus restricts the rate of a process like photosynthesis is known as a ________ factor."
+                                    },
+                                    "type": "fill_blank",
+                                    "marks": 1
+                                }
+                            },
+                            {
+                                "difficulty": "intermediate",
+                                "hints": [
+                                    "Recall the role of enzymes in the chemical reactions of photosynthesis and how temperature affects enzyme activity.",
+                                    "Consider what happens to the three-dimensional structure of proteins, like enzymes, when exposed to excessively high temperatures.",
+                                    "Focus on the irreversible change that occurs to enzymes at very high temperatures, which causes them to lose their functional shape and, consequently, their catalytic activity."
+                                ],
+                                "steps": [
+                                    "Photosynthesis relies on a series of enzyme-catalyzed reactions. Enzymes are proteins with specific three-dimensional shapes that are crucial for their function.",
+                                    "At optimal temperatures, enzymes work efficiently. However, as temperature increases significantly beyond the optimum, the kinetic energy causes the enzyme's structure to vibrate excessively.",
+                                    "This excessive vibration can break the weak bonds holding the enzyme's specific 3D shape, causing it to unfold or change shape irreversibly. This process is called denaturation.",
+                                    "Once denatured, the enzyme loses its active site's specific shape, making it unable to bind to its substrate and catalyze the reaction. As a result, the rate of photosynthesis drastically decreases."
+                                ],
+                                "taskBlock": {
+                                    "config": {
+                                        "options": [
+                                            {
+                                                "isAnswer": true,
+                                                "text": "The enzymes involved in photosynthesis begin to denature, causing the rate to decrease."
+                                            },
+                                            {
+                                                "isAnswer": false,
+                                                "text": "The plant's stomata close completely, preventing carbon dioxide uptake."
+                                            },
+                                            {
+                                                "isAnswer": false,
+                                                "text": "Chlorophyll pigments are destroyed, making them unable to absorb light energy."
+                                            },
+                                            {
+                                                "isAnswer": false,
+                                                "text": "Water within the plant cells evaporates too quickly, leading to dehydration."
+                                            }
+                                        ],
+                                        "question": "Which of the following best explains why the rate of photosynthesis decreases significantly when the temperature becomes excessively high?"
+                                    },
+                                    "type": "choice",
+                                    "marks": 2
+                                }
+                            },
+                            {
+                                "difficulty": "intermediate",
+                                "hints": [
+                                    "Think about the other essential ingredients or conditions required for photosynthesis besides light. What raw materials are consumed?",
+                                    "Consider the two main stages of photosynthesis: the light-dependent reactions and the light-independent reactions (Calvin cycle). Which raw material is directly incorporated into organic molecules?",
+                                    "If light is abundant, the light-dependent reactions might be running efficiently, producing ATP and NADPH. However, if there isn't enough of a specific gaseous raw material, what process in the light-independent reactions (Calvin cycle) cannot proceed effectively, even with ample ATP and NADPH?"
+                                ],
+                                "steps": [
+                                    "The question states that light intensity is very high, suggesting that light is not the limiting factor.",
+                                    "Photosynthesis requires not only light but also carbon dioxide (CO2) and water.",
+                                    "Carbon dioxide is a key reactant in the light-independent reactions (Calvin cycle), where it is 'fixed' to produce glucose. If the concentration of CO2 is low, even with abundant light to produce ATP and NADPH, the Calvin cycle cannot proceed efficiently because there isn't enough carbon substrate to build sugars.",
+                                    "Therefore, low carbon dioxide concentration would become the limiting factor, restricting the overall rate of photosynthesis despite high light intensity."
+                                ],
+                                "taskBlock": {
+                                    "config": {
+                                        "question": "A plant is exposed to very high light intensity, but its rate of photosynthesis remains low. Explain one environmental factor that could be limiting the rate and how it affects the process."
+                                    },
+                                    "criteria": [
+                                        {
+                                            "description": "Identifies carbon dioxide concentration as a limiting factor.",
+                                            "marks": 1
+                                        },
+                                        {
+                                            "description": "Explains that low CO2 restricts the Calvin cycle/light-independent reactions (e.g., carbon fixation/production of glucose), even with high light.",
+                                            "marks": 2
+                                        }
+                                    ],
+                                    "type": "short_answer",
+                                    "marks": 3
+                                }
+                            }
+                        ],
+                        "metadata": {
+                            "interactiveBlocks": [
+                                {
+                                    "difficulty": "beginner",
+                                    "hints": [
+                                        "Think about what 'limits' a process.",
+                                        "This term describes any environmental condition that, by being in short supply, restricts the growth or rate of a biological process.",
+                                        "It starts with the letter 'L' and indicates that the factor is preventing the process from reaching its maximum potential."
+                                    ],
+                                    "steps": [
+                                        "A limiting factor is any factor that restricts the rate of a process when it is in short supply. For photosynthesis, examples include light intensity, carbon dioxide concentration, and temperature.",
+                                        "When one of these factors is at a low level, it will limit the overall rate of photosynthesis, even if other factors are optimal. Increasing other factors will not increase the rate until the limiting factor is no longer in short supply.",
+                                        "Therefore, the correct term is 'limiting'."
+                                    ],
+                                    "taskBlock": {
+                                        "config": {
+                                            "answer": "limiting",
+                                            "sentence": "The factor that is in shortest supply and thus restricts the rate of a process like photosynthesis is known as a ________ factor."
+                                        },
+                                        "type": "fill_blank",
+                                        "marks": 1
+                                    }
+                                },
+                                {
+                                    "difficulty": "intermediate",
+                                    "hints": [
+                                        "Recall the role of enzymes in the chemical reactions of photosynthesis and how temperature affects enzyme activity.",
+                                        "Consider what happens to the three-dimensional structure of proteins, like enzymes, when exposed to excessively high temperatures.",
+                                        "Focus on the irreversible change that occurs to enzymes at very high temperatures, which causes them to lose their functional shape and, consequently, their catalytic activity."
+                                    ],
+                                    "steps": [
+                                        "Photosynthesis relies on a series of enzyme-catalyzed reactions. Enzymes are proteins with specific three-dimensional shapes that are crucial for their function.",
+                                        "At optimal temperatures, enzymes work efficiently. However, as temperature increases significantly beyond the optimum, the kinetic energy causes the enzyme's structure to vibrate excessively.",
+                                        "This excessive vibration can break the weak bonds holding the enzyme's specific 3D shape, causing it to unfold or change shape irreversibly. This process is called denaturation.",
+                                        "Once denatured, the enzyme loses its active site's specific shape, making it unable to bind to its substrate and catalyze the reaction. As a result, the rate of photosynthesis drastically decreases."
+                                    ],
+                                    "taskBlock": {
+                                        "config": {
+                                            "options": [
+                                                {
+                                                    "isAnswer": true,
+                                                    "text": "The enzymes involved in photosynthesis begin to denature, causing the rate to decrease."
+                                                },
+                                                {
+                                                    "isAnswer": false,
+                                                    "text": "The plant's stomata close completely, preventing carbon dioxide uptake."
+                                                },
+                                                {
+                                                    "isAnswer": false,
+                                                    "text": "Chlorophyll pigments are destroyed, making them unable to absorb light energy."
+                                                },
+                                                {
+                                                    "isAnswer": false,
+                                                    "text": "Water within the plant cells evaporates too quickly, leading to dehydration."
+                                                }
+                                            ],
+                                            "question": "Which of the following best explains why the rate of photosynthesis decreases significantly when the temperature becomes excessively high?"
+                                        },
+                                        "type": "choice",
+                                        "marks": 2
+                                    }
+                                },
+                                {
+                                    "difficulty": "intermediate",
+                                    "hints": [
+                                        "Think about the other essential ingredients or conditions required for photosynthesis besides light. What raw materials are consumed?",
+                                        "Consider the two main stages of photosynthesis: the light-dependent reactions and the light-independent reactions (Calvin cycle). Which raw material is directly incorporated into organic molecules?",
+                                        "If light is abundant, the light-dependent reactions might be running efficiently, producing ATP and NADPH. However, if there isn't enough of a specific gaseous raw material, what process in the light-independent reactions (Calvin cycle) cannot proceed effectively, even with ample ATP and NADPH?"
+                                    ],
+                                    "steps": [
+                                        "The question states that light intensity is very high, suggesting that light is not the limiting factor.",
+                                        "Photosynthesis requires not only light but also carbon dioxide (CO2) and water.",
+                                        "Carbon dioxide is a key reactant in the light-independent reactions (Calvin cycle), where it is 'fixed' to produce glucose. If the concentration of CO2 is low, even with abundant light to produce ATP and NADPH, the Calvin cycle cannot proceed efficiently because there isn't enough carbon substrate to build sugars.",
+                                        "Therefore, low carbon dioxide concentration would become the limiting factor, restricting the overall rate of photosynthesis despite high light intensity."
+                                    ],
+                                    "taskBlock": {
+                                        "config": {
+                                            "question": "A plant is exposed to very high light intensity, but its rate of photosynthesis remains low. Explain one environmental factor that could be limiting the rate and how it affects the process."
+                                        },
+                                        "criteria": [
+                                            {
+                                                "description": "Identifies carbon dioxide concentration as a limiting factor.",
+                                                "marks": 1
+                                            },
+                                            {
+                                                "description": "Explains that low CO2 restricts the Calvin cycle/light-independent reactions (e.g., carbon fixation/production of glucose), even with high light.",
+                                                "marks": 2
+                                            }
+                                        ],
+                                        "type": "short_answer",
+                                        "marks": 3
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "sources": {
+                        "content": [
+                            {
+                                "content": "Key Knowledge:\nthe factors that affect the rate of photosynthesis: light availability, water availability, temperature and carbon dioxide concentration\nTopic: Topic 5020",
+                                "score": 0.3526053,
+                                "metadata": {
+                                    "topic": "Topic 5020",
+                                    "type": "key_knowledge",
+                                    "subjectId": 1001,
+                                    "outcomeId": 1016,
+                                    "id": 1227
+                                },
+                                "source": "curriculum_contents"
+                            },
+                            {
+                                "content": "Key Knowledge:\nthe general factors that impact on enzyme function in relation to photosynthesis and cellular respiration: changes in temperature, pH, concentration, competitive and non-competitive enzyme inhibitors\nTopic: Topic 5020",
+                                "score": 0.4496512,
+                                "metadata": {
+                                    "subjectId": 1001,
+                                    "type": "key_knowledge",
+                                    "id": 1224,
+                                    "topic": "Topic 5020",
+                                    "outcomeId": 1016
+                                },
+                                "source": "curriculum_contents"
+                            },
+                            {
+                                "content": "Key Knowledge:\nthe factors that affect the rate of cellular respiration: temperature, glucose availability and oxygen concentration\nTopic: Topic 5020",
+                                "score": 0.5036613,
+                                "metadata": {
+                                    "outcomeId": 1016,
+                                    "topic": "Topic 5020",
+                                    "id": 1230,
+                                    "subjectId": 1001,
+                                    "type": "key_knowledge"
+                                },
+                                "source": "curriculum_contents"
+                            },
+                            {
+                                "content": "Detailed Example: How can drought resistant crops be identified? Comparison and evaluation of biological concepts, methodologies and findings.\nDetailed example How can drought resistant crops be identified? Comparison and evaluation of biological concepts, methodologies and findings. As adapted from 'Observing transpiration', 'Stomata leaf peel' and 'Preparing a leaf epidermal peel' ( GRDC , GTAC ). Aim Explore the concept of transpiration by creating a controlled environment by which this process can be monitored and measured (Part A). Compare the epidermal cellular structures (such as stomata) from the leaves of different wheat varieties. Suggest which might be best for a low rainfall environment (Part B). Key science skills Identify, inform and teach students the relevant Unit 1\u20134 Biology Key science skills that are embedded in the task. Introduction Most wheat cropping in Australia relies on rainfall because there is no option for irrigation or it is too expensive for larger scale farms. Australian grain growers regularly check weather updates from the Bureau of Meteorology. Farmers need the rain to fall at the right time and in the right place. Unfortunately, due largely to climate change, Australian farming areas are being plagued by periods of low rainfall, hot weather, dry winds and drought. In these conditions, plants can struggle to grow, survive and reproduce. Water movement throughout a plant is essential to its ability to grow, survive and reproduce. In a farming system, growers are keen for the plant to use every millimetre of water. From a scientific point of view, they want to offer farmers a variety that has the best adaptive traits possible. The CSIRO ( ECOS ) has found plants that, with adaptations, are higher yielding under drought conditions and better at maintaining growth. This is reflected in the fact that they keep their stomata open longer when stressed during flowering. Sensitive plants close those stomata quickly under stress and stop growing. Stomata control transpiration of water and photosynthesis and thereby regulate growth and grain production. Transpiration is the process by which plants lose water. Plants collect water from the soil through their root hairs via a process of osmosis. The water then travels up through the plant to the leaves where it is lost as the water diffuses into the surrounding air. On the outer layer of the leaf of a plant are microscopic holes called 'stomata'. Stomata control gas exchange and water loss by opening and closing. They are of particular interest to plant breeders because plants with smaller or fewer stomata tend to have lower levels of evaporation. Part A: Investigating transpiration using a controlled experiment Equipment 2 x clear measuring cylinders Square of cardboard Small cuttings of plant(s) (preferably crop plants \u2013 wheat, rye, corn, sunflower, beans, peas, radishes, lettuce, any other vegetable) Blue Tack Water Scissors Timer Pen Method Make a hole in the centre of the cardboard big enough for the stem. Put the stem of the cutting through this hole and seal the remaining space with Blue Tack. Fill one cup with water and mark the water level with a pen. Put the bottom of the cutting in the water and place the second cup over the top of the leaves of the plant. Place in the sun and observe for 20 minutes. Record your observations. Discussion questions/suggested annotations when report writing in the logbook A series of four to six graded questions that address the data and the implications of the relationship for cell survival should be set for students to answer in their logbook, for example: Identify \u2013 What are the dependent, independent and controlled variables in your investigation? Explain \u2013 What did you observe? What percentage of water was taken up by the plant? Explain the observations in terms of osmosis and transpiration. Apply \u2013 Which plants would be recommended as crops? Support your claims with evidence. Propose \u2013 What further tests could be performed to investigate transpiration rates in plants? Outline a method for a further test. Part B: Investigating stomata using a controlled experiment Investigate stomatal aperture from three different plant varieties. Procedure Stomata may be isolated and viewed under a light or digital microscope using a variety of methods, including using nail polish and sticky tape or peeling a thin epidermal layer from the leaf. Results Draw and label any points of stomata difference between the varieties and between the top and bottom of the leaf. Clearly label the stomata, guard cells and any other organelles you see. Describe the stomatal aperture, describing the appearance of guard cells. Explain why the lower epidermis of a leaf has more stomata than the upper epidermis. Which variety had the most stomata? Discussion questions/suggested annotations when report writing in the logbook A series of four to six graded questions that address the data and the implications of the relationship for cell survival should be set for students to answer in their logbook, for example: Identify \u2013 What are the dependent, independent and controlled variables in your investigation? Explain \u2013 What did you observe? Describe the differences between plants, including number of stomata and number of open stomata. Explain the observations in terms of stomatal opening and guard cell appearance. Apply \u2013 Which plants would be recommended as crops in drought conditions? Evidence your reasoning using your results from both Parts A and B. Propose \u2013 What further tests could be performed to investigate stomatal aperture and opening rates in plants? Outline a method for a further test. Extension Compare Australian native plants ( Mallee.pdf ) and Australian crop plants with transpiration rates, stomata location and opening. Which would you suggest would be better suited as crop plants? Explain why. Identify and describe possible social, ethical and economic issues.",
+                                "score": 0.533018,
+                                "metadata": {
+                                    "learningArea": "U1AOS2",
+                                    "subjectId": 1001,
+                                    "id": "1756013430925_1",
+                                    "type": "detailed_example"
+                                },
+                                "source": "detailed_examples"
+                            },
+                            {
+                                "content": "Outcome #2\nOn completion of this unit the student should be able to analyse the structure and regulation of biochemical pathways in photosynthesis and cellular respiration, and evaluate how biotechnology can be used to solve problems related to the regulation of biochemical pathways.",
+                                "score": 0.55326957,
+                                "metadata": {
+                                    "number": 2,
+                                    "id": 1016,
+                                    "subjectId": 1001,
+                                    "type": "outcome"
+                                },
+                                "source": "curriculum_contents"
+                            }
+                        ],
+                        "interactive": []
+                    }
+                }
+            ],
+            "totalSections": 4,
+            "totalContentBlocks": 62,
+            "totalInteractiveBlocks": 12
+        },
+        "metadata": {
+            "stage": "complete_module",
+            "sectionsGenerated": 4,
+            "totalBlocks": 74
+        },
+        "sources": [
+            {
+                "content": "Key Knowledge:\ninputs, outputs and locations of the light dependent and light independent stages of photosynthesis in C3 plants (details of biochemical pathway mechanisms are not required)\nTopic: Topic 5020",
+                "score": 0.5092759,
+                "metadata": {
+                    "subjectId": 1001,
+                    "type": "key_knowledge",
+                    "outcomeId": 1016,
+                    "topic": "Topic 5020",
+                    "id": 1225
+                },
+                "source": "curriculum_contents"
+            },
+            {
+                "content": "Key Knowledge:\nthe role of Rubisco in photosynthesis, including adaptations of C3, C4 and CAM plants to maximise the efficiency of photosynthesis\nTopic: Topic 5020",
+                "score": 0.57451916,
+                "metadata": {
+                    "subjectId": 1001,
+                    "id": 1226,
+                    "topic": "Topic 5020",
+                    "type": "key_knowledge",
+                    "outcomeId": 1016
+                },
+                "source": "curriculum_contents"
+            },
+            {
+                "content": "Key Knowledge:\nthe general role of enzymes and coenzymes in facilitating steps in photosynthesis and cellular respiration\nTopic: Topic 5020",
+                "score": 0.582734,
+                "metadata": {
+                    "subjectId": 1001,
+                    "outcomeId": 1016,
+                    "topic": "Topic 5020",
+                    "type": "key_knowledge",
+                    "id": 1223
+                },
+                "source": "curriculum_contents"
+            },
+            {
+                "content": "Key Knowledge:\nthe general structure of the biochemical pathways in photosynthesis and cellular respiration from initial reactant to final product\nTopic: Topic 5020",
+                "score": 0.59049857,
+                "metadata": {
+                    "outcomeId": 1016,
+                    "type": "key_knowledge",
+                    "topic": "Topic 5020",
+                    "subjectId": 1001,
+                    "id": 1222
+                },
+                "source": "curriculum_contents"
+            },
+            {
+                "content": "Learning Area: How do plant and animal systems function?\nIn this area of study students explore how systems function through cell specialisation in vascular plants and in digestive, endocrine and excretory systems in animals, focusing on regulation of water balance in plants, and temperature, blood glucose and water balance in animals. Students examine how homeostatic mechanisms in animals help maintain their internal environment within a narrow range of tolerance levels, and consider malfunctions in homeostatic mechanisms. On completion of this unit the student should be able to explain and compare how cells are specialised and organised in plants and animals, and analyse how specific systems in plants and animals are regulated.",
+                "score": 0.6077392,
+                "metadata": {
+                    "subjectId": 1001,
+                    "id": 1010,
+                    "type": "learning_area"
+                },
+                "source": "curriculum_contents"
+            },
+            {
+                "content": "Key Knowledge:\nthe factors that affect the rate of photosynthesis: light availability, water availability, temperature and carbon dioxide concentration\nTopic: Topic 5020",
+                "score": 0.61215955,
+                "metadata": {
+                    "outcomeId": 1016,
+                    "id": 1227,
+                    "type": "key_knowledge",
+                    "subjectId": 1001,
+                    "topic": "Topic 5020"
+                },
+                "source": "curriculum_contents"
+            },
+            {
+                "content": "Key Knowledge:\nspecialisation and organisation of plant cells into tissues for specific functions in vascular plants, including intake, movement and loss of water\nTopic: Topic 4003",
+                "score": 0.63191545,
+                "metadata": {
+                    "type": "key_knowledge",
+                    "subjectId": 1001,
+                    "outcomeId": 1010,
+                    "topic": "Topic 4003",
+                    "id": 1161
+                },
+                "source": "curriculum_contents"
+            },
+            {
+                "content": "Key Knowledge:\nthe structure and specialisation of plant and animal cell organelles for distinct functions, including chloroplasts and mitochondria\nTopic: Topic 4001",
+                "score": 0.63443047,
+                "metadata": {
+                    "subjectId": 1001,
+                    "topic": "Topic 4001",
+                    "outcomeId": 1009,
+                    "id": 1154,
+                    "type": "key_knowledge"
+                },
+                "source": "curriculum_contents"
+            },
+            {
+                "content": "Learning Area: How are biochemical pathways regulated?\nIn this area of study students focus on the structure and regulation of biochemical pathways. They examine how biochemical pathways, specifically photosynthesis and cellular respiration, involve many steps that are controlled by enzymes and assisted by coenzymes. Students investigate factors that affect the rate of cellular reactions and explore applications of biotechnology that focus on the regulation of biochemical pathways. On completion of this unit the student should be able to analyse the structure and regulation of biochemical pathways in photosynthesis and cellular respiration, and evaluate how biotechnology can be used to solve problems related to the regulation of biochemical pathways.",
+                "score": 0.64119124,
+                "metadata": {
+                    "subjectId": 1001,
+                    "id": 1016,
+                    "type": "learning_area"
+                },
+                "source": "curriculum_contents"
+            },
+            {
+                "content": "Outcome #2\nOn completion of this unit the student should be able to analyse the structure and regulation of biochemical pathways in photosynthesis and cellular respiration, and evaluate how biotechnology can be used to solve problems related to the regulation of biochemical pathways.",
+                "score": 0.6451167,
+                "metadata": {
+                    "subjectId": 1001,
+                    "type": "outcome",
+                    "id": 1016,
+                    "number": 2
+                },
+                "source": "curriculum_contents"
+            }
+        ]
+    },
+    "context": {
+        "userId": 1,
+        "sessionId": "test-session-1756019194504",
+        "moduleId": 1,
+        "action": "generate_complete_module"
+    }
+}

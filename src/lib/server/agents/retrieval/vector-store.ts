@@ -758,25 +758,37 @@ export class EducationalVectorStore {
     question: string,
     moduleId: number,
     taskBlockId: number,
-    concept: string
+    concept: string,
+    subjectId?: number
   ): Promise<void> {
-    const collection = this.collections.get('questions');
-    if (!collection) {
-      throw new Error('questions collection not initialized');
-    }
+    try {
+      // Use subject-specific collection if subjectId provided, otherwise use global collection
+      let collection;
+      if (subjectId) {
+        collection = await this.getSubjectCollection('questions', subjectId);
+      } else {
+        collection = this.collections.get('questions');
+        if (!collection) {
+          throw new Error('questions collection not initialized');
+        }
+      }
 
-    await collection.add({
-      ids: [`question_${Date.now()}_${moduleId}`],
-      documents: [question],
-      metadatas: [{
-        type: 'question',
-        subjectId: 0,
-        id: `${Date.now()}`,
-        moduleId,
-        taskBlockId,
-        concept
-      }]
-    });
+      await collection.add({
+        ids: [`question_${Date.now()}_${moduleId}_${taskBlockId}`],
+        documents: [question],
+        metadatas: [{
+          type: 'question',
+          subjectId: subjectId || 0,
+          id: `${Date.now()}`,
+          moduleId,
+          taskBlockId,
+          concept
+        }]
+      });
+    } catch (error) {
+      console.warn('Failed to store question:', error);
+      // Don't throw error - this is non-critical functionality
+    }
   }
 
   /**

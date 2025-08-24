@@ -240,262 +240,10 @@ export type BlockWhiteboardConfig = {
 	whiteboardId: number | null;
 };
 
-export const blockGraphPlot = {
-    type: 'object',
-    properties: {
-        type: { type: 'string', enum: ['graph_plot'] },
-        config: {
-            type: 'object',
-            properties: {
-                question: { type: 'string' },
-                xLabel: { type: 'string' },
-                yLabel: { type: 'string' },
-                gridSize: { type: 'number', default: 20 },
-                expectedPoints: {
-                    type: 'array',
-                    items: {
-                        type: 'object',
-                        properties: {
-                            x: { type: 'number' },
-                            y: { type: 'number' }
-                        }
-                    }
-                }
-            },
-            required: ['question', 'xLabel', 'yLabel', 'expectedPoints']
-        },
-        criteria: {
-            type: 'array',
-            items: criteriaItem,
-            minItems: 1
-        },
-        marks: { type: 'number' }
-    },
-    required: ['type', 'config', 'criteria', 'marks']
-};
-
-export const blockFormulaInput = {
-    type: 'object',
-    properties: {
-        type: { type: 'string', enum: ['formula_input'] },
-        config: {
-            type: 'object',
-            properties: {
-                question: { type: 'string' },
-                variables: {
-                    type: 'array',
-                    items: { type: 'string' }
-                },
-                expectedFormula: { type: 'string' },
-                acceptedVariants: {
-                    type: 'array',
-                    items: { type: 'string' }
-                }
-            },
-            required: ['question', 'variables', 'expectedFormula']
-        },
-        criteria: {
-            type: 'array',
-            items: criteriaItem,
-            minItems: 1
-        },
-        marks: { type: 'number' }
-    },
-    required: ['type', 'config', 'criteria', 'marks']
-};
-
-export const blockTableInput = {
-    type: 'object',
-    properties: {
-        type: { type: 'string', enum: ['table_input'] },
-        config: {
-            type: 'object',
-            properties: {
-                question: { type: 'string' },
-                headers: {
-                    type: 'array',
-                    items: { type: 'string' }
-                },
-                rows: { type: 'number' },
-                expectedValues: {
-                    type: 'array',
-                    items: {
-                        type: 'array',
-                        items: { type: 'string' }
-                    }
-                }
-            },
-            required: ['question', 'headers', 'rows', 'expectedValues']
-        },
-        marks: { type: 'number' }
-    },
-    required: ['type', 'config', 'marks']
-};
-
-export const blockInteractiveDiagram = {
-    type: 'object',
-    properties: {
-        type: { type: 'string', enum: ['interactive_diagram'] },
-        config: {
-            type: 'object',
-            properties: {
-                question: { type: 'string' },
-                imageUrl: { type: 'string' },
-                hotspots: {
-                    type: 'array',
-                    items: {
-                        type: 'object',
-                        properties: {
-                            id: { type: 'string' },
-                            x: { type: 'number' },
-                            y: { type: 'number' },
-                            label: { type: 'string' },
-                            correctLabel: { type: 'string' }
-                        }
-                    }
-                }
-            },
-            required: ['question', 'imageUrl', 'hotspots']
-        },
-        marks: { type: 'number' }
-    },
-    required: ['type', 'config', 'marks']
-};
-
-export const blockImageAnnotation = {
-    type: 'object',
-    properties: {
-        type: { type: 'string', enum: ['image_annotation'] },
-        config: {
-            type: 'object',
-            properties: {
-                question: { type: 'string' },
-                imageUrl: { type: 'string' },
-                annotations: {
-                    type: 'array',
-                    items: {
-                        type: 'object',
-                        properties: {
-                            type: { type: 'string', enum: ['circle', 'arrow', 'text'] },
-                            x: { type: 'number' },
-                            y: { type: 'number' },
-                            label: { type: 'string' }
-                        }
-                    }
-                }
-            },
-            required: ['question', 'imageUrl']
-        },
-        marks: { type: 'number' }
-    },
-    required: ['type', 'config', 'marks']
-};
-
-export const blockTextHighlight = {
-    type: 'object',
-    properties: {
-        type: { type: 'string', enum: ['text_highlight'] },
-        config: {
-            type: 'object',
-            properties: {
-                question: { type: 'string' },
-                passage: { type: 'string' },
-                expectedHighlights: {
-                    type: 'array',
-                    items: {
-                        type: 'object',
-                        properties: {
-                            start: { type: 'number' },
-                            end: { type: 'number' },
-                            category: { type: 'string' }
-                        }
-                    }
-                }
-            },
-            required: ['question', 'passage', 'expectedHighlights']
-        },
-        marks: { type: 'number' }
-    },
-    required: ['type', 'config', 'marks']
-};
-
-export const blockQuoteMatching = {
-    type: 'object',
-    properties: {
-        type: { type: 'string', enum: ['quote_matching'] },
-        config: {
-            type: 'object',
-            properties: {
-                question: { type: 'string' },
-                quotes: {
-                    type: 'array',
-                    items: { type: 'string' }
-                },
-                sources: {
-                    type: 'array',
-                    items: { type: 'string' }
-                },
-                correctPairs: {
-                    type: 'array',
-                    items: {
-                        type: 'object',
-                        properties: {
-                            quoteIndex: { type: 'number' },
-                            sourceIndex: { type: 'number' }
-                        }
-                    }
-                }
-            },
-            required: ['question', 'quotes', 'sources', 'correctPairs']
-        },
-        marks: { type: 'number' }
-    },
-    required: ['type', 'config', 'marks']
-};
-
-export const blockFillSentence = {
-    type: 'object',
-    properties: {
-        type: { type: 'string', enum: ['fill_sentence'] },
-        config: {
-            type: 'object',
-            properties: {
-                question: { type: 'string' },
-                paragraph: { type: 'string' },
-                blanks: {
-                    type: 'array',
-                    items: {
-                        type: 'object',
-                        properties: {
-                            position: { type: 'number' },
-                            answer: { type: 'string' },
-                            options: {
-                                type: 'array',
-                                items: { type: 'string' }
-                            }
-                        }
-                    }
-                }
-            },
-            required: ['question', 'paragraph', 'blanks']
-        },
-        marks: { type: 'number' }
-    },
-    required: ['type', 'config', 'marks']
-};
 
 
 // All interactive blocks for schema validation
-export const allInteractiveBlocks = [
-    blockGraphPlot,
-    blockFormulaInput,
-    blockTableInput,
-    blockInteractiveDiagram,
-    blockImageAnnotation,
-    blockTextHighlight,
-    blockQuoteMatching,
-    blockFillSentence
-];
+
 
 export const taskBlocks = [
 	blockHeading,
@@ -505,14 +253,6 @@ export const taskBlocks = [
 	blockFillBlank,
 	blockMatching,
 	blockShortAnswer,
-	blockGraphPlot,
-    blockFormulaInput,
-    blockTableInput,
-    blockInteractiveDiagram,
-    blockImageAnnotation,
-    blockTextHighlight,
-    blockQuoteMatching,
-    blockFillSentence
 ];
 
 export const layoutTwoColumns = {
@@ -553,14 +293,6 @@ export const InteractiveBlocks = [
 	blockFillBlank,
 	blockMatching,
 	blockShortAnswer,
-	blockGraphPlot,
-    blockFormulaInput,
-    blockTableInput,
-    blockInteractiveDiagram,
-    blockImageAnnotation,
-    blockTextHighlight,
-    blockQuoteMatching,
-    blockFillSentence
 ];
 
 // Original task schema for basic task blocks
@@ -624,9 +356,9 @@ export const interactiveBlockWithOptionals = (
 
 export function getBlockTypesForSubject(subjectType: string): any[] {
     const typeMap: Record<string, any[]> = {
-      mathematics: [blockGraphPlot, blockFormulaInput, blockTableInput, blockChoice, blockMathInput],
-      science: [blockInteractiveDiagram, blockImageAnnotation, blockFormulaInput, blockFillBlank],
-      english: [blockTextHighlight, blockQuoteMatching, blockFillSentence, blockShortAnswer],
+      mathematics: [blockChoice, blockMathInput],
+      science: [blockFillBlank, blockChoice, blockShortAnswer, blockFillBlank],
+      english: [blockShortAnswer],
       default: [blockChoice, blockShortAnswer, blockMatching, blockFillBlank]
     };
 

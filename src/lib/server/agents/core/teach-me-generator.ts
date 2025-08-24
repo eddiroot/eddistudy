@@ -2,13 +2,11 @@
 import { BaseAgent, type AgentContext, type AgentResponse, AgentType } from '../index';
 import { PromptRegistry } from '../prompts/registry';
 import { EducationalVectorStore } from '../retrieval/vector-store';
-import { SessionManager } from '../memory/session-manager';
 import { geminiCompletion } from '$lib/server/ai';
 import * as blockSchemas from '../schemas/blockSchema';
 
 export class TeachModuleGeneratorAgent extends BaseAgent {
   private vectorStore: EducationalVectorStore;
-  private sessionManager: SessionManager;
 
   constructor() {
     super({
@@ -21,7 +19,6 @@ for optimal learning outcomes.`,
     });
     
     this.vectorStore = new EducationalVectorStore();
-    this.sessionManager = new SessionManager();
   }
 
   async execute(context: AgentContext): Promise<AgentResponse> {
@@ -267,7 +264,8 @@ Create engaging explanatory content that:
           question,
           params.moduleId || 0,
           block.taskBlock.id || 0,
-          params.section.concepts.join(', ')
+          params.section.concepts.join(', '),
+          params.subjectId
         );
       }
     }
