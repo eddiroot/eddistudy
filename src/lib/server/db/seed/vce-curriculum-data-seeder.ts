@@ -49,7 +49,7 @@ interface OutcomeData {
 	abbreviation?: string;
 	keySkills?: Array<KeySkillData>;
 	keyKnowledge?: Array<KeyKnowledgeData>;
-	topics?: Array<{ name: string; outcomeTopic?: string }>;
+	topics?: Array<{ id?: number; name: string; outcomeTopic?: string; outcomeId?: number }>;
 }
 
 interface KeySkillData {
@@ -107,14 +107,19 @@ const subjectNameMap: Record<string, string> = {
 	'spec34': 'Specialist Mathematics'
 };
 
-function extractTopicName(item: KeySkillData | KeyKnowledgeData, outcomeTopics?: Array<{ name: string; outcomeTopic?: string }>): string | null {
+function extractTopicName(item: KeySkillData | KeyKnowledgeData, outcomeTopics?: Array<{ id?: number; name: string; outcomeTopic?: string }>): string | null {
 	// Priority order: outcomeTopic > name > topicName
 	if (item.outcomeTopic) return item.outcomeTopic;
 	if (item.name) return item.name;
 	if (item.topicName) return item.topicName;
 	
-	// Handle outcomeTopicId by using a generic topic name
-	if (item.outcomeTopicId !== undefined) {
+	// Handle outcomeTopicId by looking up the actual topic name
+	if (item.outcomeTopicId !== undefined && outcomeTopics && outcomeTopics.length > 0) {
+		const matchingTopic = outcomeTopics.find(topic => topic.id === item.outcomeTopicId);
+		if (matchingTopic) {
+			return matchingTopic.name;
+		}
+		// Fallback to generic topic name if not found
 		return `Topic ${item.outcomeTopicId}`;
 	}
 	

@@ -100,7 +100,7 @@ for optimal learning outcomes.`,
     const examples = await this.vectorStore.hybridSearch(
       section.concepts.join(' '),
       {
-        collections: ['detailed_examples', 'curriculum_contents'],
+        collections: ['detailed_examples', 'curriculum_contents', 'learning_activities'],
         subjectId: subjectId,
         k: 5
       }
@@ -167,9 +167,9 @@ Create engaging explanatory content that:
     const similarQuestions = await this.vectorStore.hybridSearch(
       section.concepts.join(' '),
       {
-        collections: ['exam_questions'],
+        collections: ['exam_questions', 'assessment_tasks'],
         subjectId: subjectId,
-        k: 5
+        k: 6
       }
     );
 
