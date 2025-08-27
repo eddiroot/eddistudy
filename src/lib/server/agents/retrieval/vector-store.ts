@@ -723,7 +723,8 @@ export class EducationalVectorStore {
     moduleId: number,
     taskBlockId: number,
     concept: string,
-    subjectId?: number
+    difficulty: string,
+    subjectId?: number,
   ): Promise<void> {
     try {
       // Use subject-specific collection if subjectId provided, otherwise use global collection
@@ -746,6 +747,7 @@ export class EducationalVectorStore {
           id: `${Date.now()}`,
           moduleId,
           taskBlockId,
+          difficulty,
           concept
         }]
       });

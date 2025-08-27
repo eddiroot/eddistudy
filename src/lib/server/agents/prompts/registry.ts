@@ -106,7 +106,6 @@ CONSTRAINTS:
                 objective: { type: 'string' },
                 concepts: { type: 'array', items: { type: 'string' } },
                 skills: { type: 'array', items: { type: 'string' } },
-                estimatedTime: { type: 'number' },
               }
             }
           }

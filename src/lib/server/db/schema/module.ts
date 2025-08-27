@@ -31,6 +31,7 @@ export const module = pgTable('module', {
         .references(() => table.curriculumSubject.id),
     title: text('title').notNull(),
     description: text('description'),
+    objective: text('objective'),
     // Module metadata
     orderIndex: integer('order_index').notNull().default(0),
     isPublished: boolean('is_published').default(false),

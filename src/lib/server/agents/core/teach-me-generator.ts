@@ -111,6 +111,7 @@ Generate comprehensive learning content for: ${section.title}
 
 Learning Objective: ${section.objective}
 Concepts to Cover: ${section.concepts.join(', ')}
+Skills to Develop: ${section.skills.join(', ')}
 
 EXAMPLES TO REFERENCE:
 ${examples.map((e: any) => e.content).join('\n\n')}
@@ -174,7 +175,7 @@ Create engaging explanatory content that:
 
     // Get common misconceptions to target
     const misconceptions = await this.vectorStore.findCommonMisconceptions(
-      section.concepts[0],
+      section.concepts.join(' '),
       undefined,
       3
     );
@@ -264,7 +265,8 @@ Create engaging explanatory content that:
           params.moduleId || 0,
           block.taskBlock.id || 0,
           params.section.concepts.join(', '),
-          params.subjectId
+          block.taskBlock.difficulty || 'beginner',
+          params.subjectId,
         );
       }
     }
