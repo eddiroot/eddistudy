@@ -65,8 +65,6 @@ class NomicEmbeddingFunction implements EmbeddingFunction {
   }
 
   async generate(texts: string[]): Promise<number[][]> {
-    console.log(`🔑 Using Nomic API with model: ${this.modelName}`);
-    console.log(`📝 Processing ${texts.length} texts for embedding (task: ${this.taskType})`);
 
     try {
       const response = await fetch('https://api-atlas.nomic.ai/v1/embedding/text', {
@@ -88,8 +86,6 @@ class NomicEmbeddingFunction implements EmbeddingFunction {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error(`❌ Nomic API error: ${response.status} ${response.statusText}`);
-        console.error(`Response body: ${errorText}`);
         throw new Error(`Nomic API error: ${response.status} ${response.statusText}: ${errorText}`);
       }
 
@@ -98,13 +94,10 @@ class NomicEmbeddingFunction implements EmbeddingFunction {
       if (!data.embeddings) {
         throw new Error('No embeddings returned from Nomic API');
       }
-
-      console.log(`✅ Successfully generated ${data.embeddings.length} embeddings`);
-      console.log(`📊 Model used: ${data.model}, Usage: ${JSON.stringify(data.usage)}`);
       
       return data.embeddings;
     } catch (error) {
-      console.error('❌ Failed to generate embeddings:', error);
+      console.error('Failed to generate embeddings:', error);
       throw error;
     }
   }
@@ -137,18 +130,9 @@ export class EducationalVectorStore {
     // Create embedders for different tasks
     this.documentEmbedder = new NomicEmbeddingFunction(apiKey);
     this.queryEmbedder = new NomicQueryEmbeddingFunction(apiKey);
-    
-    console.log('✅ Initialized Nomic embedding functions');
   }
 
   async initialize(subjectId: number): Promise<void> {
-    // Check if this specific subject has been initialized
-    if (this.initializedSubjects.has(subjectId)) {
-      console.log(`✅ Subject ${subjectId} collections already initialized`);
-      return;
-    }
-
-    console.log(`🔧 Initializing collections for subject ${subjectId}...`);
 
     const collections = [
       // Internal Data 
@@ -172,20 +156,15 @@ export class EducationalVectorStore {
 
     // Mark this subject as initialized
     this.initializedSubjects.add(subjectId);
-    console.log(`✅ Subject ${subjectId} collections initialized`);
   }
 
   /**
    * Initialize collections for multiple subjects at once
    */
   async initializeAllSubjects(subjectIds: number[]): Promise<void> {
-    console.log(`🔧 Initializing collections for ${subjectIds.length} subjects...`);
-    
     for (const subjectId of subjectIds) {
       await this.initialize(subjectId);
     }
-    
-    console.log(`✅ All ${subjectIds.length} subjects initialized`);
   }
 
   /**
@@ -210,14 +189,6 @@ export class EducationalVectorStore {
       });
       
       this.collections.set(name, collection);
-      console.log(`✅ Created/retrieved collection: ${name}`);
-      
-      // Log collection count for this subject
-      const subjectId = name.split('_')[0];
-      const subjectCollections = Array.from(this.collections.keys())
-        .filter(key => key.startsWith(subjectId + '_'));
-      console.log(`   📊 Subject ${subjectId} now has ${subjectCollections.length} collections`);
-      
       return collection;
     } catch (error) {
       console.error(`❌ Failed to create collection ${name}:`, error);
@@ -343,8 +314,6 @@ export class EducationalVectorStore {
           documents: batchDocs,
           metadatas: batchMetas
         });
-        
-        console.log(`  📦 Indexed batch ${Math.floor(i/batchSize) + 1}/${Math.ceil(documents.length/batchSize)}`);
       }
     }
   }
@@ -373,7 +342,6 @@ export class EducationalVectorStore {
       
       // Skip empty activities
       if (!activityText.trim()) {
-        console.log(`    ⚠️ Skipping empty activity for item ${i}`);
         continue;
       }
       
@@ -406,7 +374,6 @@ export class EducationalVectorStore {
           metadatas: batchMetas
         });
         
-        console.log(`    📦 Indexed learning activities batch ${Math.floor(i/maxBatchSize) + 1}/${Math.ceil(documents.length/maxBatchSize)} (${batchDocs.length} items)`);
       }
     }
   }
@@ -534,7 +501,6 @@ export class EducationalVectorStore {
       
       // Skip empty descriptions
       if (!description.trim()) {
-        console.log(`    ⚠️ Skipping empty description for item ${i}`);
         continue;
       }
       
@@ -561,8 +527,6 @@ export class EducationalVectorStore {
           documents: batchDocs,
           metadatas: batchMetas
         });
-        
-        console.log(`    📦 Indexed extra content batch ${Math.floor(i/maxBatchSize) + 1}/${Math.ceil(documents.length/maxBatchSize)} (${batchDocs.length} items)`);
       }
     }
   }

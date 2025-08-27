@@ -104,12 +104,9 @@ CONSTRAINTS:
               properties: {
                 title: { type: 'string' },
                 objective: { type: 'string' },
-                prerequisites: { type: 'array', items: { type: 'string' } }, // might not need could format better with key knowledge
                 concepts: { type: 'array', items: { type: 'string' } },
                 skills: { type: 'array', items: { type: 'string' } },
-                retrievalPoints: { type: 'array', items: { type: 'string' } },
                 estimatedTime: { type: 'number' },
-                difficulty: { type: 'string', enum: ['beginner', 'intermediate', 'advanced'] }
               }
             }
           }

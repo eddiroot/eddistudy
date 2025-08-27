@@ -102,7 +102,7 @@ for optimal learning outcomes.`,
       {
         collections: ['detailed_examples', 'curriculum_contents', 'learning_activities'],
         subjectId: subjectId,
-        k: 5
+        k: 6
       }
     );
 
@@ -111,7 +111,6 @@ Generate comprehensive learning content for: ${section.title}
 
 Learning Objective: ${section.objective}
 Concepts to Cover: ${section.concepts.join(', ')}
-Prerequisites: ${section.prerequisites.join(', ')}
 
 EXAMPLES TO REFERENCE:
 ${examples.map((e: any) => e.content).join('\n\n')}
@@ -189,7 +188,7 @@ Create engaging explanatory content that:
         sectionContent: sectionContent,
         curriculumContext: section,
         commonMisconceptions: misconceptions.map((m: any) => m.content),
-        numberOfBlocks: 3,
+        numberOfBlocks: 4,
         availableBlockTypes: blockTypes
       },
       similarQuestions
