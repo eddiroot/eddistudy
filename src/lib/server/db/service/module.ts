@@ -1,7 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as table from '$lib/server/db/schema';
 import { db } from '$lib/server/db';
 import { eq, and } from 'drizzle-orm';
 import { yearLevelEnum } from '$lib/server/db/schema/curriculum';
+import { AgentOrchestrator } from '$lib/server/agents/orchestrator';
+import { AgentAction, AgentType, type AgentContext } from '$lib/server/agents';
+import { createTask, createTaskBlock } from './task';
+import { taskTypeEnum } from '$lib/enums';
 
 // ============================================================================
 // SCHOOL & SUBJECT MANAGEMENT METHODS
@@ -227,4 +232,293 @@ export async function storeModuleMemory(data: {
 	// For now, this is a placeholder
 	console.log('Storing module memory:', data);
 	return { id: Date.now(), ...data };
+}
+
+
+export interface ModuleGenerationParams {
+  title: string;
+  description: string;
+  subjectId: number;
+  subjectType: string
+}
+
+export interface ModuleSection {
+  title: string;
+  objective: string;
+  concepts: string[];
+  skills: string[];
+  contentBlocks: any[];
+  interactiveBlocks: any[];
+}
+
+export interface ModuleScaffold {
+	sections: Array<ModuleSection>;
+}
+
+
+/**
+ * Main function to generate and store a complete module
+ */
+export async function generateAndStoreModule(params: ModuleGenerationParams) {
+  const orchestrator = new AgentOrchestrator();
+  
+  try {
+	const scaffoldContext: AgentContext = {
+		metadata: {
+			action: AgentAction.GENERATE_SCAFFOLD,
+			moduleParams: {
+				title: params.title,
+				description: params.description,
+				subjectId: params.subjectId,
+				subjectType: params.subjectType
+			}
+		}
+	}
+
+    const scaffoldResponse = await orchestrator.executeAgent(
+      AgentType.TEACH_MODULE_GENERATOR,
+      scaffoldContext
+    );
+
+    const scaffold = JSON.parse(scaffoldResponse.content);
+
+    // Step 2: Create module in database
+    const [module] = await db
+      .insert(table.module)
+      .values({
+        curriculumSubjectId: params.subjectId,
+        title: params.title,
+        description: params.description,
+        objective: scaffold.overallObjective,
+        isPublished: false
+      })
+      .returning();
+
+    // Step 3: Process each section
+    const sections: ModuleSection[] = [];
+    
+    for (let i = 0; i < scaffold.sections.length; i++) {
+      const section = scaffold.sections[i];
+      
+      // Generate content for section
+      const contentContext: AgentContext = {
+        moduleId: module.id,
+        metadata: {
+          action: AgentAction.GENERATE_CONTENT,
+          moduleParams: {
+            subjectId: params.subjectId,
+            section: section
+          }
+        }
+      };
+
+      const contentResponse = await orchestrator.executeAgent(
+        AgentType.TEACH_MODULE_GENERATOR,
+        contentContext
+      );
+
+      const contentData = JSON.parse(contentResponse.content);
+
+      // Generate interactive blocks for section
+      const interactiveContext: AgentContext = {
+        ...scaffoldContext,
+        moduleId: module.id,
+        metadata: {
+          action: AgentAction.GENERATE_INTERACTIVE,
+          moduleParams: {
+            subjectId: params.subjectId,
+            subjectType: params.subjectType,
+            section: section,
+            sectionContent: extractTextFromBlocks(contentData.blocks)
+          }
+        }
+      };
+
+      const interactiveResponse = await orchestrator.executeAgent(
+        AgentType.TEACH_MODULE_GENERATOR,
+        interactiveContext
+      );
+
+      const interactiveData = JSON.parse(interactiveResponse.content);
+
+      sections.push({
+        ...section,
+        contentBlocks: contentData.blocks,
+        interactiveBlocks: interactiveData.interactiveBlocks
+      });
+    }
+
+    // Step 4: Create tasks and subtasks for each section
+    const moduleSubTasks = [];
+    
+    // Get a subject offering for this subject (from the seeded data)
+    const [subjectOffering] = await db
+      .select()
+      .from(table.subjectOffering)
+      .where(eq(table.subjectOffering.subjectId, params.subjectId))
+      .limit(1);
+      
+    if (!subjectOffering) {
+      throw new Error(`No subject offering found for subject ID ${params.subjectId}`);
+    }
+    
+    for (let sectionIndex = 0; sectionIndex < sections.length; sectionIndex++) {
+      const section = sections[sectionIndex];
+      
+      // Create a task for this section
+      const task = await createTask(
+        section.title,
+        section.objective,
+        1, // version
+        taskTypeEnum.module,
+        subjectOffering.id, // Use subjectOfferingId from seeded data
+        true, // aiTutorEnabled
+        false // isArchived
+      );
+
+      // Create module subtask
+      const [moduleSubTask] = await db
+        .insert(table.moduleSubTask)
+        .values({
+          moduleId: module.id,
+          taskId: task.id,
+          objective: section.objective,
+          concepts: section.concepts,
+          skills: section.skills,
+          orderIndex: sectionIndex
+        })
+        .returning();
+
+      // Add content blocks to task
+      let blockIndex = 0;
+      
+      // Add content blocks
+      for (const contentBlock of section.contentBlocks) {
+        await createTaskBlock(
+          task.id,
+          contentBlock.type, 
+          contentBlock.config,
+          blockIndex++
+        );
+      }
+
+      // Add interactive blocks with metadata
+      for (const interactiveItem of section.interactiveBlocks) {
+        const block = interactiveItem.taskBlock;
+		await createTaskBlock(
+          task.id,
+          block.type,
+          block.config,
+          blockIndex++
+        );
+      }
+
+      moduleSubTasks.push(moduleSubTask);
+    }
+
+    return {
+      module,
+      subTasks: moduleSubTasks,
+      sections
+    };
+    
+  } catch (error) {
+    console.error('Module generation failed:', error);
+    throw new Error(`Failed to generate module: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+}
+
+
+function extractTextFromBlocks(blocks: any[]): string {
+  return blocks
+    .map(block => {
+      switch (block.type) {
+        case 'heading':
+          return block.config?.text || '';
+        case 'richText':
+          // Strip HTML tags and clean up whitespace
+          return block.config?.html?.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim() || '';
+        default:
+          return block.config?.text || block.config?.content || '';
+      }
+    })
+    .filter(text => text.length > 0)
+    .join('\n\n');
+}
+
+
+/**
+ * Get module with all its subtasks and blocks
+ */
+export async function getModuleWithContent(moduleId: number) {
+  const module = await db
+    .select()
+    .from(table.module)
+    .where(eq(table.module.id, moduleId))
+    .limit(1);
+
+  if (!module.length) {
+    return null;
+  }
+
+  const subTasks = await db
+    .select({
+      subTask: table.moduleSubTask,
+      task: table.task
+    })
+    .from(table.moduleSubTask)
+    .innerJoin(table.task, eq(table.moduleSubTask.taskId, table.task.id))
+    .where(eq(table.moduleSubTask.moduleId, moduleId))
+    .orderBy(table.moduleSubTask.orderIndex);
+
+  // Get blocks for each task
+  const subTasksWithBlocks = await Promise.all(
+    subTasks.map(async ({ subTask, task }) => {
+      const blocks = await db
+        .select()
+        .from(table.taskBlock)
+        .where(eq(table.taskBlock.taskId, task.id))
+        .orderBy(table.taskBlock.index);
+
+      return {
+        ...subTask,
+        task,
+        blocks
+      };
+    })
+  );
+
+  return {
+    ...module[0],
+    subTasks: subTasksWithBlocks
+  };
+}
+
+/**
+ * Update module publication status
+ */
+export async function publishModule(moduleId: number, isPublished: boolean = true) {
+  await db
+    .update(table.module)
+    .set({ isPublished })
+    .where(eq(table.module.id, moduleId));
+}
+
+/**
+ * Delete a module and all its associated data
+ */
+export async function deleteModule(moduleId: number) {
+  // Get all subtasks
+  const subTasks = await db
+    .select()
+    .from(table.moduleSubTask)
+    .where(eq(table.moduleSubTask.moduleId, moduleId));
+
+  // Delete all associated tasks (cascades to blocks)
+  for (const subTask of subTasks) {
+    await db.delete(table.task).where(eq(table.task.id, subTask.taskId));
+  }
+
+  // Delete the module (cascades to subtasks)
+  await db.delete(table.module).where(eq(table.module.id, moduleId));
 }

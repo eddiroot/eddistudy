@@ -52,46 +52,28 @@ export class PromptRegistry {
       name: 'Module Scaffold Generator',
       category: PromptCategory.MODULE_SCAFFOLD,
       template: `
-Act as an expert VCE curriculum designer implementing research-based learning principles.
+Design a VCE learning module structure for:
 
 CONTEXT:
 Title: {title}
 Description: {description}
-Learning Areas: {learningAreas}
-Key Knowledge: {keyKnowledge}
-Key Skills: {keySkills}
 
-TASK:
-Design a module structure following the testing effect and spaced repetition principles:
+Create 3-4 progressive sections that:
+1. Build from foundational to advanced concepts
+2. Each section should be 12-15 minutes of focused learning
+3. Balance conceptual understanding with skill application
 
-1. Identify 3-5 distinct learning objectives that build progressively
-2. For each objective, determine:
-   - Prerequisite knowledge required
-   - Core concepts to teach
-   - Skills to develop
-   - Appropriate difficulty progression
-
-3. Plan retrieval practice opportunities:
-   - Immediate self-testing after each concept
-   - Spaced review questions
-   - Mixed practice problems
-
-4. Structure should support:
-   - Active recall over passive review
-   - Interleaved practice
-   - Progressive difficulty
+For each section provide:
+   - Clear learning objective (what students will be able to do)
+  - 3-3 specific concepts to cover
+  - 2-3 practical skills to develop
 
 CONSTRAINTS:
-- Each section: 10-15 minutes of focused learning
-- Include 2-3 retrieval practice points per section
-- Balance conceptual understanding with skill application
+Ensure sections logically build on each other and cover the complete topic.
 `,
       variables: [
         { name: 'title', type: 'string', required: true },
         { name: 'description', type: 'string', required: true },
-        { name: 'learningAreas', type: 'array', required: false },
-        { name: 'keyKnowledge', type: 'array', required: false },
-        { name: 'keySkills', type: 'array', required: false }
       ],
       responseSchema: {
         type: 'object',

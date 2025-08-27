@@ -1,8 +1,13 @@
 import * as table from '$lib/server/db/schema';
 import { db } from '$lib/server/db';
-import { desc, eq, and, gte, inArray, asc, sql } from 'drizzle-orm';
+import { desc, eq, and, or, gte, inArray, asc, sql } from 'drizzle-orm';
 import { verifyUserAccessToClass } from './user';
-import { taskBlockTypeEnum } from '$lib/server/db/schema';
+import {
+	taskBlockTypeEnum,
+	taskStatusEnum,
+	taskTypeEnum,
+	whiteboardObjectTypeEnum
+} from '$lib/enums.js';
 
 export async function addTasksToClass(
 	taskIds: number[],
@@ -73,7 +78,6 @@ export async function getTasksBySubjectOfferingClassId(
 			courseMapItem: table.courseMapItem
 		})
 		.from(table.subjectOfferingClassTask)
-
 		.innerJoin(table.task, eq(table.subjectOfferingClassTask.taskId, table.task.id))
 		.innerJoin(
 			table.courseMapItem,
@@ -83,6 +87,39 @@ export async function getTasksBySubjectOfferingClassId(
 		.orderBy(asc(table.task.id));
 
 	return classTasks?.length == 0 ? [] : classTasks;
+}
+
+export async function getLessonsAndHomeworkBySubjectOfferingClassId(
+	userId: string,
+	subjectOfferingClassId: number
+) {
+	const userAccess = await verifyUserAccessToClass(userId, subjectOfferingClassId);
+
+	if (!userAccess) {
+		return [];
+	}
+
+	const lessonsAndHomework = await db
+		.select({
+			task: table.task,
+			subjectOfferingClassTask: table.subjectOfferingClassTask,
+			courseMapItem: table.courseMapItem
+		})
+		.from(table.subjectOfferingClassTask)
+		.innerJoin(table.task, eq(table.subjectOfferingClassTask.taskId, table.task.id))
+		.leftJoin(
+			table.courseMapItem,
+			eq(table.subjectOfferingClassTask.courseMapItemId, table.courseMapItem.id)
+		)
+		.where(
+			and(
+				eq(table.subjectOfferingClassTask.subjectOfferingClassId, subjectOfferingClassId),
+				or(eq(table.task.type, taskTypeEnum.lesson), eq(table.task.type, taskTypeEnum.homework))
+			)
+		)
+		.orderBy(asc(table.task.createdAt));
+
+	return lessonsAndHomework?.length == 0 ? [] : lessonsAndHomework;
 }
 
 export async function getTopics(subjectOfferingId: number) {
@@ -151,7 +188,7 @@ export async function createTask(
 	title: string,
 	description: string,
 	version: number,
-	type: table.taskTypeEnum,
+	type: taskTypeEnum,
 	subjectOfferingId: number,
 	aiTutorEnabled: boolean = true,
 	isArchived: boolean = false
@@ -224,8 +261,8 @@ export async function updateTaskTitle(taskId: number, title: string) {
 
 export async function createTaskBlock(
 	taskId: number,
-	type: table.taskBlockTypeEnum,
-	content: unknown,
+	type: taskBlockTypeEnum,
+	config: Record<string, unknown>,
 	index: number | undefined = undefined
 ) {
 	// If index is not provided, calculate the next available index used for LLM
@@ -252,7 +289,7 @@ export async function createTaskBlock(
 		.values({
 			taskId,
 			type,
-			content,
+			config,
 			index
 		})
 		.returning();
@@ -263,8 +300,8 @@ export async function createTaskBlock(
 export async function updateTaskBlock(
 	blockId: number,
 	updates: {
-		content?: unknown;
-		type?: table.taskBlockTypeEnum;
+		config?: Record<string, unknown>;
+		type?: taskBlockTypeEnum;
 	}
 ) {
 	const [taskBlock] = await db
@@ -339,7 +376,7 @@ export async function getWhiteboardObjects(whiteboardId: number = 1) {
 
 export async function saveWhiteboardObject(data: {
 	objectId: string;
-	objectType: table.whiteboardObjectTypeEnum;
+	objectType: whiteboardObjectTypeEnum;
 	objectData: Record<string, unknown>;
 	whiteboardId?: number;
 }) {
@@ -609,18 +646,14 @@ export async function createRubric(title: string) {
 	const [rubric] = await db
 		.insert(table.rubric)
 		.values({
-			title,
-
+			title
 		})
 		.returning();
 
-		return rubric;
-	}
+	return rubric;
+}
 
-export async function updateRubric(
-	rubricId: number,
-	updates: { title?: string;}
-) {
+export async function updateRubric(rubricId: number, updates: { title?: string }) {
 	const [rubric] = await db
 		.update(table.rubric)
 		.set({ ...updates })
@@ -655,10 +688,7 @@ export async function createRubricRow(rubricId: number, title: string) {
 	return row;
 }
 
-export async function updateRubricRow(
-	rowId: number,
-	updates: { title?: string; }
-) {
+export async function updateRubricRow(rowId: number, updates: { title?: string }) {
 	const [row] = await db
 		.update(table.rubricRow)
 		.set({ ...updates })
@@ -740,10 +770,13 @@ export async function getRubricWithRowsAndCells(rubricId: number) {
 	}
 
 	const rubric = rows[0].rubric;
-	const rowsMap = new Map<number, {
-		row: table.RubricRow;
-		cells: table.RubricCell[];
-	}>();
+	const rowsMap = new Map<
+		number,
+		{
+			row: table.RubricRow;
+			cells: table.RubricCell[];
+		}
+	>();
 
 	for (const row of rows) {
 		if (row.rubricRow) {
@@ -803,10 +836,7 @@ export async function createCompleteRubric(
 ) {
 	return await db.transaction(async (tx) => {
 		// Create the rubric
-		const [rubric] = await tx
-			.insert(table.rubric)
-			.values({ title })
-			.returning();
+		const [rubric] = await tx.insert(table.rubric).values({ title }).returning();
 
 		// Create rows and cells
 		const createdRows = [];
@@ -849,7 +879,7 @@ export async function duplicateRubric(rubricId: number, newTitle?: string) {
 	const title = newTitle || `${existingRubric.rubric.title} (Copy)`;
 	const rows = existingRubric.rows.map(({ row, cells }) => ({
 		title: row.title,
-		cells: cells.map(cell => ({
+		cells: cells.map((cell) => ({
 			level: cell.level,
 			description: cell.description,
 			marks: cell.marks
@@ -859,199 +889,10 @@ export async function duplicateRubric(rubricId: number, newTitle?: string) {
 	return await createCompleteRubric(title, rows);
 }
 
-// Answer methods
-export async function createAnswer(
-	taskBlockId: number,
-	answer: unknown,
-	marks?: number
-) {
-	const [createdAnswer] = await db
-		.insert(table.answer)
-		.values({
-			taskBlockId,
-			answer,
-			marks
-		})
-		.returning();
-
-	return createdAnswer;
-}
-
-export async function updateAnswer(
-	answerId: number,
-	updates: {
-		answer?: unknown;
-		marks?: number;
-	}
-) {
-	const [updatedAnswer] = await db
-		.update(table.answer)
-		.set({ ...updates })
-		.where(eq(table.answer.id, answerId))
-		.returning();
-
-	return updatedAnswer;
-}
-
-export async function deleteAnswer(answerId: number) {
-	await db.delete(table.answer).where(eq(table.answer.id, answerId));
-}
-
-export async function getAnswersByTaskBlockId(taskBlockId: number) {
-	const answers = await db
-		.select()
-		.from(table.answer)
-		.where(eq(table.answer.taskBlockId, taskBlockId))
-		.orderBy(asc(table.answer.id));
-
-	return answers;
-}
-
-export async function getAnswerById(answerId: number) {
-	const answers = await db
-		.select()
-		.from(table.answer)
-		.where(eq(table.answer.id, answerId))
-		.limit(1);
-
-	return answers[0] || null;
-}
-
-// Criteria methods
-export async function createCriteria(
-	taskBlockId: number,
-	description: string,
-	marks: number
-) {
-	const [createdCriteria] = await db
-		.insert(table.criteria)
-		.values({
-			taskBlockId,
-			description,
-			marks
-		})
-		.returning();
-
-	return createdCriteria;
-}
-
-export async function updateCriteria(
-	criteriaId: number,
-	updates: {
-		description?: string;
-		marks?: number;
-	}
-) {
-	const [updatedCriteria] = await db
-		.update(table.criteria)
-		.set({ ...updates })
-		.where(eq(table.criteria.id, criteriaId))
-		.returning();
-
-	return updatedCriteria;
-}
-
-export async function deleteCriteria(criteriaId: number) {
-	await db.delete(table.criteria).where(eq(table.criteria.id, criteriaId));
-}
-
-export async function getCriteriaByTaskBlockId(taskBlockId: number) {
-	const criteria = await db
-		.select()
-		.from(table.criteria)
-		.where(eq(table.criteria.taskBlockId, taskBlockId))
-		.orderBy(asc(table.criteria.id));
-
-	return criteria;
-}
-
-export async function getCriteriaById(criteriaId: number) {
-	const criteria = await db
-		.select()
-		.from(table.criteria)
-		.where(eq(table.criteria.id, criteriaId))
-		.limit(1);
-
-	return criteria[0] || null;
-}
-
-// Combined methods for task block with answers and criteria
-export async function getTaskBlockWithAnswersAndCriteria(taskBlockId: number) {
-	const taskBlock = await db
-		.select()
-		.from(table.taskBlock)
-		.where(eq(table.taskBlock.id, taskBlockId))
-		.limit(1);
-
-	if (!taskBlock[0]) {
-		return null;
-	}
-
-	const [answers, criteria] = await Promise.all([
-		getAnswersByTaskBlockId(taskBlockId),
-		getCriteriaByTaskBlockId(taskBlockId)
-	]);
-
-	return {
-		taskBlock: taskBlock[0],
-		answers,
-		criteria
-	};
-}
-
-export async function createTaskBlockWithAnswersAndCriteria(
+export async function getSubjectOfferingClassTaskByTaskId(
 	taskId: number,
-	type: table.taskBlockTypeEnum,
-	content: unknown,
-	answers?: Array<{ answer: unknown; marks?: number }>,
-	criteria?: Array<{ description: string; marks: number }>,
-	index?: number
+	subjectOfferingClassId: number
 ) {
-	return await db.transaction(async (tx) => {
-		// Create the task block
-		const taskBlock = await createTaskBlock(taskId, type, content, index);
-
-		// Create answers if provided
-		const createdAnswers = [];
-		if (answers && answers.length > 0) {
-			for (const answerData of answers) {
-				const [answer] = await tx
-					.insert(table.answer)
-					.values({
-						taskBlockId: taskBlock.id,
-						answer: answerData.answer,
-						marks: answerData.marks
-					})
-					.returning();
-				createdAnswers.push(answer);
-			}
-		}
-
-		// Create criteria if provided
-		const createdCriteria = [];
-		if (criteria && criteria.length > 0) {
-			for (const criteriaData of criteria) {
-				const [criteriaItem] = await tx
-					.insert(table.criteria)
-					.values({
-						taskBlockId: taskBlock.id,
-						description: criteriaData.description,
-						marks: criteriaData.marks
-					})
-					.returning();
-				createdCriteria.push(criteriaItem);
-			}
-		}
-
-		return {
-			taskBlock,
-			answers: createdAnswers,
-			criteria: createdCriteria
-		};
-	});
-}
-
-export async function getSubjectOfferingClassTaskByTaskId(taskId: number, subjectOfferingClassId: number) {
 	const [classTask] = await db
 		.select()
 		.from(table.subjectOfferingClassTask)
@@ -1066,7 +907,11 @@ export async function getSubjectOfferingClassTaskByTaskId(taskId: number, subjec
 	return classTask || null;
 }
 
-export async function updateSubjectOfferingClassTaskStatus(taskId: number, subjectOfferingClassId: number, status: table.taskStatusEnum) {
+export async function updateSubjectOfferingClassTaskStatus(
+	taskId: number,
+	subjectOfferingClassId: number,
+	status: taskStatusEnum
+) {
 	await db
 		.update(table.subjectOfferingClassTask)
 		.set({ status })
@@ -1079,66 +924,128 @@ export async function updateSubjectOfferingClassTaskStatus(taskId: number, subje
 }
 
 // Task Block Response functions
-export async function createOrUpdateTaskBlockResponse(
+
+export async function upsertClassTaskBlockResponse(
 	taskBlockId: number,
 	authorId: string,
 	classTaskId: number,
 	response: unknown
 ) {
-	// First, try to find an existing response
-	const existingResponse = await db
-		.select()
-		.from(table.taskBlockResponse)
-		.where(
-			and(
-				eq(table.taskBlockResponse.taskBlockId, taskBlockId),
-				eq(table.taskBlockResponse.authorId, authorId),
-				eq(table.taskBlockResponse.classTaskId, classTaskId)
-			)
-		)
-		.limit(1);
-
-	if (existingResponse.length > 0) {
-		// Update existing response
-		const [updatedResponse] = await db
-			.update(table.taskBlockResponse)
-			.set({ 
-				response,
-				updatedAt: new Date()
-			})
-			.where(eq(table.taskBlockResponse.id, existingResponse[0].id))
-			.returning();
-		
-		return updatedResponse;
-	} else {
-		// Create new response
-		const [newResponse] = await db
-			.insert(table.taskBlockResponse)
-			.values({
-				taskBlockId,
-				authorId,
-				classTaskId,
+	const [upsertedResponse] = await db
+		.insert(table.classTaskBlockResponse)
+		.values({
+			taskBlockId,
+			authorId,
+			classTaskId,
+			response
+		})
+		.onConflictDoUpdate({
+			target: [
+				table.classTaskBlockResponse.taskBlockId,
+				table.classTaskBlockResponse.authorId,
+				table.classTaskBlockResponse.classTaskId
+			],
+			set: {
 				response
-			})
-			.returning();
-		
-		return newResponse;
-	}
+			}
+		})
+		.returning();
+
+	return upsertedResponse;
 }
 
-export async function getTaskBlockResponse(
-	taskBlockId: number,
-	authorId: string,
-	classTaskId: number
-) {
-	const response = await db
-		.select()
-		.from(table.taskBlockResponse)
+export async function getClassTaskBlockResponsesByClassTaskId(classTaskId: number) {
+	const responses = await db
+		.select({
+			response: table.classTaskBlockResponse,
+			block: table.taskBlock
+		})
+		.from(table.classTaskBlockResponse)
+		.innerJoin(table.taskBlock, eq(table.classTaskBlockResponse.taskBlockId, table.taskBlock.id))
+		.where(eq(table.classTaskBlockResponse.classTaskId, classTaskId))
+		.orderBy(asc(table.classTaskBlockResponse.authorId), asc(table.taskBlock.index));
+
+	const groupedResponses: {
+		[authorId: string]: {
+			[blockId: number]: table.ClassTaskBlockResponse;
+		};
+	} = {};
+	for (const item of responses) {
+		const authorId = item.response.authorId;
+		if (!groupedResponses[authorId]) {
+			groupedResponses[authorId] = {};
+		}
+		groupedResponses[authorId][item.block.id] = item.response;
+	}
+
+	return groupedResponses;
+}
+
+export async function getClassTaskBlockResponsesByAuthorId(classTaskId: number, authorId: string) {
+	const responses = await db
+		.select({
+			response: table.classTaskBlockResponse,
+			block: table.taskBlock
+		})
+		.from(table.classTaskBlockResponse)
+		.innerJoin(table.taskBlock, eq(table.classTaskBlockResponse.taskBlockId, table.taskBlock.id))
 		.where(
 			and(
-				eq(table.taskBlockResponse.taskBlockId, taskBlockId),
-				eq(table.taskBlockResponse.authorId, authorId),
-				eq(table.taskBlockResponse.classTaskId, classTaskId)
+				eq(table.classTaskBlockResponse.authorId, authorId),
+				eq(table.classTaskBlockResponse.classTaskId, classTaskId)
+			)
+		);
+
+	return responses.reduce(
+		(acc, curr) => {
+			acc[curr.block.id] = curr.response;
+			return acc;
+		},
+		{} as { [blockId: number]: table.ClassTaskBlockResponse }
+	);
+}
+
+// Class Task Response functions
+export async function createClassTaskResponse(
+	classTaskId: number,
+	authorId: string,
+	comment?: string
+) {
+	const [response] = await db
+		.insert(table.classTaskResponse)
+		.values({
+			classTaskId,
+			authorId,
+			comment
+		})
+		.returning();
+
+	return response;
+}
+
+export async function upsertClassTaskResponse(classTaskId: number, authorId: string) {
+	const [response] = await db
+		.insert(table.classTaskResponse)
+		.values({
+			classTaskId,
+			authorId
+		})
+		.onConflictDoNothing({
+			target: [table.classTaskResponse.classTaskId, table.classTaskResponse.authorId]
+		})
+		.returning();
+
+	return response;
+}
+
+export async function getClassTaskResponse(classTaskId: number, authorId: string) {
+	const response = await db
+		.select()
+		.from(table.classTaskResponse)
+		.where(
+			and(
+				eq(table.classTaskResponse.classTaskId, classTaskId),
+				eq(table.classTaskResponse.authorId, authorId)
 			)
 		)
 		.limit(1);
@@ -1146,130 +1053,173 @@ export async function getTaskBlockResponse(
 	return response[0] || null;
 }
 
-export async function getUserTaskBlockResponses(
-	taskId: number,
-	authorId: string,
-	classTaskId: number
-) {
-	const responses = await db
+export async function getClassTaskResponseResources(classTaskResponseId: number) {
+	const resources = await db
 		.select({
-			taskBlockResponse: table.taskBlockResponse,
-			taskBlock: table.taskBlock
+			responseResource: table.classTaskResponseResource,
+			resource: table.resource
 		})
-		.from(table.taskBlockResponse)
-		.innerJoin(table.taskBlock, eq(table.taskBlockResponse.taskBlockId, table.taskBlock.id))
+		.from(table.classTaskResponseResource)
+		.innerJoin(table.resource, eq(table.classTaskResponseResource.resourceId, table.resource.id))
 		.where(
 			and(
-				eq(table.taskBlock.taskId, taskId),
-				eq(table.taskBlockResponse.authorId, authorId),
-				eq(table.taskBlockResponse.classTaskId, classTaskId)
+				eq(table.classTaskResponseResource.classTaskResponseId, classTaskResponseId),
+				eq(table.classTaskResponseResource.isArchived, false),
+				eq(table.resource.isArchived, false)
 			)
 		);
+
+	return resources;
+}
+
+export async function getClassTaskResponsesWithStudents(classTaskId: number) {
+	const responses = await db
+		.select({
+			classTaskResponse: table.classTaskResponse,
+			student: {
+				id: table.user.id,
+				firstName: table.user.firstName,
+				lastName: table.user.lastName,
+				email: table.user.email
+			}
+		})
+		.from(table.classTaskResponse)
+		.innerJoin(table.user, eq(table.classTaskResponse.authorId, table.user.id))
+		.where(
+			and(
+				eq(table.classTaskResponse.classTaskId, classTaskId),
+				eq(table.classTaskResponse.isArchived, false)
+			)
+		)
+		.orderBy(asc(table.user.lastName), asc(table.user.firstName));
 
 	return responses;
 }
 
-// Helper function to create individual blocks from components
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function createBlockFromComponent(component: any, taskId: number) {
-	if (!component || !component.content || !component.content.type) {
-		console.warn('Invalid component structure:', component);
-		return;
-	}
+export async function updateClassTaskResponseComment(
+	classTaskResponseId: number,
+	comment: string | null
+) {
+	const [response] = await db
+		.update(table.classTaskResponse)
+		.set({
+			comment
+		})
+		.where(eq(table.classTaskResponse.id, classTaskResponseId))
+		.returning();
 
-	const type = component.content.type;
-	const content = component.content.content;
-
-	let createdBlock;
-
-	switch (type) {
-		case 'h1':
-		case 'h2':
-		case 'h3':
-		case 'h4':
-		case 'h5': {
-			// Extract text content properly
-			const headingText = content?.text || content || 'Heading';
-			createdBlock = await createTaskBlock(taskId, type, headingText);
-			break;
-		}
-		case 'paragraph': {
-			// Extract paragraph content properly
-			const paragraphContent = content?.markdown || '';
-			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.markdown, paragraphContent);
-			break;
-		}
-		case 'math_input': {
-			// Math input is not currently supported in the schema, so we'll skip it
-			console.warn('Math input blocks are not currently supported, skipping...');
-			break;
-		}
-		case 'multiple_choice': {
-			// Validate and transform multiple choice content structure
-			const question = content?.question || '';
-			const options = content?.options || [];
-			const multiple = content?.multiple || false;
-			const answer = component.answer || [];
-			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.multipleChoice, { question, options, answer, multiple});
-			break;
-		}
-
-		case 'image': {
-			// Validate and transform image content structure
-			const url = content?.url || '';
-			const caption = content?.caption || '';
-			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.image, { url, caption });
-			break;
-		}
-
-		case 'video': {
-			const url = content?.url || '';
-			const caption = content?.caption || '';
-			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.video, { url, caption });
-			break;
-		}
-
-		case 'fill_in_blank': {
-			const sentence = content?.sentence || '';
-			const answer = component.answer || [];
-			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.fillInBlank, { sentence, answer });
-			break;
-		}
-
-		case 'matching': {
-			const instructions = content?.instructions || '';
-			const pairs = content?.pairs || [];
-			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.matching, { instructions, pairs });
-			break;
-		}
-		case 'short_answer': {
-			const question = content?.question || '';
-			createdBlock = await createTaskBlock(taskId, taskBlockTypeEnum.shortAnswer, { question });
-			break;
-		}
-
-		default:
-			console.warn(`Unknown block type: ${type}, ignoring`);
-			return;
-	}
-
-	return createdBlock;
+	return response;
 }
 
+export async function archiveAllResourcesFromClassTaskResponse(classTaskResponseId: number) {
+	await db
+		.update(table.classTaskResponseResource)
+		.set({
+			isArchived: true
+		})
+		.where(eq(table.classTaskResponseResource.classTaskResponseId, classTaskResponseId));
+}
 
-export async function createTaskWithId() {
-	const [task] = await db
-		.insert(table.task)
+export async function deleteResourcesFromClassTaskResponse(classTaskResponseId: number) {
+	const resources = await db
+		.select({
+			resource: table.resource
+		})
+		.from(table.classTaskResponseResource)
+		.innerJoin(table.resource, eq(table.classTaskResponseResource.resourceId, table.resource.id))
+		.where(
+			and(
+				eq(table.classTaskResponseResource.classTaskResponseId, classTaskResponseId),
+				eq(table.classTaskResponseResource.isArchived, false),
+				eq(table.resource.isArchived, false)
+			)
+		);
+
+	await db
+		.delete(table.classTaskResponseResource)
+		.where(eq(table.classTaskResponseResource.classTaskResponseId, classTaskResponseId));
+
+	return resources.map((r) => r.resource);
+}
+
+export async function deleteResourceFromClassTaskResponse(
+	classTaskResponseId: number,
+	resourceId: number,
+	userId: string
+) {
+	const [resourceData] = await db
+		.select({
+			resource: table.resource,
+			response: table.classTaskResponse
+		})
+		.from(table.classTaskResponseResource)
+		.innerJoin(table.resource, eq(table.classTaskResponseResource.resourceId, table.resource.id))
+		.innerJoin(
+			table.classTaskResponse,
+			eq(table.classTaskResponseResource.classTaskResponseId, table.classTaskResponse.id)
+		)
+		.where(
+			and(
+				eq(table.classTaskResponseResource.classTaskResponseId, classTaskResponseId),
+				eq(table.classTaskResponseResource.resourceId, resourceId),
+				eq(table.classTaskResponse.authorId, userId),
+				eq(table.classTaskResponseResource.isArchived, false),
+				eq(table.resource.isArchived, false)
+			)
+		);
+
+	if (!resourceData) {
+		throw new Error('Resource not found or access denied');
+	}
+
+	await db
+		.delete(table.classTaskResponseResource)
+		.where(
+			and(
+				eq(table.classTaskResponseResource.classTaskResponseId, classTaskResponseId),
+				eq(table.classTaskResponseResource.resourceId, resourceId)
+			)
+		);
+
+	return resourceData.resource;
+}
+
+export async function addResourceToClassTaskResponse(
+	classTaskResponseId: number,
+	resourceId: number
+) {
+	const [relationship] = await db
+		.insert(table.classTaskResponseResource)
 		.values({
-			title: "",
-			description: "",
-			type: table.taskTypeEnum.lesson,
-			version: 1,
-			subjectOfferingId: 1264,
-			aiTutorEnabled: true,
-			isArchived: false
+			classTaskResponseId,
+			resourceId,
+			authorId: '' // This will be set by the calling function
 		})
 		.returning();
 
-	return task;
+	return relationship;
+}
+
+export async function addResourcesToClassTaskResponse(
+	classTaskResponseId: number,
+	resourceIds: number[],
+	authorId: string
+) {
+	if (resourceIds.length === 0) {
+		return [];
+	}
+
+	const newRelationships = await db
+		.insert(table.classTaskResponseResource)
+		.values(
+			resourceIds.map((resourceId) => ({
+				classTaskResponseId,
+				resourceId,
+				authorId
+			}))
+		)
+		.onConflictDoNothing()
+		.returning();
+
+	return newRelationships;
 }

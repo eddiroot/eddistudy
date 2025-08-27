@@ -58,8 +58,8 @@ export interface AttemptRecord {
 }
 
 export interface AgentContext {
-  userId: number;
-  sessionId: string;
+  userId?: number;
+  sessionId?: string;
   moduleId?: number;
   metadata: {
     action: string;
@@ -67,7 +67,7 @@ export interface AgentContext {
     previousResponse?: AgentResponse;
     [key: string]: any;
   };
-  memory: AgentMemory;
+  memory?: AgentMemory;
 }
 
 export interface AgentResponse {

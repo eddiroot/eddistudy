@@ -327,6 +327,38 @@ export function getBlockTypesForSubject(subjectType: string): any[] {
     return typeMap[subjectType.toLowerCase()] || typeMap.default;
   }
 
+ export function getInteractiveSchema(subjectType: string): any {
+    const blockTypes = getBlockTypesForSubject(subjectType);
+
+    // Use the interactiveBlockWithOptionals helper for consistent schema generation
+    const interactiveBlockSchema = interactiveBlockWithOptionals({
+      type: 'object',
+      properties: {
+        taskBlock: {
+          anyOf: blockTypes
+        }
+      },
+      required: ['taskBlock']
+    }, {
+      includeHints: true,
+      includeDifficulty: true,
+      includeSteps: true,
+      makeRequired: true
+    });
+
+    return {
+      type: 'object',
+      properties: {
+        interactiveBlocks: {
+          type: 'array',
+          items: interactiveBlockSchema,
+          minItems: 1,
+          maxItems: 5
+        }
+      },
+      required: ['interactiveBlocks']
+    };
+  }
 
 
 export const layoutTwoColumns = {

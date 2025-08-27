@@ -4,6 +4,7 @@ import { PromptRegistry } from '../prompts/registry';
 import { EducationalVectorStore } from '../retrieval/vector-store';
 import { geminiCompletion } from '$lib/server/ai';
 import * as blockSchemas from '../../../schemas/blockSchema';
+import { getInteractiveSchema } from '../../../schemas/blockSchema';
 
 export class TeachModuleGeneratorAgent extends BaseAgent {
   private vectorStore: EducationalVectorStore;
@@ -15,7 +16,7 @@ export class TeachModuleGeneratorAgent extends BaseAgent {
 research-based learning modules that leverage the testing effect and spaced repetition 
 for optimal learning outcomes.`,
       temperature: 0.7,
-      maxTokens: 4000
+      maxTokens: 5000
     });
     
     this.vectorStore = new EducationalVectorStore();
@@ -61,9 +62,6 @@ for optimal learning outcomes.`,
       {
         title: params.title,
         description: params.description,
-        learningAreas: params.learningAreaIds,
-        keyKnowledge: params.keyKnowledgeIds,
-        keySkills: params.keySkillIds
       },
       curriculumContext
     );
@@ -196,7 +194,7 @@ Create engaging explanatory content that:
     );
 
     // Get appropriate schemas for the subject
-    const responseSchema = this.getInteractiveSchema(subjectType);
+    const responseSchema = getInteractiveSchema(subjectType);
 
     const response = await geminiCompletion(
       prompt,
@@ -206,9 +204,6 @@ Create engaging explanatory content that:
     );
 
     const blocks = JSON.parse(response);
-
-    // Store generated blocks for future retrieval
-    await this.storeGeneratedBlocks(blocks, params);
 
     return {
       content: response,
@@ -222,67 +217,4 @@ Create engaging explanatory content that:
   }
 
 
-  private getInteractiveSchema(subjectType: string): any {
-    const blockTypes = blockSchemas.getBlockTypesForSubject(subjectType);
-
-    // Use the interactiveBlockWithOptionals helper for consistent schema generation
-    const interactiveBlockSchema = blockSchemas.interactiveBlockWithOptionals({
-      type: 'object',
-      properties: {
-        taskBlock: {
-          anyOf: blockTypes
-        }
-      },
-      required: ['taskBlock']
-    }, {
-      includeHints: true,
-      includeDifficulty: true,
-      includeSteps: true,
-      makeRequired: true
-    });
-
-    return {
-      type: 'object',
-      properties: {
-        interactiveBlocks: {
-          type: 'array',
-          items: interactiveBlockSchema,
-          minItems: 1,
-          maxItems: 5
-        }
-      },
-      required: ['interactiveBlocks']
-    };
-  }
-
-  private async storeGeneratedBlocks(blocks: any, params: any): Promise<void> {
-    // Store generated questions for future retrieval
-    for (const block of blocks.interactiveBlocks) {
-      const question = this.extractQuestionFromBlock(block.taskBlock);
-      if (question) {
-        await this.vectorStore.storeQuestion(
-          question,
-          params.moduleId || 0,
-          block.taskBlock.id || 0,
-          params.section.concepts.join(', '),
-          block.taskBlock.difficulty || 'beginner',
-          params.subjectId,
-        );
-      }
-    }
-  }
-
-  private extractQuestionFromBlock(taskBlock: any): string | null {
-    // Extract question text based on block type
-    if (taskBlock.config?.question) {
-      return taskBlock.config.question;
-    }
-    if (taskBlock.config?.instructions) {
-      return taskBlock.config.instructions;
-    }
-    if (taskBlock.config?.sentence) {
-      return taskBlock.config.sentence;
-    }
-    return null;
-  }
 }
