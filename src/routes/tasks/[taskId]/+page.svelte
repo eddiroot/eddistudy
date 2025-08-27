@@ -1,109 +1,60 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
-	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
+	import { type TaskBlock } from '$lib/server/db/schema';
+	import { draggable, droppable, type DragDropState, dndState } from '@thisux/sveltednd';
+
+	// UI Components
 	import Button, { buttonVariants } from '$lib/components/ui/button/button.svelte';
 	import * as Card from '$lib/components/ui/card';
-	import { draggable, droppable, type DragDropState, dndState } from '@thisux/sveltednd';
-	import Heading from './blocks/heading.svelte';
-	import RichTextEditor from './blocks/rich-text-editor.svelte';
-	import Image from './blocks/image.svelte';
-	import Video from './blocks/video.svelte';
-	import Audio from './blocks/audio.svelte';
-	import Whiteboard from './blocks/whiteboard.svelte';
-	import MultipleChoice from './blocks/multiple-choice.svelte';
-	import FillInBlank from './blocks/fill-in-blank.svelte';
-	import Matching from './blocks/matching.svelte';
-	import TwoColumnLayout from './blocks/two-column-layout.svelte';
+	import * as Select from '$lib/components/ui/select';
+	import { Badge } from '$lib/components/ui/badge';
+
+	// Block Components
+	import BlockHeading from './components/block-heading.svelte';
+	import BlockRichText from './components/block-rich-text-editor.svelte';
+	import BlockWhiteboard from './components/block-whiteboard.svelte';
+	import BlockChoice from './components/block-choice.svelte';
+	import BlockFillBlank from './components/block-fill-blank.svelte';
+	import BlockMatching from './components/block-matching.svelte';
+
+	// Icons
+	import CheckCircleIcon from '@lucide/svelte/icons/check-circle';
+	import CheckIcon from '@lucide/svelte/icons/check';
 	import EyeIcon from '@lucide/svelte/icons/eye';
-	import EditIcon from '@lucide/svelte/icons/edit';
-	import ShortAnswer from './blocks/short-answer.svelte';
-	import { type TaskBlock } from '$lib/server/db/schema';
-	import { ViewMode } from '$lib/utils';
 
 	import {
 		createBlock,
 		deleteBlock,
 		updateBlock,
 		updateTaskTitle,
-		updateBlockOrder
+		updateBlockOrder,
+		upsertBlockResponse
 	} from './client';
-	import { blockTypes } from './constants';
-	import Separator from '$lib/components/ui/separator/separator.svelte';
+
+	import {
+		blockTypes,
+		ViewMode,
+		type BlockChoiceResponse,
+		type BlockFillBlankResponse,
+		type BlockHeadingConfig,
+		type BlockMatchingResponse,
+		type BlockResponse
+	} from '$lib/schemas/taskSchema';
 	import GripVerticalIcon from '@lucide/svelte/icons/grip-vertical';
-	import { browser } from '$app/environment';
+	import { taskBlockTypeEnum, taskStatusEnum, userTypeEnum } from '$lib/enums';
+	import { PresentationIcon } from '@lucide/svelte';
 
 	let { data } = $props();
-	
 	let blocks = $state(data.blocks);
 	let mouseOverElement = $state<string>('');
-	let taskStatus = $state<string>(data.classTask.status);
-	let manualViewMode = $state<ViewMode | null>(null); // Override for manual switching
-
-	// Common response props for all interactive blocks
-	const responseProps = $derived({
-		taskId: data.task.id,
-		classTaskId: data.classTask.id,
-		subjectOfferingId: data.subjectOfferingId,
-		subjectOfferingClassId: data.subjectOfferingClassId,
-		isPublished: taskStatus === 'published'
-	});
-
-	// Use a derived value for viewMode that updates reactively
-	let viewMode = $derived<ViewMode>(
-		manualViewMode !== null 
-			? manualViewMode
-			: data.user.type === 'student' || taskStatus === 'published'
-			? ViewMode.VIEW
-			: ViewMode.EDIT
+	let viewMode = $state<ViewMode>(
+		data.user.type == userTypeEnum.student ? ViewMode.ANSWER : ViewMode.CONFIGURE
 	);
+	let selectedStatus = $state<taskStatusEnum>(data.classTask.status);
+	let selectedStudent = $state<string | null>(null);
 
 	const draggedOverClasses = 'border-accent-foreground';
 	const notDraggedOverClasses = 'border-bg';
-
-	// Handle status changes
-	async function publishTask() {
-		try {
-			const response = await fetch(`?/publish`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-				}
-			});
-
-			if (response.ok) {
-				// Update local state instead of reloading
-				taskStatus = 'published';
-				manualViewMode = null; // Reset manual override
-			} else {
-				alert('Failed to publish task');
-			}
-		} catch (error) {
-			console.error('Error publishing task:', error);
-			alert('Failed to publish task');
-		}
-	}
-
-	async function setToDraft() {
-		try {
-			const response = await fetch(`?/setToDraft`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-				}
-			});
-
-			if (response.ok) {
-				// Update local state instead of reloading
-				taskStatus = 'draft';
-				manualViewMode = null; // Reset manual override
-			} else {
-				alert('Failed to set task to draft');
-			}
-		} catch (error) {
-			console.error('Error setting task to draft:', error);
-			alert('Failed to set task to draft');
-		}
-	}
 
 	async function handleDrop(state: DragDropState<TaskBlock>) {
 		const { draggedItem, sourceContainer, targetContainer } = state;
@@ -115,7 +66,7 @@
 			const { block } = await createBlock({
 				taskId: data.task.id,
 				type: draggedItem.type,
-				content: draggedItem.content,
+				config: draggedItem.config,
 				index: targetContainer === 'task-bottom' ? blocks.length : index
 			});
 
@@ -141,7 +92,7 @@
 			const { block } = await createBlock({
 				taskId: data.task.id,
 				type: draggedItem.type,
-				content: draggedItem.content,
+				config: draggedItem.config,
 				index: targetContainer === 'task-bottom' ? blocks.length : index
 			});
 
@@ -232,113 +183,147 @@
 </script>
 
 <div
-	class="grid h-full gap-4 p-4 {viewMode === ViewMode.EDIT
+	class="grid h-full gap-4 p-4 {viewMode === ViewMode.CONFIGURE
 		? 'grid-cols-[200px_1fr_300px]'
 		: 'grid-cols-[200px_1fr]'}"
 >
 	<!-- Contents Pane -->
 	<div class="flex flex-col gap-2">
 		{#if data.user.type !== 'student'}
-			{#if taskStatus === 'published'}
-				<Button
-					variant="outline"
-					onclick={setToDraft}
-					size="lg"
-					class="flex h-16 w-full items-center justify-center gap-2 whitespace-normal"
-				>
-					<EditIcon class="size-5" />
-					Set to Draft
-				</Button>
-			{:else}
-				<Button
-					variant="outline"
-					onclick={() => {
-						if (viewMode === ViewMode.EDIT) {
-							manualViewMode = ViewMode.VIEW;
-						} else {
-							manualViewMode = ViewMode.EDIT;
-						}
-					}}
-					size="lg"
-					class="flex h-16 w-full items-center justify-center gap-2 whitespace-normal"
-				>
-					{#if viewMode === ViewMode.EDIT}
-						<EyeIcon class="size-5" />
-						Switch to Preview Mode
-					{:else}
-						<EditIcon class="size-5" />
-						Switch to Edit Mode
-					{/if}
-				</Button>
-			{/if}
+			<form method="POST" action="?/status">
+				<Select.Root type="single" name="status" required bind:value={selectedStatus}>
+					<Select.Trigger class="w-full"
+						>{selectedStatus[0].toUpperCase() + selectedStatus.slice(1)}</Select.Trigger
+					>
+					<Select.Content>
+						<Select.Item value={taskStatusEnum.draft}>Draft</Select.Item>
+						<Select.Item value={taskStatusEnum.published}>Published</Select.Item>
+					</Select.Content>
+				</Select.Root>
+			</form>
 			<Button
-				variant="outline"
-				href={`/subjects/${data.subjectOfferingId}/class/${data.subjectOfferingClassId}/tasks/${data.task.id}/present`}
+				variant={viewMode === ViewMode.ANSWER ? 'default' : 'outline'}
+				onclick={() =>
+					viewMode == ViewMode.CONFIGURE
+						? (viewMode = ViewMode.ANSWER)
+						: (viewMode = ViewMode.CONFIGURE)}
 				size="lg"
-				class="flex h-16 w-full items-center justify-center gap-2 whitespace-normal"
 			>
-				Start Presentation
+				<EyeIcon />
+				Preview
+				{#if viewMode === ViewMode.ANSWER}
+					<CheckIcon />
+				{/if}
 			</Button>
-		{:else if data.activePresentation}
+			<Button variant="outline" disabled onclick={() => (viewMode = ViewMode.PRESENT)} size="lg">
+				<PresentationIcon />
+				Present
+			</Button>
 			<Button
-				variant="outline"
-				href={`/subjects/${data.subjectOfferingId}/class/${data.subjectOfferingClassId}/tasks/${data.task.id}/present`}
+				variant={viewMode === ViewMode.REVIEW ? 'default' : 'outline'}
+				onclick={() =>
+					viewMode == ViewMode.REVIEW
+						? (viewMode = ViewMode.CONFIGURE)
+						: (viewMode = ViewMode.REVIEW)}
 				size="lg"
-				class="flex h-16 w-full items-center justify-center gap-2 whitespace-normal"
 			>
-				Join Presentation
+				<CheckCircleIcon />
+				Review
+				{#if viewMode === ViewMode.REVIEW}
+					<CheckIcon />
+				{/if}
 			</Button>
 		{/if}
 		<Card.Root class="h-full">
 			<Card.Header>
-				<Card.Title class="text-center text-lg">Contents</Card.Title>
+				<Card.Title>{viewMode === ViewMode.REVIEW ? 'Students' : 'Content'}</Card.Title>
 			</Card.Header>
-			<Card.Content></Card.Content>
+			<Card.Content class="space-y-1">
+				{#if viewMode === ViewMode.REVIEW}
+					{#each data.responses as response}
+						<Button
+							onclick={() => (selectedStudent = response.student.id)}
+							size="lg"
+							variant={selectedStudent === response.student.id ? 'default' : 'ghost'}
+						>
+							{response.student.firstName}
+							{response.student.lastName}
+						</Button>
+					{/each}
+				{:else}
+					{#each blocks.filter((block) => block.type === taskBlockTypeEnum.heading) as block}
+						{#if block.type === taskBlockTypeEnum.heading}
+							<p class="text-muted-foreground">{(block.config as BlockHeadingConfig).text}</p>
+						{:else}
+							<p class="text-muted-foreground">Untitled Heading</p>
+						{/if}
+					{/each}
+				{/if}
+			</Card.Content>
 		</Card.Root>
 	</div>
 
 	<!-- Task Blocks -->
 	<Card.Root class="h-full overflow-y-auto">
 		<Card.Content class="h-full space-y-4">
-			<div class={viewMode === ViewMode.EDIT ? 'ml-[38px]' : ''}>
-				<div class="flex items-center gap-3">
-					<Heading
-						headingSize={1}
-						text={data.task.title}
+			<div class={viewMode === ViewMode.CONFIGURE ? 'ml-[38px]' : ''}>
+				<div class="flex items-center gap-4">
+					<BlockHeading
+						initialConfig={{
+							text: data.task.title,
+							size: 1
+						}}
+						onConfigUpdate={async (config) =>
+							await updateTaskTitle({ taskId: data.task.id, title: config.text })}
 						{viewMode}
-						onUpdate={async (newText: string) =>
-							await updateTaskTitle({ taskId: data.task.id, title: newText })}
 					/>
-					<div class="text-muted-foreground text-lg font-light flex items-center gap-2">
-						{#if taskStatus === 'draft'}
-							<span>Draft</span>
-						{/if}
-					</div>
+					<!-- Submit Button for Students -->
+					{#if data.classTask.status === 'published' && data.user.type === userTypeEnum.student}
+						<Button
+							href="/subjects/${data.subjectOfferingId}/class/${data.subjectOfferingClassId}/tasks/${data
+								.task.id}/submit"
+							size="lg"
+						>
+							Submit Task
+						</Button>
+					{/if}
 				</div>
+
+				{#if page.url.searchParams.get('submitted') === 'true'}
+					<div class="mt-4">
+						<Badge
+							variant="default"
+							class="flex w-fit items-center gap-2 border-green-300 bg-green-100 text-green-800"
+						>
+							<CheckCircleIcon class="h-4 w-4" />
+							Task submitted successfully!
+						</Badge>
+					</div>
+				{/if}
 			</div>
 			<div class="flex h-full flex-col">
 				{#each blocks as block}
 					<div
-						class="min-h-4"
+						class="ml-[38px] min-h-4 rounded-md {dndState.targetContainer === `task-${block.id}`
+							? 'border-accent-foreground my-2 h-8 border border-dashed'
+							: ''}"
 						use:droppable={{
 							container: `task-${block.id}`,
 							callbacks: {
 								onDrop: handleDrop
 							}
 						}}
-					>
-						{#if dndState.targetContainer === `task-${block.id}`}
-							<Separator class="bg-accent-foreground my-2" />
-						{/if}
-					</div>
+					></div>
 
 					<div
-						class="grid {viewMode === ViewMode.EDIT ? 'grid-cols-[30px_1fr]' : 'grid-cols-1'} items-center gap-2"
+						class="grid {viewMode === ViewMode.CONFIGURE
+							? 'grid-cols-[30px_1fr]'
+							: 'grid-cols-1'} items-center gap-2"
 						role="group"
 						onmouseover={() => (mouseOverElement = `task-${block.id}`)}
 						onfocus={() => (mouseOverElement = `task-${block.id}`)}
 					>
-						{#if viewMode === ViewMode.EDIT && mouseOverElement === `task-${block.id}`}
+						{#if viewMode === ViewMode.CONFIGURE && mouseOverElement === `task-${block.id}`}
 							<div
 								use:draggable={{
 									container: 'task',
@@ -350,97 +335,77 @@
 									class="text-muted-foreground group-hover:text-foreground h-3 w-3 rounded transition-colors"
 								/>
 							</div>
-						{:else if viewMode === ViewMode.EDIT}
+						{:else if viewMode === ViewMode.CONFIGURE}
 							<div></div>
 						{/if}
 						<div>
-							{#if block.type === 'h1' || block.type === 'h2' || block.type === 'h3' || block.type === 'h4' || block.type === 'h5' || block.type === 'h6'}
-								<Heading
-									headingSize={parseInt(block.type[1]) + 1}
-									text={typeof block.content === 'string' ? block.content : 'This is a heading'}
+							{#if block.type === taskBlockTypeEnum.heading}
+								<BlockHeading
+									initialConfig={block.config as { text: string; size: number }}
+									onConfigUpdate={async (config) => await updateBlock({ block, config })}
 									{viewMode}
-									onUpdate={async (content: string) => await updateBlock({ block, content })}
 								/>
-							{:else if block.type === 'markdown'}
-								<RichTextEditor
-									initialContent={block.content as string | undefined}
+							{:else if block.type === taskBlockTypeEnum.richText}
+								<BlockRichText
+									initialConfig={block.config as { html: string }}
+									onConfigUpdate={async (config) => await updateBlock({ block, config })}
 									{viewMode}
-									onUpdate={async (content: string) => await updateBlock({ block, content })}
 								/>
-							{:else if block.type === 'image'}
-								<Image
-									content={block.content as Record<string, any> | undefined}
+							{:else if block.type === taskBlockTypeEnum.whiteboard}
+								<BlockWhiteboard
+									initialConfig={block.config as { title: string; whiteboardId: number | null }}
+									onConfigUpdate={async (config) => await updateBlock({ block, config })}
 									{viewMode}
-									onUpdate={async (content: string) => await updateBlock({ block, content })}
 								/>
-							{:else if block.type === 'video'}
-								<Video
-									content={block.content as Record<string, any> | undefined}
-									{viewMode}
-									onUpdate={async (content: string) => await updateBlock({ block, content })}
-								/>
-							{:else if block.type === 'audio'}
-								<Audio
-									content={block.content as Record<string, any> | undefined}
-									{viewMode}
-									onUpdate={async (content: string) => await updateBlock({ block, content })}
-								/>
-							{:else if block.type === 'whiteboard'}
-								<Whiteboard
-									content={block.content as Record<string, any> | undefined}
-									{viewMode}
-									onUpdate={async (content: string) => await updateBlock({ block, content })}
-								/>
-							{:else if block.type === 'multiple_choice'}
-								<MultipleChoice
-									content={block.content as any}
-									{viewMode}
-									onUpdate={async (content: string) => await updateBlock({ block, content })}
-									blockId={block.id}
-									{...responseProps}
-								/>
-							{:else if block.type === 'fill_in_blank'}
-								<FillInBlank
-									content={block.content as any}
-									{viewMode}
-									onUpdate={async (content: string) => await updateBlock({ block, content })}
-									blockId={block.id}
-									{...responseProps}
-								/>
-							{:else if block.type === 'matching'}
-								<Matching
-									content={block.content as any}
-									{viewMode}
-									onUpdate={async (content: string) => await updateBlock({ block, content })}
-									blockId={block.id}
-									{...responseProps}
-								/>
-							{:else if block.type === 'two_column_layout'}
-								<TwoColumnLayout
-									content={block.content as any}
-									{viewMode}
-									onUpdate={async (content: string) => {
-										await updateBlock({ block, content });
+							{:else if block.type === taskBlockTypeEnum.choice}
+								<BlockChoice
+									initialConfig={block.config as {
+										question: string;
+										options: { text: string; isAnswer: boolean }[];
 									}}
-									onGlobalDrop={handleDrop}
-									blockId={block.id}
-									{...responseProps}
-								/>
-							{:else if block.type === 'short_answer'}
-								<ShortAnswer
-									content={block.content as any}
+									onConfigUpdate={async (config) => await updateBlock({ block, config })}
+									initialResponse={viewMode === ViewMode.REVIEW && selectedStudent
+										? (data.groupedBlockResponses[selectedStudent][block.id]
+												?.response as BlockChoiceResponse)
+										: undefined}
+									onResponseUpdate={async (response) =>
+										await upsertBlockResponse(block.id, data.classTask.id, response)}
 									{viewMode}
-									onUpdate={async (content: string) => await updateBlock({ block, content })}
-									blockId={block.id}
-									{...responseProps}
+								/>
+							{:else if block.type === taskBlockTypeEnum.fillBlank}
+								<BlockFillBlank
+									initialConfig={block.config as { sentence: string; answer: string }}
+									onConfigUpdate={async (config) => await updateBlock({ block, config })}
+									initialResponse={viewMode === ViewMode.REVIEW && selectedStudent
+										? (data.groupedBlockResponses[selectedStudent][block.id]
+												?.response as BlockFillBlankResponse)
+										: undefined}
+									onResponseUpdate={async (response) =>
+										await upsertBlockResponse(block.id, data.classTask.id, response)}
+									{viewMode}
+								/>
+							{:else if block.type === taskBlockTypeEnum.matching}
+								<BlockMatching
+									initialConfig={block.config as {
+										instructions: string;
+										pairs: { left: string; right: string }[];
+									}}
+									onConfigUpdate={async (config) => await updateBlock({ block, config })}
+									initialResponse={viewMode === ViewMode.REVIEW && selectedStudent
+										? (data.groupedBlockResponses[selectedStudent][block.id]
+												?.response as BlockMatchingResponse)
+										: undefined}
+									onResponseUpdate={async (response) =>
+										await upsertBlockResponse(block.id, data.classTask.id, response)}
+									{viewMode}
 								/>
 							{:else}
-								<p>Content for {block.type} block.</p>
+								<p>Block of type "{block.type}" is not yet implemented.</p>
 							{/if}
 						</div>
 					</div>
 				{/each}
-				{#if viewMode === ViewMode.EDIT}
+				{#if viewMode === ViewMode.CONFIGURE}
 					<div
 						use:droppable={{
 							container: `task-bottom`,
@@ -461,14 +426,14 @@
 	</Card.Root>
 
 	<!-- Block Pane -->
-	{#if viewMode === ViewMode.EDIT}
+	{#if viewMode === ViewMode.CONFIGURE}
 		<div class="flex flex-col gap-4">
 			<Card.Root class="h-full">
 				<Card.Header>
 					<Card.Title class="text-lg">Task Blocks</Card.Title>
 					<Card.Description>
-						Drag and drop blocks from the palette to the task content area. If you'd like to delete a block,
-						simply drag it to the area below.
+						Drag and drop blocks from the palette to the task content area. If you'd like to delete
+						a block, simply drag it to the area below.
 					</Card.Description>
 				</Card.Header>
 				<Card.Content class="flex h-full flex-col gap-4">
@@ -487,7 +452,7 @@
 							}
 						}}
 					>
-						{#each blockTypes as { type, name, content, icon }}
+						{#each blockTypes as { type, name, initialConfig, icon }}
 							{@const Icon = icon}
 							<div
 								class="flex flex-col items-center justify-center gap-1 {buttonVariants({
@@ -495,7 +460,7 @@
 								})} aspect-square h-18 w-full"
 								use:draggable={{
 									container: 'blockPalette',
-									dragData: { type, content, id: 0 }
+									dragData: { type, config: initialConfig, id: 0 }
 								}}
 							>
 								<Icon class="size-8" />
@@ -505,17 +470,6 @@
 					</div>
 				</Card.Content>
 			</Card.Root>
-
-			<!-- Publish Button -->
-			{#if data.user.type !== 'student' && taskStatus === 'draft'}
-				<Button
-					onclick={publishTask}
-					size="lg"
-					class="w-full"
-				>
-					Publish Task
-				</Button>
-			{/if}
 		</div>
 	{/if}
 </div>

@@ -45,7 +45,9 @@ export const moduleSubTask = pgTable('module_sub_task', {
     taskId: integer("task_id")
         .notNull()
         .references(() => table.task.id),
+    objective: text('objective').notNull(),
     concepts: text('concepts').array().notNull().default([]),
+    skills: text('skills').array().notNull().default([]),
     orderIndex: integer('order_index').notNull(),
 
 });
@@ -66,7 +68,7 @@ export const moduleSession = pgTable('module_session', {
     currentTaskIndex: integer('current_task_index').default(0),
     // Session state (temporary storage)
     agentMemory: jsonb('agent_memory').$type<{
-        recentResponses: number[]; // IDs of moduleResponse records
+        recentResponses: number[]; // IDs of taskBlockResponse records
 
         strugglingConcepts: Array<{
             concept: string;

@@ -3,7 +3,7 @@ import { BaseAgent, type AgentContext, type AgentResponse, AgentType } from '../
 import { PromptRegistry } from '../prompts/registry';
 import { EducationalVectorStore } from '../retrieval/vector-store';
 import { geminiCompletion } from '$lib/server/ai';
-import * as blockSchemas from '../schemas/blockSchema';
+import * as blockSchemas from '../../../schemas/blockSchema';
 
 export class TeachModuleGeneratorAgent extends BaseAgent {
   private vectorStore: EducationalVectorStore;
@@ -168,7 +168,7 @@ Create engaging explanatory content that:
       {
         collections: ['exam_questions', 'assessment_tasks'],
         subjectId: subjectId,
-        k: 6
+        k: 5
       }
     );
 
