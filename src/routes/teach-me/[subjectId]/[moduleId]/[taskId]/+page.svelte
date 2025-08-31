@@ -246,13 +246,11 @@
 	}
 </script>
 
-<div
-	class="grid h-full"
->
-
-	<!-- Task Blocks -->
-	<Card.Root class="h-full overflow-y-auto">
-		<Card.Content class="h-full space-y-4">
+<div class="min-h-screen flex justify-center p-8">
+	<div class="w-4/5 max-w-4xl">
+		<!-- Task Blocks -->
+		<Card.Root class="h-full overflow-y-auto">
+			<Card.Content class="h-full space-y-4">
 			<div class="flex h-full flex-col">
 				{#each blocks as block}
 					<div
@@ -436,4 +434,5 @@
 			</Card.Root>
 		</div>
 	{/if}
+	</div>
 </div>
