@@ -35,6 +35,7 @@ const stepsItem = {
 // Export the items for reuse
 export { difficultyItem, hintsItem, stepsItem };
 
+
 export const blockHeading = {
 	type: 'object',
 	properties: {
@@ -441,7 +442,6 @@ export type FillBlankBlockProps = BlockProps<BlockFillBlankConfig, BlockFillBlan
 export type MatchingBlockProps = BlockProps<BlockMatchingConfig, BlockMatchingResponse>;
 export type ShortAnswerBlockProps = BlockProps<BlockShortAnswerConfig, BlockShortAnswerResponse>;
 export type WhiteboardBlockProps = BlockProps<BlockWhiteboardConfig>;
-
 
 import HeadingOneIcon from '@lucide/svelte/icons/heading-1';
 import HeadingTwoIcon from '@lucide/svelte/icons/heading-2';

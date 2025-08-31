@@ -1,25 +1,33 @@
 import { json } from '@sveltejs/kit';
 import { createTaskBlock, updateTaskBlock, deleteTaskBlock } from '$lib/server/db/service';
-import { taskBlockTypeEnum } from '$lib/server/db/schema';
+import { taskBlockTypeEnum } from '$lib/enums';
 
-// POST /api/tasks/blocks - Create a new block
 export async function POST({ request }: { request: Request }) {
 	try {
-		const { taskId, type, content, index } = await request.json();
+		const { taskId, type, config, index } = await request.json();
 
-		if (!taskId || !type || (!index && index != 0) || content === undefined) {
-			return json({ error: 'Task ID, type, index, and content are required' }, { status: 400 });
+		if (!taskId || !type || (!index && index != 0) || config === undefined) {
+			return json({ error: 'Task ID, type, index, and config are required' }, { status: 400 });
 		}
 
 		if (typeof taskId !== 'number' || typeof type !== 'string' || typeof index !== 'number') {
 			return json({ error: 'Invalid input types' }, { status: 400 });
 		}
 
+		if (typeof config !== 'object' || config === null || Array.isArray(config)) {
+			return json({ error: 'Config must be a valid object' }, { status: 400 });
+		}
+
 		if (!Object.values(taskBlockTypeEnum).includes(type as taskBlockTypeEnum)) {
 			return json({ error: 'Invalid block type' }, { status: 400 });
 		}
 
-		const block = await createTaskBlock(taskId, type as taskBlockTypeEnum, content, index);
+		const block = await createTaskBlock(
+			taskId,
+			type as taskBlockTypeEnum,
+			config as Record<string, unknown>,
+			index
+		);
 
 		return json({ block });
 	} catch (error) {
@@ -28,10 +36,9 @@ export async function POST({ request }: { request: Request }) {
 	}
 }
 
-// PATCH /api/tasks/blocks - Update a block
 export async function PATCH({ request }: { request: Request }) {
 	try {
-		const { block, content } = await request.json();
+		const { block, config } = await request.json();
 
 		if (!block.id) {
 			return json({ error: 'Block ID is required' }, { status: 400 });
@@ -41,8 +48,13 @@ export async function PATCH({ request }: { request: Request }) {
 			return json({ error: 'Invalid block ID type' }, { status: 400 });
 		}
 
-		const updates: { content?: unknown; type?: taskBlockTypeEnum } = {};
-		if (content !== undefined) updates.content = content;
+		const updates: { config?: Record<string, unknown>; type?: taskBlockTypeEnum } = {};
+		if (config !== undefined) {
+			if (typeof config !== 'object' || config === null || Array.isArray(config)) {
+				return json({ error: 'Config must be a valid object' }, { status: 400 });
+			}
+			updates.config = config as Record<string, unknown>;
+		}
 		if (block.type !== undefined) {
 			if (typeof block.type !== 'string') {
 				return json({ error: 'Invalid block type' }, { status: 400 });
@@ -62,7 +74,6 @@ export async function PATCH({ request }: { request: Request }) {
 	}
 }
 
-// DELETE /api/tasks/blocks?blockId=123 - Delete a block
 export async function DELETE({ url }: { url: URL }) {
 	try {
 		const blockIdParam = url.searchParams.get('blockId');

@@ -1,38 +1,18 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button/index.js';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import * as Card from '$lib/components/ui/card';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import PenToolIcon from '@lucide/svelte/icons/pen-tool';
-	import CheckIcon from '@lucide/svelte/icons/check';
 	import XIcon from '@lucide/svelte/icons/x';
 	import {
-		type BlockFillBlankResponse,
 		ViewMode,
+		type BlockFillBlankConfig,
 		type FillBlankBlockProps
-	} from '$lib/schemas/taskSchema';
+	} from '$lib/schemas/blockSchema';
 
-	let {
-		initialConfig,
-		onConfigUpdate,
-		initialResponse,
-		onResponseUpdate,
-		viewMode
-	}: FillBlankBlockProps = $props();
-
-	let config = $state(initialConfig);
-	let response = $state<BlockFillBlankResponse>(initialResponse || { answer: '' });
-
-	// Do not remove. Updates config state when block order is changed.
-	$effect(() => {
-		config = initialConfig;
-	});
-
-	// Do not remove. Updates response state when new student selected.
-	$effect(() => {
-		response = initialResponse || { answer: '' };
-	});
+	let { config, onConfigUpdate, response, onResponseUpdate, viewMode }: FillBlankBlockProps =
+		$props();
 
 	function isAnswerCorrect(): boolean {
 		return response?.answer.trim() == config.answer;
@@ -49,25 +29,25 @@
 		};
 	}
 
-	function saveChanges() {
-		if (!config.sentence.trim()) {
+	function saveChanges(input: BlockFillBlankConfig) {
+		if (!input.sentence.trim()) {
 			alert('Sentence text is required');
 			return;
 		}
 
-		if (!config.answer.trim()) {
+		if (!input.answer.trim()) {
 			alert('Correct answer is required');
 			return;
 		}
 
-		if (!config.sentence.includes('_____')) {
+		if (!input.sentence.includes('_____')) {
 			alert('Sentence must contain _____ to indicate where the blank should be');
 			return;
 		}
 
 		onConfigUpdate({
-			sentence: config.sentence.trim(),
-			answer: config.answer.trim()
+			sentence: input.sentence.trim(),
+			answer: input.answer.trim()
 		});
 	}
 </script>
@@ -86,8 +66,11 @@
 					<Label for="sentence-text">Sentence</Label>
 					<Textarea
 						id="sentence-text"
-						bind:value={config.sentence}
-						onblur={saveChanges}
+						value={config.sentence}
+						oninput={(e) => {
+							const value = (e.target as HTMLTextAreaElement)?.value;
+							saveChanges(value ? { ...config, sentence: value } : config);
+						}}
 						placeholder="Enter your sentence with _____ where the blank should be..."
 						class="min-h-[80px] resize-none"
 					/>
@@ -100,8 +83,11 @@
 					<Label for="correct-answer">Correct Answer</Label>
 					<Input
 						id="correct-answer"
-						bind:value={config.answer}
-						onblur={saveChanges}
+						value={config.answer}
+						oninput={(e) => {
+							const value = (e.target as HTMLInputElement)?.value;
+							saveChanges(value ? { ...config, answer: value } : config);
+						}}
 						placeholder="Enter the correct answer..."
 					/>
 				</div>
@@ -134,7 +120,12 @@
 						<span>{parsed.before}</span>
 						<div class="relative mx-2 inline-block">
 							<Input
-								bind:value={response.answer}
+								value={response.answer}
+								oninput={async (e) => {
+									const target = e.target as HTMLInputElement;
+									const newResponse = { ...response, answer: target.value };
+									await onResponseUpdate(newResponse);
+								}}
 								disabled={viewMode !== ViewMode.ANSWER}
 								placeholder="Your answer"
 								class={`max-w-[200px] min-w-[140px] text-center font-medium transition-all duration-200 ${

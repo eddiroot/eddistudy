@@ -7,56 +7,29 @@
 	import PlusIcon from '@lucide/svelte/icons/plus';
 	import TrashIcon from '@lucide/svelte/icons/trash-2';
 	import ArrowRightIcon from '@lucide/svelte/icons/arrow-right';
-	import {
-		type BlockMatchingResponse,
-		ViewMode,
-		type MatchingBlockProps
-	} from '$lib/schemas/taskSchema';
+	import { ViewMode, type MatchingBlockProps } from '$lib/schemas/blockSchema';
 
-	let {
-		initialConfig,
-		onConfigUpdate,
-		initialResponse,
-		onResponseUpdate,
-		viewMode
-	}: MatchingBlockProps = $props();
-
-	let config = $state(initialConfig);
-	let response = $state<BlockMatchingResponse>(
-		initialResponse || {
-			matches: []
-		}
-	);
-
-	// Do not remove. Updates config state when block order is changed.
-	$effect(() => {
-		config = initialConfig;
-	});
-
-	// Do not remove. Updates response state when new student selected.
-	$effect(() => {
-		response = initialResponse || {
-			matches: []
-		};
-	});
+	let { config, onConfigUpdate, response, onResponseUpdate, viewMode }: MatchingBlockProps =
+		$props();
 
 	function addPair() {
-		config = { ...config, pairs: [...config.pairs, { left: '', right: '' }] };
-		onConfigUpdate(config);
+		const newConfig = { ...config, pairs: [...config.pairs, { left: '', right: '' }] };
+		onConfigUpdate(newConfig);
 	}
 
 	function removePair(index: number) {
 		if (config.pairs.length <= 1) return;
-		config = { ...config, pairs: config.pairs.filter((_, i) => i !== index) };
-		onConfigUpdate(config);
+		const newConfig = { ...config, pairs: config.pairs.filter((_, i) => i !== index) };
+		onConfigUpdate(newConfig);
 	}
 
 	function updatePair(index: number, field: 'left' | 'right', value: string) {
 		if (index < 0 || index >= config.pairs.length) return;
-		const updatedPairs = [...config.pairs];
+		const newConfig = { ...config };
+		const updatedPairs = [...newConfig.pairs];
 		updatedPairs[index] = { ...updatedPairs[index], [field]: value };
-		config = { ...config, pairs: updatedPairs };
-		onConfigUpdate(config);
+		newConfig.pairs = updatedPairs;
+		onConfigUpdate(newConfig);
 	}
 </script>
 
@@ -71,9 +44,13 @@
 				<Label for="instructions">Instructions</Label>
 				<Textarea
 					id="instructions"
-					bind:value={config.instructions}
-					onblur={async () => {
-						await onConfigUpdate(config);
+					value={config.instructions}
+					oninput={(e) => {
+						const value = (e.target as HTMLTextAreaElement)?.value;
+						if (value !== undefined) {
+							const newConfig = { ...config, instructions: value };
+							onConfigUpdate(newConfig);
+						}
 					}}
 					placeholder="Enter instructions for the matching exercise..."
 					class="min-h-20"
@@ -95,9 +72,12 @@
 						<div class="flex-1">
 							<Label class="text-muted-foreground text-xs">Left Item</Label>
 							<Input
-								bind:value={pair.left}
-								onblur={async () => {
-									await onConfigUpdate(config);
+								value={pair.left}
+								oninput={(e) => {
+									const value = (e.target as HTMLInputElement)?.value;
+									if (value !== undefined) {
+										updatePair(index, 'left', value);
+									}
 								}}
 								placeholder="Left item..."
 								class="mt-1"
@@ -109,9 +89,12 @@
 						<div class="flex-1">
 							<Label class="text-muted-foreground text-xs">Right Item</Label>
 							<Input
-								bind:value={pair.right}
-								onblur={async () => {
-									await onConfigUpdate(config);
+								value={pair.right}
+								oninput={(e) => {
+									const value = (e.target as HTMLInputElement)?.value;
+									if (value !== undefined) {
+										updatePair(index, 'right', value);
+									}
 								}}
 								placeholder="Right item..."
 								class="mt-1"
