@@ -4,8 +4,6 @@
 	import { goto } from '$app/navigation';
 	import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left';
 	import BookOpenIcon from '@lucide/svelte/icons/book-open';
-	import ClockIcon from '@lucide/svelte/icons/clock';
-	import PlayIcon from '@lucide/svelte/icons/play';
 	import type { PageData } from './$types';
 
 	type Props = {
@@ -71,38 +69,19 @@
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 				{#each data.modules as module}
 					<Card.Root class="group hover:shadow-xl transition-all duration-300 cursor-pointer" onclick={() => handleModuleClick(module.id)}>
-						<Card.Header class="pb-3">
+						<Card.Content class="p-6 text-center space-y-4">
 							<Card.Title class="text-lg font-semibold group-hover:text-primary transition-colors line-clamp-2">
 								{module.title}
 							</Card.Title>
-						</Card.Header>
-						<Card.Content class="space-y-4">
+							
 							{#if module.description}
 								<p class="text-sm text-muted-foreground line-clamp-3">
 									{module.description}
 								</p>
 							{/if}
-
-							<div class="flex items-center justify-between pt-2">
-								<div class="flex items-center gap-2 text-xs text-muted-foreground">
-									<ClockIcon class="w-3 h-3" />
-									<span>Interactive learning</span>
-								</div>
-								<div class="flex items-center gap-1 text-primary group-hover:opacity-80 transition-opacity">
-									<PlayIcon class="w-4 h-4" />
-									<span class="text-sm font-medium">Start</span>
-								</div>
-							</div>
 						</Card.Content>
 					</Card.Root>
 				{/each}
-			</div>
-
-			<!-- Additional Info -->
-			<div class="text-center mt-16">
-				<p class="text-sm text-muted-foreground">
-					Found {data.modules.length} module{data.modules.length !== 1 ? 's' : ''} for {formatSubjectName(data.subject.name)}
-				</p>
 			</div>
 		{/if}
 	</div>

@@ -17,6 +17,8 @@
 	import BlockFillBlank from './components/block-fill-blank.svelte';
 	import BlockMatching from './components/block-matching.svelte';
 	import BlockShortAnswer from './components/block-short-answer.svelte';
+	import BlockClose from './components/block-close.svelte';
+	import BlockHighlightText from './components/block-highlight-text.svelte';
 
 	// Icons
 	import CheckCircleIcon from '@lucide/svelte/icons/check-circle';
@@ -41,7 +43,9 @@
 		type BlockMatchingConfig,
 		type BlockRichTextConfig,
 		type BlockShortAnswerConfig,
-		type BlockWhiteboardConfig
+		type BlockWhiteboardConfig,
+		type BlockCloseConfig,
+		type BlockHighlightTextConfig
 	} from '$lib/schemas/blockSchema';
 	import GripVerticalIcon from '@lucide/svelte/icons/grip-vertical';
 	import { taskBlockTypeEnum, taskStatusEnum, userTypeEnum } from '$lib/enums';
@@ -53,45 +57,34 @@
 	let responses = $state<Record<number, any>>({});
 
 	let mouseOverElement = $state<string>('');
-	let viewMode = $state<ViewMode>(
-		data.user.type == userTypeEnum.student ? ViewMode.ANSWER : ViewMode.CONFIGURE
-	);
-	let selectedStatus = $state<taskStatusEnum>(data.classTask.status);
-	let selectedStudent = $state<string | null>(null);
+	let viewMode = $state<ViewMode>(ViewMode.ANSWER	);
+
+	$effect(() => {
+		blocks.forEach((block) => {
+			if (!Object.prototype.hasOwnProperty.call(responses, block.id)) {
+				responses[block.id] = getInitialResponse(block.type);
+			}
+		});
+	});
 
 	function getInitialResponse(blockType: string) {
 		switch (blockType) {
 			case taskBlockTypeEnum.choice:
 				return { answers: [] };
 			case taskBlockTypeEnum.fillBlank:
-				return { answer: '' };
+				return { answers: [] };
 			case taskBlockTypeEnum.matching:
 				return { matches: [] };
 			case taskBlockTypeEnum.shortAnswer:
 				return { answer: '' };
+			case taskBlockTypeEnum.close:
+				return { answer: '' };
+			case taskBlockTypeEnum.highlightText:
+				return { selectedText: [] };
 			default:
 				return {};
 		}
 	}
-
-	function getCurrentResponse(blockId: number, blockType: string) {
-		if (data.user.type == userTypeEnum.student) {
-			return data.blockResponses![blockId] || getInitialResponse(blockType);
-		}
-
-		if (viewMode === ViewMode.REVIEW && selectedStudent) {
-			return (
-				data.groupedBlockResponses![selectedStudent]?.[blockId]?.response ||
-				getInitialResponse(blockType)
-			);
-		}
-
-		if (!Object.prototype.hasOwnProperty.call(responses, blockId)) {
-			responses[blockId] = getInitialResponse(blockType);
-		}
-		return responses[blockId];
-	}
-
 	async function handleConfigUpdate(block: TaskBlock, config: any) {
 		await updateBlock({ block, config });
 		const blockIndex = blocks.findIndex((b) => b.id === block.id);
@@ -102,22 +95,27 @@
 
 	async function handleResponseUpdate(blockId: number, response: any) {
 		responses[blockId] = response;
-
-		if (responseUpdateTimeouts[blockId]) {
-			clearTimeout(responseUpdateTimeouts[blockId]);
-		}
-
-		responseUpdateTimeouts[blockId] = setTimeout(async () => {
-			try {
-				await upsertBlockResponse(blockId, data.classTask.id, response);
-			} catch (error) {
-				console.error('Failed to save response:', error);
-			}
-			delete responseUpdateTimeouts[blockId];
-		}, 500);
 	}
 
-	let responseUpdateTimeouts: Record<string, NodeJS.Timeout> = {};
+	// Simple function to return empty responses since users don't need to be logged in
+	function getEmptyResponse(blockType: string): any {
+		switch (blockType) {
+			case taskBlockTypeEnum.choice:
+				return { answers: [] };
+			case taskBlockTypeEnum.fillBlank:
+				return { answers: [] };
+			case taskBlockTypeEnum.matching:
+				return { matches: [] };
+			case taskBlockTypeEnum.shortAnswer:
+				return { answer: '' };
+			case taskBlockTypeEnum.close:
+				return { answers: [] };
+			case taskBlockTypeEnum.highlightText:
+				return { selectedText: [] };
+			default:
+				return {};
+		}
+	}
 
 	const draggedOverClasses = 'border-accent-foreground';
 	const notDraggedOverClasses = 'border-bg';
@@ -249,131 +247,12 @@
 </script>
 
 <div
-	class="grid h-full gap-4 p-4 {viewMode === ViewMode.CONFIGURE
-		? 'grid-cols-[200px_1fr_300px]'
-		: 'grid-cols-[200px_1fr]'}"
+	class="grid h-full"
 >
-	<!-- Contents Pane -->
-	<div class="flex flex-col gap-2">
-		{#if data.user.type !== 'student'}
-			<form method="POST" action="?/status">
-				<Select.Root type="single" name="status" required bind:value={selectedStatus}>
-					<Select.Trigger class="w-full"
-						>{selectedStatus[0].toUpperCase() + selectedStatus.slice(1)}</Select.Trigger
-					>
-					<Select.Content>
-						<Select.Item value={taskStatusEnum.draft}>Draft</Select.Item>
-						<Select.Item value={taskStatusEnum.published}>Published</Select.Item>
-					</Select.Content>
-				</Select.Root>
-			</form>
-			<Button
-				variant={viewMode === ViewMode.CONFIGURE ? 'default' : 'outline'}
-				onclick={() => (viewMode = ViewMode.CONFIGURE)}
-				size="lg"
-			>
-				<WrenchIcon />
-				Configure
-			</Button>
-			<Button variant="outline" disabled onclick={() => (viewMode = ViewMode.PRESENT)} size="lg">
-				<PresentationIcon />
-				Present
-			</Button>
-			<Button
-				variant={viewMode === ViewMode.ANSWER ? 'default' : 'outline'}
-				onclick={() => (viewMode = ViewMode.ANSWER)}
-				size="lg"
-			>
-				<EyeIcon />
-				Preview
-			</Button>
-			<Button
-				variant={viewMode === ViewMode.REVIEW ? 'default' : 'outline'}
-				onclick={() => (viewMode = ViewMode.REVIEW)}
-				size="lg"
-			>
-				<CheckCircleIcon />
-				Review
-			</Button>
-		{/if}
-		<Card.Root class="h-full">
-			<Card.Header>
-				<Card.Title>{viewMode === ViewMode.REVIEW ? 'Students' : 'Content'}</Card.Title>
-			</Card.Header>
-			<Card.Content class="space-y-1">
-				{#if viewMode === ViewMode.REVIEW}
-					{#each data.responses! as response}
-						<Button
-							onclick={() => (selectedStudent = response.student.id)}
-							size="lg"
-							variant={selectedStudent === response.student.id ? 'default' : 'ghost'}
-						>
-							{response.student.firstName}
-							{response.student.lastName}
-						</Button>
-					{/each}
-				{:else}
-					{#each blocks.filter((block) => block.type === taskBlockTypeEnum.heading) as block}
-						{#if block.type === taskBlockTypeEnum.heading}
-							<p
-								class="text-muted-foreground"
-								style="font-size: {1.5 -
-									(block.config as BlockHeadingConfig).size * 0.1}rem; font-weight: {700 -
-									(block.config as BlockHeadingConfig).size * 100}; margin-left: {((
-									block.config as BlockHeadingConfig
-								).size -
-									1) *
-									4}px"
-							>
-								{(block.config as BlockHeadingConfig).text}
-							</p>
-						{:else}
-							<p class="text-muted-foreground">Untitled Heading</p>
-						{/if}
-					{/each}
-				{/if}
-			</Card.Content>
-		</Card.Root>
-	</div>
 
 	<!-- Task Blocks -->
 	<Card.Root class="h-full overflow-y-auto">
 		<Card.Content class="h-full space-y-4">
-			<div class={viewMode === ViewMode.CONFIGURE ? 'ml-[38px]' : ''}>
-				<div class="flex items-center gap-4">
-					<BlockHeading
-						config={{
-							text: data.task.title,
-							size: 1
-						}}
-						onConfigUpdate={async (config) =>
-							await updateTaskTitle({ taskId: data.task.id, title: config.text })}
-						{viewMode}
-					/>
-					<!-- Submit Button for Students -->
-					{#if data.classTask.status === 'published' && data.user.type === userTypeEnum.student}
-						<Button
-							href="/subjects/${data.subjectOfferingId}/class/${data.subjectOfferingClassId}/tasks/${data
-								.task.id}/submit"
-							size="lg"
-						>
-							Submit Task
-						</Button>
-					{/if}
-				</div>
-
-				{#if page.url.searchParams.get('submitted') === 'true'}
-					<div class="mt-4">
-						<Badge
-							variant="default"
-							class="flex w-fit items-center gap-2 border-green-300 bg-green-100 text-green-800"
-						>
-							<CheckCircleIcon class="h-4 w-4" />
-							Task submitted successfully!
-						</Badge>
-					</div>
-				{/if}
-			</div>
 			<div class="flex h-full flex-col">
 				{#each blocks as block}
 					<div
@@ -434,7 +313,7 @@
 								<BlockChoice
 									config={block.config as BlockChoiceConfig}
 									onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
-									response={getCurrentResponse(block.id, block.type)}
+									response={getEmptyResponse(block.type)}
 									onResponseUpdate={async (response) =>
 										await handleResponseUpdate(block.id, response)}
 									{viewMode}
@@ -443,7 +322,7 @@
 								<BlockFillBlank
 									config={block.config as BlockFillBlankConfig}
 									onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
-									response={getCurrentResponse(block.id, block.type)}
+									response={getEmptyResponse(block.type)}
 									onResponseUpdate={async (response) =>
 										await handleResponseUpdate(block.id, response)}
 									{viewMode}
@@ -452,7 +331,7 @@
 								<BlockMatching
 									config={block.config as BlockMatchingConfig}
 									onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
-									response={getCurrentResponse(block.id, block.type)}
+									response={getEmptyResponse(block.type)}
 									onResponseUpdate={async (response) =>
 										await handleResponseUpdate(block.id, response)}
 									{viewMode}
@@ -461,7 +340,25 @@
 								<BlockShortAnswer
 									config={block.config as BlockShortAnswerConfig}
 									onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
-									response={getCurrentResponse(block.id, block.type)}
+									response={getEmptyResponse(block.type)}
+									onResponseUpdate={async (response) =>
+										await handleResponseUpdate(block.id, response)}
+									{viewMode}
+								/>
+							{:else if block.type === taskBlockTypeEnum.close}
+								<BlockClose
+									config={block.config as BlockCloseConfig}
+									onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
+									response={getEmptyResponse(block.type)}
+									onResponseUpdate={async (response) =>
+										await handleResponseUpdate(block.id, response)}
+									{viewMode}
+								/>
+							{:else if block.type === taskBlockTypeEnum.highlightText}
+								<BlockHighlightText
+									config={block.config as BlockHighlightTextConfig}
+									onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
+									response={getEmptyResponse(block.type)}
 									onResponseUpdate={async (response) =>
 										await handleResponseUpdate(block.id, response)}
 									{viewMode}

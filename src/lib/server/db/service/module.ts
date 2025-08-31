@@ -83,10 +83,7 @@ export async function getModulesForSubject(subjectId: number) {
 		})
 		.from(table.module)
 		.where(
-			and(
-				eq(table.module.subjectId, subjectId),
-				eq(table.module.isPublished, true)
-			)
+			eq(table.module.subjectId, subjectId)
 		)
 		.orderBy(table.module.orderIndex, table.module.createdAt);
 }
@@ -363,7 +360,20 @@ export async function generateAndStoreModule(params: ModuleGenerationParams) {
       scaffoldContext
     );
 
-    const scaffold = JSON.parse(scaffoldResponse.content);
+    let scaffold;
+    try {
+      scaffold = JSON.parse(scaffoldResponse.content);
+    } catch (error) {
+      console.error('Failed to parse scaffold response:', error);
+      console.error('Scaffold response:', scaffoldResponse.content);
+      throw new Error('Invalid JSON response from scaffold generation agent');
+    }
+
+    // Validate scaffold structure
+    if (!scaffold.sections || !Array.isArray(scaffold.sections)) {
+      console.error('Invalid scaffold structure:', scaffold);
+      throw new Error('Scaffold missing sections array');
+    }
 
     // Step 2: Create module in database
     const [module] = await db
@@ -400,7 +410,20 @@ export async function generateAndStoreModule(params: ModuleGenerationParams) {
         contentContext
       );
 
-      const contentData = JSON.parse(contentResponse.content);
+      let contentData;
+      try {
+        contentData = JSON.parse(contentResponse.content);
+      } catch (error) {
+        console.error('Failed to parse content response:', error);
+        console.error('Content response:', contentResponse.content);
+        throw new Error('Invalid JSON response from content generation agent');
+      }
+
+      // Ensure contentData has blocks property
+      if (!contentData.blocks) {
+        console.warn('Content data missing blocks property, using empty array');
+        contentData.blocks = [];
+      }
 
       // Generate interactive blocks for section
       const interactiveContext: AgentContext = {
@@ -422,7 +445,21 @@ export async function generateAndStoreModule(params: ModuleGenerationParams) {
         interactiveContext
       );
 
-      const interactiveData = JSON.parse(interactiveResponse.content);
+      let interactiveData;
+      try {
+        interactiveData = JSON.parse(interactiveResponse.content);
+      } catch (error) {
+        console.error('Failed to parse interactive response:', error);
+        console.error('Interactive response:', interactiveResponse.content);
+        // Provide fallback data structure
+        interactiveData = { interactiveBlocks: [] };
+      }
+
+      // Ensure interactiveData has the expected structure
+      if (!interactiveData.interactiveBlocks) {
+        console.warn('Interactive data missing interactiveBlocks property, using empty array');
+        interactiveData.interactiveBlocks = [];
+      }
 
       sections.push({
         ...section,
@@ -513,8 +550,18 @@ export async function generateAndStoreModule(params: ModuleGenerationParams) {
 
 
 function extractTextFromBlocks(blocks: any[]): string {
+  // Handle undefined or null blocks
+  if (!blocks || !Array.isArray(blocks)) {
+    console.warn('extractTextFromBlocks: blocks is not an array:', blocks);
+    return '';
+  }
+
   return blocks
     .map(block => {
+      if (!block || typeof block !== 'object') {
+        return '';
+      }
+      
       switch (block.type) {
         case 'heading':
           return block.config?.text || '';
