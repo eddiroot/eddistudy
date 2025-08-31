@@ -8,6 +8,75 @@ import { AgentAction, AgentType, type AgentContext } from '$lib/server/agents';
 import { createTask, createTaskBlock } from './task';
 import { taskTypeEnum } from '$lib/enums';
 
+/**
+ * Get all curriculum subjects that are available
+ */
+export async function getAllCurriculumSubjects() {
+	return await db
+		.select()
+		.from(table.curriculumSubject)
+		.where(eq(table.curriculumSubject.isArchived, false))
+		.orderBy(table.curriculumSubject.name);
+}
+
+/**
+ * Get curriculum subject by name or ID
+ */
+export async function getCurriculumSubjectByIdentifier(identifier: string | number) {
+	if (typeof identifier === 'number') {
+		const [subject] = await db
+			.select()
+			.from(table.curriculumSubject)
+			.where(
+				and(
+					eq(table.curriculumSubject.id, identifier),
+					eq(table.curriculumSubject.isArchived, false)
+				)
+			);
+		return subject;
+	}
+	
+	// Try to match by a slug-like name format
+	const normalizedName = identifier
+		.split('-')
+		.map(word => word.charAt(0).toUpperCase() + word.slice(1))
+		.join(' ');
+	
+	const subjects = await db
+		.select()
+		.from(table.curriculumSubject)
+		.where(eq(table.curriculumSubject.isArchived, false));
+	
+	return subjects.find(subject => 
+		subject.name.toLowerCase() === normalizedName.toLowerCase() ||
+		subject.name.toLowerCase().includes(normalizedName.toLowerCase())
+	);
+}
+
+/**
+ * Get all published modules for a curriculum subject
+ */
+export async function getModulesForSubject(subjectId: number) {
+	return await db
+		.select({
+			id: table.module.id,
+			title: table.module.title,
+			description: table.module.description,
+			isPublished: table.module.isPublished,
+			orderIndex: table.module.orderIndex,
+			createdAt: table.module.createdAt,
+			updatedAt: table.module.updatedAt
+		})
+		.from(table.module)
+		.where(
+			and(
+				eq(table.module.curriculumSubjectId, subjectId),
+				eq(table.module.isPublished, true)
+			)
+		)
+		.orderBy(table.module.orderIndex, table.module.createdAt);
+}
+
 // ============================================================================
 // SCHOOL & SUBJECT MANAGEMENT METHODS
 // ============================================================================
