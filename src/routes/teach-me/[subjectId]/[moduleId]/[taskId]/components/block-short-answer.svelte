@@ -2,7 +2,7 @@
 	import Label from '$lib/components/ui/label/label.svelte';
 	import * as Card from '$lib/components/ui/card';
 	import { Textarea } from '$lib/components/ui/textarea';
-	import PenToolIcon from '@lucide/svelte/icons/pen-tool';
+	import MessageSquareTextIcon from '@lucide/svelte/icons/message-square-text';
 	import CheckCircleIcon from '@lucide/svelte/icons/check-circle';
 	import {
 		ViewMode,
@@ -30,7 +30,7 @@
 		<Card.Root>
 			<Card.Header>
 				<Card.Title class="flex items-center gap-2">
-					<PenToolIcon class="h-4 w-4" />
+					<MessageSquareTextIcon class="h-4 w-4" />
 					Configure Short Answer Block
 				</Card.Title>
 			</Card.Header>
@@ -40,7 +40,7 @@
 					<Textarea
 						id="question-text"
 						value={config.question}
-						oninput={(e) => {
+						onblur={(e) => {
 							const value = (e.target as HTMLTextAreaElement)?.value;
 							saveChanges(value ? { ...config, question: value } : config);
 						}}
@@ -51,22 +51,6 @@
 						Students will provide a written response to this question.
 					</p>
 				</div>
-
-				{#if config.question}
-					<div class="space-y-2">
-						<Label>Preview</Label>
-						<div class="dark:bg-input/30 border-input rounded-lg border bg-transparent p-4">
-							<div class="space-y-4">
-								<p class="text-lg font-medium">{config.question}</p>
-								<Textarea
-									placeholder="Student's answer will appear here..."
-									class="min-h-[120px] resize-none"
-									disabled
-								/>
-							</div>
-						</div>
-					</div>
-				{/if}
 			</Card.Content>
 		</Card.Root>
 	{:else if viewMode === ViewMode.ANSWER || viewMode === ViewMode.REVIEW}
@@ -84,11 +68,6 @@
 							}}
 							disabled={viewMode !== ViewMode.ANSWER}
 							placeholder="Type your answer here..."
-							class={`min-h-[120px] resize-none transition-all duration-200 ${
-								viewMode === ViewMode.ANSWER
-									? 'border-primary/30 focus:border-primary bg-background hover:border-primary/50 border-2 shadow-sm'
-									: 'border-input bg-background'
-							}`}
 						/>
 					</div>
 
@@ -114,7 +93,7 @@
 		{:else}
 			<div class="flex h-48 w-full items-center justify-center rounded-lg border border-dashed">
 				<div class="text-center">
-					<PenToolIcon class="text-muted-foreground mx-auto h-12 w-12" />
+					<MessageSquareTextIcon class="text-muted-foreground mx-auto h-12 w-12" />
 					<p class="text-muted-foreground mt-2 text-sm">No question created</p>
 					<p class="text-muted-foreground text-xs">
 						Switch to edit mode to create a short answer question

@@ -1,14 +1,14 @@
 import { error } from '@sveltejs/kit';
-import { getCurriculumSubjectByIdentifier, getModulesForSubject } from '$lib/server/db/service/module.js';
+import { getSubjectByIdentifier, getModulesForSubject } from '$lib/server/db/service/module.js';
 
 export async function load({ params }) {
 	const { subjectId } = params;
 
-	// Try to parse as number first, otherwise treat as string identifier
-	const identifier = !isNaN(Number(subjectId)) ? Number(subjectId) : subjectId;
-	
-	// Get the subject by slug/identifier
-	const subject = await getCurriculumSubjectByIdentifier(identifier);
+	// Parse string ID to number if it's a valid number
+	const parsedId = /^\d+$/.test(subjectId) ? parseInt(subjectId, 10) : subjectId;
+
+	// Get the subject by ID or slug/identifier
+	const subject = await getSubjectByIdentifier(parsedId);
 	
 	if (!subject) {
 		error(404, 'Subject not found');

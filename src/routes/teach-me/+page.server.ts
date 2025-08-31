@@ -1,7 +1,7 @@
-import { getAllCurriculumSubjects } from '$lib/server/db/service/module.js';
+import { getAllSubjects } from '$lib/server/db/service/module.js';
 
 export async function load() {
-	// Get all curriculum subjects from database
-	const subjects = await getAllCurriculumSubjects();
+	// Get all subjects from database
+	const subjects = await getAllSubjects();
 	return { subjects };
 }

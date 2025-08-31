@@ -56,7 +56,9 @@ export enum taskBlockTypeEnum {
 	choice = 'choice',
 	whiteboard = 'whiteboard',
 	matching = 'matching',
-	shortAnswer = 'short_answer'
+	shortAnswer = 'short_answer',
+	close = 'close',
+	highlightText = 'highlight_text'
 }
 
 export enum taskStatusEnum {
@@ -113,9 +115,4 @@ export enum queueStatusEnum {
 	inProgress = 'in_progress',
 	completed = 'completed',
 	failed = 'failed'
-}
-
-export enum sessionTypeEnum {
-	teach = 'teach',
-	train = 'train'
 }

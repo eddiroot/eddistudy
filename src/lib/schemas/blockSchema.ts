@@ -155,9 +155,12 @@ export const blockFillBlank = {
 			type: 'object',
 			properties: {
 				sentence: { type: 'string' },
-				answer: { type: 'string' }
+				answers: {
+					type: 'array',
+					items: { type: 'string' }
+				}
 			},
-			required: ['sentence', 'answer']
+			required: ['sentence', 'answers']
 		},
 		marks: { type: 'number' }
 	},
@@ -166,11 +169,11 @@ export const blockFillBlank = {
 
 export type BlockFillBlankConfig = {
 	sentence: string;
-	answer: string;
+	answers: string[];
 };
 
 export type BlockFillBlankResponse = {
-	answer: string;
+	answers: string[];
 };
 
 export const blockMatching = {
@@ -238,6 +241,63 @@ export type BlockShortAnswerResponse = {
 	answer: string;
 };
 
+export const blockClose = {
+	type: 'object',
+	properties: {
+		type: { type: 'string', enum: [taskBlockTypeEnum.close] },
+		config: {
+			type: 'object',
+			properties: {
+				text: { type: 'string' }
+			},
+			required: ['text']
+		},
+		criteria: {
+			type: 'array',
+			items: criteriaItem,
+			minItems: 1
+		},
+		marks: { type: 'number' }
+	},
+	required: ['type', 'config', 'criteria']
+};
+
+export type BlockCloseConfig = {
+	text: string;
+};
+
+export type BlockCloseResponse = {
+	answers: string[];
+};
+
+export const blockHighlightText = {
+	type: 'object',
+	properties: {
+		type: { type: 'string', enum: [taskBlockTypeEnum.highlightText] },
+		config: {
+			type: 'object',
+			properties: {
+				text: { type: 'string' },
+				instructions: { type: 'string' },
+				highlightCorrect: { type: 'boolean' }
+			},
+			required: ['text', 'instructions', 'highlightCorrect']
+		},
+		marks: { type: 'number' }
+	},
+	required: ['type', 'config']
+};
+
+export type BlockHighlightTextConfig = {
+	text: string;
+	instructions: string;
+	highlightCorrect: boolean;
+};
+
+export type BlockHighlightTextResponse = {
+	selectedText: string[];
+};
+
 export const blockWhiteboard = {
 	type: 'object',
 	properties: {
@@ -267,100 +327,10 @@ export const taskBlocks = [
 	blockChoice,
 	blockFillBlank,
 	blockMatching,
-	blockShortAnswer
+	blockShortAnswer,
+	blockClose,
+	blockHighlightText
 ];
-
-
-
-
-export const interactiveBlockWithOptionals = (
-    interactiveBlock: any,
-    options: {
-        includeHints?: boolean;
-        includeDifficulty?: boolean;
-        includeSteps?: boolean;
-        makeRequired?: boolean;
-    } = {}
-) => {
-    const {
-        includeHints = true,
-        includeDifficulty = true,
-        includeSteps = true,
-        makeRequired = true
-    } = options;
-
-    const additionalProperties: any = {};
-    const additionalRequired: string[] = [];
-
-    if (includeHints) {
-        additionalProperties.hints = hintsItem;
-        if (makeRequired) additionalRequired.push('hints');
-    }
-
-    if (includeDifficulty) {
-        additionalProperties.difficulty = difficultyItem;
-        if (makeRequired) additionalRequired.push('difficulty');
-    }
-
-    if (includeSteps) {
-        additionalProperties.steps = stepsItem;
-        if (makeRequired) additionalRequired.push('steps');
-    }
-
-    return {
-        ...interactiveBlock,
-        properties: {
-            ...interactiveBlock.properties,
-            ...additionalProperties
-        },
-        required: [...(interactiveBlock.required || []), ...additionalRequired]
-    };
-};
-
-export function getBlockTypesForSubject(subjectType: string): any[] {
-    const typeMap: Record<string, any[]> = {
-      mathematics: [blockChoice, blockMathInput],
-      science: [blockFillBlank, blockChoice, blockShortAnswer, blockFillBlank],
-      english: [blockShortAnswer],
-      default: [blockChoice, blockShortAnswer, blockMatching, blockFillBlank]
-    };
-
-    return typeMap[subjectType.toLowerCase()] || typeMap.default;
-  }
-
- export function getInteractiveSchema(subjectType: string): any {
-    const blockTypes = getBlockTypesForSubject(subjectType);
-
-    // Use the interactiveBlockWithOptionals helper for consistent schema generation
-    const interactiveBlockSchema = interactiveBlockWithOptionals({
-      type: 'object',
-      properties: {
-        taskBlock: {
-          anyOf: blockTypes
-        }
-      },
-      required: ['taskBlock']
-    }, {
-      includeHints: true,
-      includeDifficulty: true,
-      includeSteps: true,
-      makeRequired: true
-    });
-
-    return {
-      type: 'object',
-      properties: {
-        interactiveBlocks: {
-          type: 'array',
-          items: interactiveBlockSchema,
-          minItems: 1,
-          maxItems: 5
-        }
-      },
-      required: ['interactiveBlocks']
-    };
-  }
-
 
 export const layoutTwoColumns = {
 	type: 'object',
@@ -415,13 +385,17 @@ export type BlockConfig =
 	| BlockFillBlankConfig
 	| BlockMatchingConfig
 	| BlockShortAnswerConfig
-	| BlockWhiteboardConfig;
+	| BlockWhiteboardConfig
+	| BlockCloseConfig
+	| BlockHighlightTextConfig;
 
 export type BlockResponse =
 	| BlockChoiceResponse
 	| BlockFillBlankResponse
 	| BlockMatchingResponse
-	| BlockShortAnswerResponse;
+	| BlockShortAnswerResponse
+	| BlockCloseResponse
+	| BlockHighlightTextResponse;
 
 export type BlockProps<T extends BlockConfig = BlockConfig, Q extends BlockResponse = never> = {
 	config: T;
@@ -442,6 +416,11 @@ export type FillBlankBlockProps = BlockProps<BlockFillBlankConfig, BlockFillBlan
 export type MatchingBlockProps = BlockProps<BlockMatchingConfig, BlockMatchingResponse>;
 export type ShortAnswerBlockProps = BlockProps<BlockShortAnswerConfig, BlockShortAnswerResponse>;
 export type WhiteboardBlockProps = BlockProps<BlockWhiteboardConfig>;
+export type CloseBlockProps = BlockProps<BlockCloseConfig, BlockCloseResponse>;
+export type HighlightTextBlockProps = BlockProps<
+	BlockHighlightTextConfig,
+	BlockHighlightTextResponse
+>;
 
 import HeadingOneIcon from '@lucide/svelte/icons/heading-1';
 import HeadingTwoIcon from '@lucide/svelte/icons/heading-2';
@@ -453,6 +432,8 @@ import PresentationIcon from '@lucide/svelte/icons/presentation';
 import List from '@lucide/svelte/icons/list';
 import PenToolIcon from '@lucide/svelte/icons/pen-tool';
 import LinkIcon from '@lucide/svelte/icons/link';
+import HighlighterIcon from '@lucide/svelte/icons/highlighter';
+import MessageSquareTextIcon from '@lucide/svelte/icons/message-square-text';
 import type { Icon } from '@lucide/svelte';
 
 export enum ViewMode {
@@ -526,8 +507,16 @@ export const blockTypes: {
 		type: taskBlockTypeEnum.fillBlank,
 		name: 'Fill Blank',
 		initialConfig: {
-			sentence: 'Fill in the _____.',
-			answer: 'answer'
+			sentence: 'Fill in the _____ and _____.',
+			answers: ['first blank', 'second blank']
+		},
+		icon: PenToolIcon
+	},
+	{
+		type: taskBlockTypeEnum.close,
+		name: 'Answer Blank',
+		initialConfig: {
+			text: 'Complete this sentence with _____ and _____.'
 		},
 		icon: PenToolIcon
 	},
@@ -537,7 +526,17 @@ export const blockTypes: {
 		initialConfig: {
 			question: 'Question'
 		},
-		icon: PenToolIcon
+		icon: MessageSquareTextIcon
+	},
+	{
+		type: taskBlockTypeEnum.highlightText,
+		name: 'Highlight Text',
+		initialConfig: {
+			text: 'Sample text for students to highlight key concepts and important information.',
+			instructions: 'Highlight the correct information',
+			highlightCorrect: true
+		},
+		icon: HighlighterIcon
 	},
 	{
 		type: taskBlockTypeEnum.matching,
@@ -552,3 +551,94 @@ export const blockTypes: {
 		icon: LinkIcon
 	}
 ];
+
+
+
+
+export const interactiveBlockWithOptionals = (
+    interactiveBlock: any,
+    options: {
+        includeHints?: boolean;
+        includeDifficulty?: boolean;
+        includeSteps?: boolean;
+        makeRequired?: boolean;
+    } = {}
+) => {
+    const {
+        includeHints = true,
+        includeDifficulty = true,
+        includeSteps = true,
+        makeRequired = true
+    } = options;
+
+    const additionalProperties: any = {};
+    const additionalRequired: string[] = [];
+
+    if (includeHints) {
+        additionalProperties.hints = hintsItem;
+        if (makeRequired) additionalRequired.push('hints');
+    }
+
+    if (includeDifficulty) {
+        additionalProperties.difficulty = difficultyItem;
+        if (makeRequired) additionalRequired.push('difficulty');
+    }
+
+    if (includeSteps) {
+        additionalProperties.steps = stepsItem;
+        if (makeRequired) additionalRequired.push('steps');
+    }
+
+    return {
+        ...interactiveBlock,
+        properties: {
+            ...interactiveBlock.properties,
+            ...additionalProperties
+        },
+        required: [...(interactiveBlock.required || []), ...additionalRequired]
+    };
+};
+
+export function getBlockTypesForSubject(subjectType: string): any[] {
+    const typeMap: Record<string, any[]> = {
+      mathematics: [blockChoice, blockShortAnswer, blockFillBlank],
+      science: [blockFillBlank, blockChoice, blockShortAnswer],
+      english: [blockShortAnswer, blockClose, blockHighlightText],
+      default: [blockChoice, blockShortAnswer, blockMatching, blockFillBlank]
+    };
+
+    return typeMap[subjectType.toLowerCase()] || typeMap.default;
+  }
+
+ export function getInteractiveSchema(subjectType: string): any {
+    const blockTypes = getBlockTypesForSubject(subjectType);
+
+    // Use the interactiveBlockWithOptionals helper for consistent schema generation
+    const interactiveBlockSchema = interactiveBlockWithOptionals({
+      type: 'object',
+      properties: {
+        taskBlock: {
+          anyOf: blockTypes
+        }
+      },
+      required: ['taskBlock']
+    }, {
+      includeHints: true,
+      includeDifficulty: true,
+      includeSteps: true,
+      makeRequired: true
+    });
+
+    return {
+      type: 'object',
+      properties: {
+        interactiveBlocks: {
+          type: 'array',
+          items: interactiveBlockSchema,
+          minItems: 1,
+          maxItems: 5
+        }
+      },
+      required: ['interactiveBlocks']
+    };
+  }

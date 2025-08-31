@@ -9,28 +9,35 @@ import { createTask, createTaskBlock } from './task';
 import { taskTypeEnum } from '$lib/enums';
 
 /**
- * Get all curriculum subjects that are available
+ * Get all subjects that are available
  */
-export async function getAllCurriculumSubjects() {
+export async function getAllSubjects() {
 	return await db
 		.select()
-		.from(table.curriculumSubject)
-		.where(eq(table.curriculumSubject.isArchived, false))
-		.orderBy(table.curriculumSubject.name);
+		.from(table.subject)
+		.where(eq(table.subject.isArchived, false))
+		.orderBy(table.subject.name);
 }
 
 /**
- * Get curriculum subject by name or ID
+ * Get all curriculum subjects that are available (deprecated - use getAllSubjects)
  */
-export async function getCurriculumSubjectByIdentifier(identifier: string | number) {
+export async function getAllCurriculumSubjects() {
+	return await getAllSubjects();
+}
+
+/**
+ * Get subject by name or ID
+ */
+export async function getSubjectByIdentifier(identifier: string | number) {
 	if (typeof identifier === 'number') {
 		const [subject] = await db
 			.select()
-			.from(table.curriculumSubject)
+			.from(table.subject)
 			.where(
 				and(
-					eq(table.curriculumSubject.id, identifier),
-					eq(table.curriculumSubject.isArchived, false)
+					eq(table.subject.id, identifier),
+					eq(table.subject.isArchived, false)
 				)
 			);
 		return subject;
@@ -44,13 +51,20 @@ export async function getCurriculumSubjectByIdentifier(identifier: string | numb
 	
 	const subjects = await db
 		.select()
-		.from(table.curriculumSubject)
-		.where(eq(table.curriculumSubject.isArchived, false));
+		.from(table.subject)
+		.where(eq(table.subject.isArchived, false));
 	
 	return subjects.find(subject => 
 		subject.name.toLowerCase() === normalizedName.toLowerCase() ||
 		subject.name.toLowerCase().includes(normalizedName.toLowerCase())
 	);
+}
+
+/**
+ * Get curriculum subject by name or ID (deprecated - use getSubjectByIdentifier)
+ */
+export async function getCurriculumSubjectByIdentifier(identifier: string | number) {
+	return await getSubjectByIdentifier(identifier);
 }
 
 /**
@@ -70,7 +84,7 @@ export async function getModulesForSubject(subjectId: number) {
 		.from(table.module)
 		.where(
 			and(
-				eq(table.module.curriculumSubjectId, subjectId),
+				eq(table.module.subjectId, subjectId),
 				eq(table.module.isPublished, true)
 			)
 		)
@@ -355,7 +369,7 @@ export async function generateAndStoreModule(params: ModuleGenerationParams) {
     const [module] = await db
       .insert(table.module)
       .values({
-        curriculumSubjectId: params.subjectId,
+        subjectId: params.subjectId,
         title: params.title,
         description: params.description,
         objective: scaffold.overallObjective,

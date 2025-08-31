@@ -26,9 +26,9 @@ export const sessionTypeEnum = pgEnum('session_type', [
 // Main teach me modules
 export const module = pgTable('module', {
     id: integer('id').primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
-    curriculumSubjectId: integer('curriculum_subject_id')
+    subjectId: integer('subject_id')
         .notNull()
-        .references(() => table.curriculumSubject.id),
+        .references(() => table.subject.id),
     title: text('title').notNull(),
     description: text('description'),
     objective: text('objective'),
