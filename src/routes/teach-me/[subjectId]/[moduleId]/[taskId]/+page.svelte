@@ -1,55 +1,43 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import { type TaskBlock } from '$lib/server/db/schema';
-	import { draggable, droppable, type DragDropState, dndState } from '@thisux/sveltednd';
-
-	// UI Components
-	import Button, { buttonVariants } from '$lib/components/ui/button/button.svelte';
+	import { dndState, draggable, droppable, type DragDropState } from '@thisux/sveltednd';
+// UI Components
+	import { buttonVariants } from '$lib/components/ui/button/button.svelte';
 	import * as Card from '$lib/components/ui/card';
-	import * as Select from '$lib/components/ui/select';
-	import { Badge } from '$lib/components/ui/badge';
-
-	// Block Components
-	import BlockHeading from './components/block-heading.svelte';
-	import BlockRichText from './components/block-rich-text-editor.svelte';
-	import BlockWhiteboard from './components/block-whiteboard.svelte';
+// Block Components
 	import BlockChoice from './components/block-choice.svelte';
-	import BlockFillBlank from './components/block-fill-blank.svelte';
-	import BlockMatching from './components/block-matching.svelte';
-	import BlockShortAnswer from './components/block-short-answer.svelte';
 	import BlockClose from './components/block-close.svelte';
+	import BlockFillBlank from './components/block-fill-blank.svelte';
+	import BlockHeading from './components/block-heading.svelte';
 	import BlockHighlightText from './components/block-highlight-text.svelte';
-
-	// Icons
-	import CheckCircleIcon from '@lucide/svelte/icons/check-circle';
-	import WrenchIcon from '@lucide/svelte/icons/wrench';
-	import EyeIcon from '@lucide/svelte/icons/eye';
+	import BlockMatching from './components/block-matching.svelte';
+	import BlockRichText from './components/block-rich-text-editor.svelte';
+	import BlockShortAnswer from './components/block-short-answer.svelte';
+	import BlockWhiteboard from './components/block-whiteboard.svelte';
+// Icons
 
 	import {
-		createBlock,
-		deleteBlock,
-		updateBlock,
-		updateTaskTitle,
-		updateBlockOrder,
-		upsertBlockResponse
+	  createBlock,
+	  deleteBlock,
+	  updateBlock,
+	  updateBlockOrder
 	} from './client';
 
+	import { taskBlockTypeEnum } from '$lib/enums';
 	import {
-		blockTypes,
-		ViewMode,
-		type BlockChoiceConfig,
-		type BlockFillBlankConfig,
-		type BlockHeadingConfig,
-		type BlockMatchingConfig,
-		type BlockRichTextConfig,
-		type BlockShortAnswerConfig,
-		type BlockWhiteboardConfig,
-		type BlockCloseConfig,
-		type BlockHighlightTextConfig
+	  blockTypes,
+	  ViewMode,
+	  type BlockChoiceConfig,
+	  type BlockCloseConfig,
+	  type BlockFillBlankConfig,
+	  type BlockHeadingConfig,
+	  type BlockHighlightTextConfig,
+	  type BlockMatchingConfig,
+	  type BlockRichTextConfig,
+	  type BlockShortAnswerConfig,
+	  type BlockWhiteboardConfig
 	} from '$lib/schemas/blockSchema';
 	import GripVerticalIcon from '@lucide/svelte/icons/grip-vertical';
-	import { taskBlockTypeEnum, taskStatusEnum, userTypeEnum } from '$lib/enums';
-	import { PresentationIcon } from '@lucide/svelte';
 
 	let { data } = $props();
 
@@ -57,9 +45,7 @@
 	let responses = $state<Record<number, any>>({});
 
 	let mouseOverElement = $state<string>('');
-	let viewMode = $state<ViewMode>(ViewMode.ANSWER	);
-
-	$effect(() => {
+	let viewMode = $state<ViewMode>(ViewMode.ANSWER);	$effect(() => {
 		blocks.forEach((block) => {
 			if (!Object.prototype.hasOwnProperty.call(responses, block.id)) {
 				responses[block.id] = getInitialResponse(block.type);
@@ -246,188 +232,188 @@
 	}
 </script>
 
-<div class="min-h-screen flex justify-center p-8">
-	<div class="w-4/5 max-w-4xl">
-			<div class="flex h-full flex-col">
-				{#each blocks as block}
-					<div
-						class="ml-[38px] min-h-4 rounded-md {dndState.targetContainer === `task-${block.id}`
-							? 'border-accent-foreground my-2 h-8 border border-dashed'
-							: ''}"
-						use:droppable={{
-							container: `task-${block.id}`,
-							callbacks: {
-								onDrop: handleDrop
-							}
-						}}
-					></div>
+<div class="min-h-screen flex justify-center p-8 transition-all duration-300">
+	<div class="w-full max-w-4xl">
+		<div class="flex h-full flex-col">
+			{#each blocks as block}
+				<div
+					class="ml-[38px] min-h-4 rounded-md {dndState.targetContainer === `task-${block.id}`
+						? 'border-accent-foreground my-2 h-8 border border-dashed'
+						: ''}"
+					use:droppable={{
+						container: `task-${block.id}`,
+						callbacks: {
+							onDrop: handleDrop
+						}
+					}}
+				></div>
 
-					<div
-						class="grid {viewMode === ViewMode.CONFIGURE
-							? 'grid-cols-[30px_1fr]'
-							: 'grid-cols-1'} items-center gap-2"
-						role="group"
-						onmouseover={() => (mouseOverElement = `task-${block.id}`)}
-						onfocus={() => (mouseOverElement = `task-${block.id}`)}
-					>
-						{#if viewMode === ViewMode.CONFIGURE && mouseOverElement === `task-${block.id}`}
-							<div
-								use:draggable={{
-									container: 'task',
-									dragData: block
-								}}
-								class="group hover:bg-muted relative flex h-6 w-6 cursor-grab items-center justify-center rounded transition-colors active:cursor-grabbing"
-							>
-								<GripVerticalIcon
-									class="text-muted-foreground group-hover:text-foreground h-3 w-3 rounded transition-colors"
-								/>
-							</div>
-						{:else if viewMode === ViewMode.CONFIGURE}
-							<div></div>
-						{/if}
-						<div>
-							{#if block.type === taskBlockTypeEnum.heading}
-								<BlockHeading
-									config={block.config as BlockHeadingConfig}
-									onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
-									{viewMode}
-								/>
-							{:else if block.type === taskBlockTypeEnum.richText}
-								<BlockRichText
-									config={block.config as BlockRichTextConfig}
-									onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
-									{viewMode}
-								/>
-							{:else if block.type === taskBlockTypeEnum.whiteboard}
-								<BlockWhiteboard
-									config={block.config as BlockWhiteboardConfig}
-									onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
-									{viewMode}
-								/>
-							{:else if block.type === taskBlockTypeEnum.choice}
-								<BlockChoice
-									config={block.config as BlockChoiceConfig}
-									onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
-									response={getEmptyResponse(block.type)}
-									onResponseUpdate={async (response) =>
-										await handleResponseUpdate(block.id, response)}
-									{viewMode}
-								/>
-							{:else if block.type === taskBlockTypeEnum.fillBlank}
-								<BlockFillBlank
-									config={block.config as BlockFillBlankConfig}
-									onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
-									response={getEmptyResponse(block.type)}
-									onResponseUpdate={async (response) =>
-										await handleResponseUpdate(block.id, response)}
-									{viewMode}
-								/>
-							{:else if block.type === taskBlockTypeEnum.matching}
-								<BlockMatching
-									config={block.config as BlockMatchingConfig}
-									onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
-									response={getEmptyResponse(block.type)}
-									onResponseUpdate={async (response) =>
-										await handleResponseUpdate(block.id, response)}
-									{viewMode}
-								/>
-							{:else if block.type === taskBlockTypeEnum.shortAnswer}
-								<BlockShortAnswer
-									config={block.config as BlockShortAnswerConfig}
-									onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
-									response={getEmptyResponse(block.type)}
-									onResponseUpdate={async (response) =>
-										await handleResponseUpdate(block.id, response)}
-									{viewMode}
-								/>
-							{:else if block.type === taskBlockTypeEnum.close}
-								<BlockClose
-									config={block.config as BlockCloseConfig}
-									onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
-									response={getEmptyResponse(block.type)}
-									onResponseUpdate={async (response) =>
-										await handleResponseUpdate(block.id, response)}
-									{viewMode}
-								/>
-							{:else if block.type === taskBlockTypeEnum.highlightText}
-								<BlockHighlightText
-									config={block.config as BlockHighlightTextConfig}
-									onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
-									response={getEmptyResponse(block.type)}
-									onResponseUpdate={async (response) =>
-										await handleResponseUpdate(block.id, response)}
-									{viewMode}
-								/>
-							{:else}
-								<p>Block of type {block.type} is not yet implemented.</p>
-							{/if}
+				<div
+					class="grid {viewMode === ViewMode.CONFIGURE
+						? 'grid-cols-[30px_1fr]'
+						: 'grid-cols-1'} items-center gap-2"
+					role="group"
+					onmouseover={() => (mouseOverElement = `task-${block.id}`)}
+					onfocus={() => (mouseOverElement = `task-${block.id}`)}
+				>
+					{#if viewMode === ViewMode.CONFIGURE && mouseOverElement === `task-${block.id}`}
+						<div
+							use:draggable={{
+								container: 'task',
+								dragData: block
+							}}
+							class="group hover:bg-muted relative flex h-6 w-6 cursor-grab items-center justify-center rounded transition-colors active:cursor-grabbing"
+						>
+							<GripVerticalIcon
+								class="text-muted-foreground group-hover:text-foreground h-3 w-3 rounded transition-colors"
+							/>
 						</div>
+					{:else if viewMode === ViewMode.CONFIGURE}
+						<div></div>
+					{/if}
+					<div>
+						{#if block.type === taskBlockTypeEnum.heading}
+							<BlockHeading
+								config={block.config as BlockHeadingConfig}
+								onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
+								{viewMode}
+							/>
+						{:else if block.type === taskBlockTypeEnum.richText}
+							<BlockRichText
+								config={block.config as BlockRichTextConfig}
+								onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
+								{viewMode}
+							/>
+						{:else if block.type === taskBlockTypeEnum.whiteboard}
+							<BlockWhiteboard
+								config={block.config as BlockWhiteboardConfig}
+								onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
+								{viewMode}
+							/>
+						{:else if block.type === taskBlockTypeEnum.choice}
+							<BlockChoice
+								config={block.config as BlockChoiceConfig}
+								onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
+								response={getEmptyResponse(block.type)}
+								onResponseUpdate={async (response) =>
+									await handleResponseUpdate(block.id, response)}
+								{viewMode}
+							/>
+						{:else if block.type === taskBlockTypeEnum.fillBlank}
+							<BlockFillBlank
+								config={block.config as BlockFillBlankConfig}
+								onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
+								response={getEmptyResponse(block.type)}
+								onResponseUpdate={async (response) =>
+									await handleResponseUpdate(block.id, response)}
+								{viewMode}
+							/>
+						{:else if block.type === taskBlockTypeEnum.matching}
+							<BlockMatching
+								config={block.config as BlockMatchingConfig}
+								onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
+								response={getEmptyResponse(block.type)}
+								onResponseUpdate={async (response) =>
+									await handleResponseUpdate(block.id, response)}
+								{viewMode}
+							/>
+						{:else if block.type === taskBlockTypeEnum.shortAnswer}
+							<BlockShortAnswer
+								config={block.config as BlockShortAnswerConfig}
+								onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
+								response={getEmptyResponse(block.type)}
+								onResponseUpdate={async (response) =>
+									await handleResponseUpdate(block.id, response)}
+								{viewMode}
+							/>
+						{:else if block.type === taskBlockTypeEnum.close}
+							<BlockClose
+								config={block.config as BlockCloseConfig}
+								onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
+								response={getEmptyResponse(block.type)}
+								onResponseUpdate={async (response) =>
+									await handleResponseUpdate(block.id, response)}
+								{viewMode}
+							/>
+						{:else if block.type === taskBlockTypeEnum.highlightText}
+							<BlockHighlightText
+								config={block.config as BlockHighlightTextConfig}
+								onConfigUpdate={async (config) => await handleConfigUpdate(block, config)}
+								response={getEmptyResponse(block.type)}
+								onResponseUpdate={async (response) =>
+									await handleResponseUpdate(block.id, response)}
+								{viewMode}
+							/>
+						{:else}
+							<p>Block of type {block.type} is not yet implemented.</p>
+						{/if}
 					</div>
-				{/each}
-				{#if viewMode === ViewMode.CONFIGURE}
-					<div
-						use:droppable={{
-							container: `task-bottom`,
-							callbacks: {
-								onDrop: handleDrop
-							}
-						}}
-						class="my-4 ml-[38px] flex min-h-24 items-center justify-center rounded-lg border border-dashed transition-colors {dndState.targetContainer ===
-						'task-bottom'
-							? draggedOverClasses
-							: notDraggedOverClasses}"
-					>
-						<span class="text-muted-foreground text-sm">Add more blocks here</span>
-					</div>
-				{/if}
-			</div>
-
-	<!-- Block Pane -->
-	{#if viewMode === ViewMode.CONFIGURE}
-		<div class="flex flex-col gap-4">
-			<Card.Root class="h-full">
-				<Card.Header>
-					<Card.Title class="text-lg">Task Blocks</Card.Title>
-					<Card.Description>
-						Drag and drop blocks from the palette to the task content area. If you'd like to delete
-						a block, simply drag it to the area below.
-					</Card.Description>
-				</Card.Header>
-				<Card.Content class="flex h-full flex-col gap-4">
-					<div
-						class="grid grid-cols-2 gap-3 rounded-lg p-2 {(dndState.sourceContainer.startsWith(
-							'task'
-						) ||
-							dndState.sourceContainer.startsWith('two-column-')) &&
-						dndState.targetContainer === 'blockPalette'
-							? 'border-destructive border border-dashed'
-							: notDraggedOverClasses}"
-						use:droppable={{
-							container: `blockPalette`,
-							callbacks: {
-								onDrop: handleDrop
-							}
-						}}
-					>
-						{#each blockTypes as { type, name, initialConfig, icon }}
-							{@const Icon = icon}
-							<div
-								class="flex flex-col items-center justify-center gap-1 {buttonVariants({
-									variant: 'outline'
-								})} aspect-square h-18 w-full"
-								use:draggable={{
-									container: 'blockPalette',
-									dragData: { type, config: initialConfig, id: 0 }
-								}}
-							>
-								<Icon class="size-8" />
-								<span class="text-center text-xs leading-tight">{name}</span>
-							</div>
-						{/each}
-					</div>
-				</Card.Content>
-			</Card.Root>
+				</div>
+			{/each}
+			{#if viewMode === ViewMode.CONFIGURE}
+				<div
+					use:droppable={{
+						container: `task-bottom`,
+						callbacks: {
+							onDrop: handleDrop
+						}
+					}}
+					class="my-4 ml-[38px] flex min-h-24 items-center justify-center rounded-lg border border-dashed transition-colors {dndState.targetContainer ===
+					'task-bottom'
+						? draggedOverClasses
+						: notDraggedOverClasses}"
+				>
+					<span class="text-muted-foreground text-sm">Add more blocks here</span>
+				</div>
+			{/if}
 		</div>
-	{/if}
+
+		<!-- Block Pane -->
+		{#if viewMode === ViewMode.CONFIGURE}
+			<div class="flex flex-col gap-4">
+				<Card.Root class="h-full">
+					<Card.Header>
+						<Card.Title class="text-lg">Task Blocks</Card.Title>
+						<Card.Description>
+							Drag and drop blocks from the palette to the task content area. If you'd like to delete
+							a block, simply drag it to the area below.
+						</Card.Description>
+					</Card.Header>
+					<Card.Content class="flex h-full flex-col gap-4">
+						<div
+							class="grid grid-cols-2 gap-3 rounded-lg p-2 {(dndState.sourceContainer.startsWith(
+								'task'
+							) ||
+								dndState.sourceContainer.startsWith('two-column-')) &&
+							dndState.targetContainer === 'blockPalette'
+								? 'border-destructive border border-dashed'
+								: notDraggedOverClasses}"
+							use:droppable={{
+								container: `blockPalette`,
+								callbacks: {
+									onDrop: handleDrop
+								}
+							}}
+						>
+							{#each blockTypes as { type, name, initialConfig, icon }}
+								{@const Icon = icon}
+								<div
+									class="flex flex-col items-center justify-center gap-1 {buttonVariants({
+										variant: 'outline'
+									})} aspect-square h-18 w-full"
+									use:draggable={{
+										container: 'blockPalette',
+										dragData: { type, config: initialConfig, id: 0 }
+									}}
+								>
+									<Icon class="size-8" />
+									<span class="text-center text-xs leading-tight">{name}</span>
+								</div>
+							{/each}
+						</div>
+					</Card.Content>
+				</Card.Root>
+			</div>
+		{/if}
 	</div>
 </div>

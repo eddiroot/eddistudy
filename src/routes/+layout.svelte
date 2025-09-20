@@ -5,16 +5,44 @@
 
 	import { page } from '$app/state';
 
-	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
-	import * as Breadcrumb from '$lib/components/ui/breadcrumb/index.js';
-	import ThemeToggle from '$lib/components/theme-toggle.svelte';
+	import { AiSidebar } from '$lib/components/ai-sidebar';
 	import AppSidebar from '$lib/components/app-sidebar.svelte';
-	import AiSidebar from '$lib/components/ai-sidebar.svelte';
+	import ThemeToggle from '$lib/components/theme-toggle.svelte';
+	import * as Breadcrumb from '$lib/components/ui/breadcrumb/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 
 	let { children, data } = $props();
 
 	const user = $derived(() => data?.user);
+
+	// Sidebar state for dynamic resizing
+	let sidebarController: any = $state(null);
+	let sidebarWidth = $state(400);
+	let sidebarOpen = $state(false);
+
+	// Function to handle sidebar state changes
+	function handleSidebarStateChange(controller: any) {
+		sidebarController = controller;
+		if (controller) {
+			const state = controller.getState();
+			sidebarWidth = state.width;
+			sidebarOpen = state.isOpen;
+		}
+	}
+
+	// Determine the sidebar context based on current page
+	const sidebarContext = $derived(() => {
+		const pathname = page.url.pathname;
+		
+		if (pathname.includes('/tasks/')) {
+			return 'task';
+		} else if (pathname.includes('/lessons/') || pathname.includes('/class/')) {
+			return 'lesson';
+		} else {
+			return 'general';
+		}
+	});
 
 	// Extract subjectOfferingId from URL if on a subject-specific page
 	const currentSubjectOfferingId = $derived(() => {
@@ -23,10 +51,15 @@
 		return subjectMatch ? parseInt(subjectMatch[1], 10) : null;
 	});
 
-	// Check if user is on any subjects page
-	const isOnSubjectsPage = $derived(() => {
+	// Check if user is on any subjects page or task page
+	const isOnSubjectsPageOrTask = $derived(() => {
 		const pathname = page.url.pathname;
-		return pathname.startsWith('/subjects/');
+		console.log('Checking pathname for AI sidebar:', pathname);
+		const isSubjectsPage = pathname.startsWith('/subjects/');
+		const isTaskPage = pathname.includes('/tasks/');
+		const result = isSubjectsPage || isTaskPage;
+		console.log('isSubjectsPage:', isSubjectsPage, 'isTaskPage:', isTaskPage, 'result:', result);
+		return result;
 	});
 
 	// Check if we're on a task page and get the task data
@@ -166,17 +199,31 @@
 						<Button href="/auth/login">Login</Button>
 					{/if}
 					<ThemeToggle />
-					{#if user() && isOnSubjectsPage() && shouldShowAITutor()}
-						<Sidebar.Trigger name="right" aria-label="Toggle AI Helper" />
-					{/if}
 				</div>
 			</nav>
 		</header>
-		<main class="flex-1 overflow-auto">
+		<main 
+			class="flex-1 overflow-auto transition-all duration-300"
+			style={sidebarOpen ? `margin-right: ${sidebarWidth}px` : ''}
+		>
 			{@render children()}
 		</main>
 	</div>
-	{#if user() && isOnSubjectsPage() && shouldShowAITutor()}
-		<AiSidebar subjectOfferingId={currentSubjectOfferingId()} />
+	<!-- AI Sidebar - Show on all pages when user is logged in for testing -->
+	{#if user()}
+		<AiSidebar 
+			context={sidebarContext()} 
+			enabled={true}
+			subjectOfferingId={currentSubjectOfferingId() ?? undefined}
+			onStateChange={handleSidebarStateChange}
+		/>
+	{:else}
+		<!-- Debug: Show when no user is logged in too for testing -->
+		<AiSidebar 
+			context={sidebarContext()} 
+			enabled={true}
+			subjectOfferingId={undefined}
+			onStateChange={handleSidebarStateChange}
+		/>
 	{/if}
 </Sidebar.Provider>
