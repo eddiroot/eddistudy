@@ -2,7 +2,9 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
+	import ArrowUp from '@lucide/svelte/icons/arrow-up';
 	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
+	import MessageCircle from '@lucide/svelte/icons/message-circle';
 	import XIcon from '@lucide/svelte/icons/x';
 	import { onMount } from 'svelte';
 	import { GeneralSidebarController } from './general-sidebar';
@@ -241,9 +243,7 @@
 									<!-- Chat icon and title -->
 									<div class="space-y-4">
 										<div class="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto">
-											<svg class="w-8 h-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.955 8.955 0 01-2.706-.414L7 21l1.586-3.293A8.958 8.958 0 013 12c0-4.418 3.582-8 8-8s8 3.582 8 8z"></path>
-											</svg>
+											<MessageCircle class="h-8 w-8 text-foreground" />
 										</div>
 										<h3 class="text-lg font-semibold text-foreground">Learn with the AI Tutor</h3>
 									</div>
@@ -335,7 +335,7 @@
 										placeholder="Ask anything"
 										onkeydown={handleKeydown}
 										disabled={currentState.isLoading}
-										class="!border-none !bg-transparent !shadow-none !ring-0 !ring-offset-0 !outline-none focus-visible:!border-transparent focus-visible:!ring-0 focus-visible:!ring-offset-0 focus-visible:!shadow-none placeholder:text-muted-foreground !text-xl !p-0 !h-auto !min-h-0"
+										class="!border-none !bg-background !shadow-none !ring-0 !ring-offset-0 !outline-none focus-visible:!border-transparent focus-visible:!ring-0 focus-visible:!ring-offset-0 focus-visible:!shadow-none placeholder:text-muted-foreground !text-xl !p-0 !h-auto !min-h-0"
 									/>
 								</div>
 								
@@ -356,9 +356,7 @@
 										disabled={currentState.isLoading || !currentState.message.trim()}
 										aria-label="Send"
 									>
-										<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12 6.5z"></path>
-										</svg>
+										<ArrowUp class="h-4 w-4" />
 									</Button>
 								</div>
 							</div>
