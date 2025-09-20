@@ -104,42 +104,25 @@ for optimal learning outcomes.`,
       }
     );
 
-    const prompt = `
-Generate comprehensive learning content for: ${section.title}
-
-Learning Objective: ${section.objective}
-Concepts to Cover: ${section.concepts.join(', ')}
-Skills to Develop: ${section.skills.join(', ')}
-
-EXAMPLES TO REFERENCE:
-${examples.map((e: any) => e.content).join('\n\n')}
-
-Create engaging explanatory content that:
-1. Builds on prerequisites
-2. Uses clear examples
-3. Includes visual descriptions where helpful
-4. Prepares for immediate self-testing
-`;
-
-    const contentSchema = {
-      type: 'object',
-      properties: {
-        blocks: {
-          type: 'array',
-          items: {
-            anyOf: [
-              blockSchemas.blockHeading,
-              blockSchemas.blockRichText,
-            ]
-          }
-        }
-      }
-    };
+    // Get the prompt template
+    const promptTemplate = PromptRegistry.getPrompt('content_generator')!;
+    
+    // Fill the prompt with context
+    const prompt = PromptRegistry.fillPrompt(
+      'content_generator',
+      {
+        title: section.title,
+        objective: section.objective,
+        concepts: section.concepts,
+        skills: section.skills
+      },
+      examples
+    );
 
     const response = await geminiCompletion(
       prompt,
       undefined, // no media file
-      contentSchema,
+      promptTemplate.responseSchema,
       this.getSystemInstruction()
     );
 

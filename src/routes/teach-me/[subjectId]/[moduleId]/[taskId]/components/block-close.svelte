@@ -1,11 +1,11 @@
 <script lang="ts">
+	import * as Card from '$lib/components/ui/card';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
-	import * as Card from '$lib/components/ui/card';
 	import { Textarea } from '$lib/components/ui/textarea';
-	import PenToolIcon from '@lucide/svelte/icons/pen-tool';
-	import CheckCircleIcon from '@lucide/svelte/icons/check-circle';
 	import { ViewMode, type BlockCloseConfig, type CloseBlockProps } from '$lib/schemas/blockSchema';
+	import CheckCircleIcon from '@lucide/svelte/icons/check-circle';
+	import PenToolIcon from '@lucide/svelte/icons/pen-tool';
 
 	let { config, onConfigUpdate, response, onResponseUpdate, viewMode }: CloseBlockProps = $props();
 
@@ -49,7 +49,7 @@
 		<Card.Root>
 			<Card.Header>
 				<Card.Title class="flex items-center gap-2">
-					<PenToolIcon class="h-4 w-4" />
+					<PenToolIcon />
 					Configure Close Block
 				</Card.Title>
 			</Card.Header>

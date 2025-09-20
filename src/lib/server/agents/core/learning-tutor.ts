@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { BaseAgent, type AgentContext, type AgentResponse, AgentType } from '../index';
+import { geminiCompletion } from '$lib/server/ai';
+import { AgentType, BaseAgent, type AgentContext, type AgentResponse } from '../index';
+import { SessionManager } from '../memory/session-manager';
 import { PromptRegistry } from '../prompts/registry';
 import { EducationalVectorStore } from '../retrieval/vector-store';
-import { SessionManager } from '../memory/session-manager';
-import { geminiCompletion } from '$lib/server/ai';
 
 export class LearningTutorAgent extends BaseAgent {
   private vectorStore: EducationalVectorStore;
@@ -38,6 +38,8 @@ needs and learning pace while maintaining high expectations.`,
         return await this.selectNextQuestion(context, memory);
       case 'provide_feedback':
         return await this.provideFeedback(context, memory);
+      case 'chat_response':
+        return await this.handleChatResponse(context, memory);
       default:
         throw new Error(`Unknown action: ${action}`);
     }
@@ -52,9 +54,11 @@ needs and learning pace while maintaining high expectations.`,
     // Get similar evaluations for consistency
     const similarEvaluations = await this.vectorStore.hybridSearch(
       `evaluate ${blockType} response`,
-      ['hints_feedback'],
-      { type: 'evaluation', blockType },
-      3
+      {
+        collections: ['hints_feedback'],
+        filter: { type: 'evaluation', blockType },
+        k: 3
+      }
     );
 
     const prompt = PromptRegistry.fillPrompt(
@@ -74,8 +78,9 @@ needs and learning pace while maintaining high expectations.`,
     
     const response = await geminiCompletion(
       prompt,
-      this.getSystemInstruction(),
-      evaluationSchema
+      undefined, // no media file
+      evaluationSchema,
+      this.getSystemInstruction()
     );
 
     const evaluation = JSON.parse(response);
@@ -143,6 +148,8 @@ needs and learning pace while maintaining high expectations.`,
 
     const hint = await geminiCompletion(
       prompt,
+      undefined, // no media file
+      undefined, // no response schema
       this.getSystemInstruction()
     );
 
@@ -246,6 +253,8 @@ ${memory ? `Student has been working at ${memory.context.currentDifficulty} leve
 
     const feedback = await geminiCompletion(
       prompt,
+      undefined, // no media file
+      undefined, // no response schema
       this.getSystemInstruction()
     );
 
@@ -254,6 +263,92 @@ ${memory ? `Student has been working at ${memory.context.currentDifficulty} leve
       metadata: {
         type: 'feedback',
         masteryLevel: evaluation.masteryLevel
+      }
+    };
+  }
+
+  private async handleChatResponse(
+    context: AgentContext,
+    memory?: any
+  ): Promise<AgentResponse> {
+    const { 
+      message, 
+      blockContext, 
+      conversationHistory,
+      activeBlockId 
+    } = context.metadata;
+
+    // Retrieve relevant content for the current context
+    const relevantContent = await this.vectorStore.hybridSearch(
+      message,
+      {
+        collections: ['curriculum_contents', 'hints_feedback', 'misconceptions'],
+        k: 3
+      }
+    );
+
+    const prompt = `
+You are Eddi, a friendly and knowledgeable AI tutor helping a student learn.
+
+Current Task Context:
+${blockContext || 'No specific task blocks available'}
+
+Active Block: ${activeBlockId ? `Block ID ${activeBlockId}` : 'None'}
+
+Conversation History:
+${conversationHistory || 'This is the start of the conversation'}
+
+Student's Message: ${message}
+
+Retrieved Knowledge:
+${relevantContent.map(r => r.content).join('\n')}
+
+${memory ? `
+Student Performance:
+- Current difficulty: ${memory.context.currentDifficulty}
+- Struggling concepts: ${memory.context.strugglingConcepts.join(', ') || 'None identified yet'}
+- Mastered concepts: ${memory.context.masteredConcepts.join(', ') || 'None yet'}
+` : ''}
+
+Respond to the student's message with:
+1. A helpful, encouraging response that addresses their question
+2. If they're asking for help with a specific block, provide targeted guidance without giving away the answer
+3. Use Socratic questioning when appropriate to guide their thinking
+4. Keep responses concise but informative (2-3 paragraphs max)
+5. If relevant, identify which concepts this relates to
+
+Format your response as JSON:
+{
+  "message": "Your response here",
+  "action": "optional_action", // e.g., "highlight_block", "show_hint", "next_question"
+  "blockId": null, // ID of block to highlight if relevant
+  "concepts": [], // Array of concepts being discussed
+  "hints": [] // Optional hints if providing step-by-step guidance
+}
+`;
+
+    const response = await geminiCompletion(
+      prompt,
+      undefined,
+      {
+        type: 'object',
+        properties: {
+          message: { type: 'string' },
+          action: { type: 'string', nullable: true },
+          blockId: { type: 'number', nullable: true },
+          concepts: { type: 'array', items: { type: 'string' } },
+          hints: { type: 'array', items: { type: 'string' } }
+        },
+        required: ['message']
+      },
+      this.getSystemInstruction()
+    );
+
+    return {
+      content: response,
+      metadata: {
+        type: 'chat_response',
+        sources: relevantContent
       }
     };
   }

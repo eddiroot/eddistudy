@@ -1,3 +1,4 @@
+import * as blockSchemas from '../../../schemas/blockSchema';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface PromptTemplate {
   id: string;
@@ -64,8 +65,8 @@ Create 3-4 progressive sections that:
 3. Balance conceptual understanding with skill application
 
 For each section provide:
-   - Clear learning objective (what students will be able to do)
-  - 3-3 specific concepts to cover
+   - Clear learning objective (what will be achieved by the end)
+  - 3-4 specific concepts to cover
   - 2-3 practical skills to develop
 
 CONSTRAINTS:
@@ -110,7 +111,7 @@ SECTION CONTEXT:
 CURRICULUM ALIGNMENT:
 {curriculumContext}
 
-PREVIOUS STUDENT ERRORS (for targeted practice):
+COMMON MISCONCEPTIONS (for targeted practice):
 {commonMisconceptions}
 
 TASK:
@@ -119,7 +120,7 @@ Create {numberOfBlocks} interactive blocks that:
 1. Test understanding immediately after learning (testing effect)
 2. Include progressive hints that scaffold learning
 3. Provide detailed feedback for incorrect responses
-4. Target common misconceptions
+4. Address common misconceptions
 
 For each block include:
 - Clear success criteria aligned to curriculum
@@ -256,6 +257,50 @@ FEEDBACK TONE:
         }
       },
       tags: ['evaluation', 'feedback', 'assessment']
+    });
+
+    this.registerPrompt({
+      id: 'content_generator',
+      name: 'Learning Content Generator',
+      category: PromptCategory.CONTENT_GENERATION,
+      template: `
+Generate comprehensive learning content for: {title}
+
+Learning Objective: {objective}
+Concepts to Cover: {concepts}
+Skills to Develop: {skills}
+
+Create engaging explanatory content that:
+1. Builds on prerequisites
+2. Uses clear examples
+3. Includes visual descriptions where helpful
+4. Prepares for immediate self-testing
+
+The content should be structured as educational blocks that guide learners through 
+the concepts progressively and provide clear explanations with relevant examples.
+`,
+      variables: [
+        { name: 'title', type: 'string', required: true },
+        { name: 'objective', type: 'string', required: true },
+        { name: 'concepts', type: 'array', required: true },
+        { name: 'skills', type: 'array', required: true }
+      ],
+      responseSchema: {
+        type: 'object',
+        properties: {
+          blocks: {
+            type: 'array',
+            items: {
+              anyOf: [
+                blockSchemas.blockHeading,
+                blockSchemas.blockRichText
+              ]
+            }
+          }
+        }
+      },
+      chainable: true,
+      tags: ['content', 'generation', 'learning']
     });
 
     this.registerPrompt({
