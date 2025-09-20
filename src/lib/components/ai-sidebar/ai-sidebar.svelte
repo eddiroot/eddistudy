@@ -178,7 +178,7 @@
 			{@const FirstTabIcon = availableTabs[0].icon}
 			<button
 				onclick={handleToggle}
-				class="fixed bottom-6 right-6 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all hover:scale-110 hover:shadow-xl"
+				class="fixed bottom-6 right-6 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all hover:scale-110 hover:shadow-xl pointer-events-auto"
 				aria-label="Open AI Assistant"
 			>
 				<FirstTabIcon class="h-6 w-6" />
@@ -189,8 +189,8 @@
 	<!-- AI Sidebar -->
 	{#if currentState.isOpen}
 		<div 
-			class="fixed {currentConfig.position}-0 z-50 bg-background shadow-lg border-l {isResizing ? '' : 'transition-all duration-300'}"
-			style="width: {currentState.width}px; top: 56px; bottom: 0;"
+			class="absolute top-0 right-0 h-full z-50 bg-background shadow-lg border-l pointer-events-auto {isResizing ? '' : 'transition-all duration-300'}"
+			style="width: {currentState.width}px;"
 		>
 			<!-- Resize Handle -->
 			<button

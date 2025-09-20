@@ -16,6 +16,10 @@
 
 	const user = $derived(() => data?.user);
 
+	// Header element reference for dynamic height calculation
+	let headerElement: HTMLElement;
+	let headerHeight = $state(0);
+
 	// Sidebar state for dynamic resizing
 	let sidebarController: any = $state(null);
 	let sidebarWidth = $state(400);
@@ -152,6 +156,20 @@
 
 		return items;
 	};
+
+	// Update header height when component mounts or window resizes
+	function updateHeaderHeight() {
+		if (headerElement) {
+			headerHeight = headerElement.offsetHeight;
+		}
+	}
+
+	// Update header height on mount and resize
+	$effect(() => {
+		updateHeaderHeight();
+		window.addEventListener('resize', updateHeaderHeight);
+		return () => window.removeEventListener('resize', updateHeaderHeight);
+	});
 </script>
 
 <svelte:head>
@@ -170,7 +188,8 @@
 	{/if}
 	<div class="relative flex h-full w-full flex-col">
 		<header
-			class="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 backdrop-blur"
+			class="bg-background/95 supports-[backdrop-filter]:bg-background/60 fixed top-0 left-0 right-0 z-50 backdrop-blur"
+			bind:this={headerElement}
 		>
 			<nav class="mx-auto flex items-center justify-between border-b px-4 py-2">
 				<div class="flex items-center gap-x-4">
@@ -202,28 +221,28 @@
 				</div>
 			</nav>
 		</header>
-		<main 
-			class="flex-1 overflow-auto transition-all duration-300"
-			style={sidebarOpen ? `margin-right: ${sidebarWidth}px` : ''}
-		>
-			{@render children()}
-		</main>
+		
+		<!-- Main content area below header -->
+		<div class="flex-1 relative" style="padding-top: {headerHeight}px;">
+			<main 
+				class="h-full overflow-auto transition-all duration-300"
+				style={sidebarOpen ? `margin-right: ${sidebarWidth}px` : ''}
+			>
+				{@render children()}
+			</main>
+			
+			<!-- AI Sidebar Container - positioned to start below header and end at viewport bottom -->
+			<div 
+				class="fixed right-0 bottom-0 pointer-events-none z-40"
+				style="top: {headerHeight}px;"
+			>
+				<AiSidebar 
+					context={sidebarContext()} 
+					enabled={true}
+					subjectOfferingId={user() ? currentSubjectOfferingId() ?? undefined : undefined}
+					onStateChange={handleSidebarStateChange}
+				/>
+			</div>
+		</div>
 	</div>
-	<!-- AI Sidebar - Show on all pages when user is logged in for testing -->
-	{#if user()}
-		<AiSidebar 
-			context={sidebarContext()} 
-			enabled={true}
-			subjectOfferingId={currentSubjectOfferingId() ?? undefined}
-			onStateChange={handleSidebarStateChange}
-		/>
-	{:else}
-		<!-- Debug: Show when no user is logged in too for testing -->
-		<AiSidebar 
-			context={sidebarContext()} 
-			enabled={true}
-			subjectOfferingId={undefined}
-			onStateChange={handleSidebarStateChange}
-		/>
-	{/if}
 </Sidebar.Provider>
